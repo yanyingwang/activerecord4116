@@ -2,13 +2,13 @@ require 'cases/helper'
 require 'models/person'
 require 'models/topic'
 
-class NonExistentTable < ActiveRecord::Base; end
+class NonExistentTable < ActiveRecord4116::Base; end
 
-class CoreTest < ActiveRecord::TestCase
+class CoreTest < ActiveRecord4116::TestCase
   fixtures :topics
 
   def test_inspect_class
-    assert_equal 'ActiveRecord::Base', ActiveRecord::Base.inspect
+    assert_equal 'ActiveRecord4116::Base', ActiveRecord4116::Base.inspect
     assert_equal 'LoosePerson(abstract)', LoosePerson.inspect
     assert_match(/^Topic\(id: integer, title: string/, Topic.inspect)
   end

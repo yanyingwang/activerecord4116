@@ -1,4 +1,4 @@
-class Club < ActiveRecord::Base
+class Club < ActiveRecord4116::Base
   has_one :membership
   has_many :memberships, :inverse_of => false
   has_many :members, :through => :memberships
@@ -15,7 +15,7 @@ class Club < ActiveRecord::Base
   end
 end
 
-class SuperClub < ActiveRecord::Base
+class SuperClub < ActiveRecord4116::Base
   self.table_name = "clubs"
 
   has_many :memberships, class_name: 'SuperMembership', foreign_key: 'club_id'

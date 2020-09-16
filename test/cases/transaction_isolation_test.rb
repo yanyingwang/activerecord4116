@@ -1,29 +1,29 @@
 require 'cases/helper'
 
-unless ActiveRecord::Base.connection.supports_transaction_isolation?
-  class TransactionIsolationUnsupportedTest < ActiveRecord::TestCase
+unless ActiveRecord4116::Base.connection.supports_transaction_isolation?
+  class TransactionIsolationUnsupportedTest < ActiveRecord4116::TestCase
     self.use_transactional_fixtures = false
 
-    class Tag < ActiveRecord::Base
+    class Tag < ActiveRecord4116::Base
     end
 
     test "setting the isolation level raises an error" do
-      assert_raises(ActiveRecord::TransactionIsolationError) do
+      assert_raises(ActiveRecord4116::TransactionIsolationError) do
         Tag.transaction(isolation: :serializable) { }
       end
     end
   end
 end
 
-if ActiveRecord::Base.connection.supports_transaction_isolation?
-  class TransactionIsolationTest < ActiveRecord::TestCase
+if ActiveRecord4116::Base.connection.supports_transaction_isolation?
+  class TransactionIsolationTest < ActiveRecord4116::TestCase
     self.use_transactional_fixtures = false
 
-    class Tag < ActiveRecord::Base
+    class Tag < ActiveRecord4116::Base
       self.table_name = 'tags'
     end
 
-    class Tag2 < ActiveRecord::Base
+    class Tag2 < ActiveRecord4116::Base
       self.table_name = 'tags'
     end
 
@@ -36,7 +36,7 @@ if ActiveRecord::Base.connection.supports_transaction_isolation?
     # It is impossible to properly test read uncommitted. The SQL standard only
     # specifies what must not happen at a certain level, not what must happen. At
     # the read uncommitted level, there is nothing that must not happen.
-    if ActiveRecord::Base.connection.transaction_isolation_levels.include?(:read_uncommitted)
+    if ActiveRecord4116::Base.connection.transaction_isolation_levels.include?(:read_uncommitted)
       test "read uncommitted" do
         Tag.transaction(isolation: :read_uncommitted) do
           assert_equal 0, Tag.count
@@ -61,7 +61,7 @@ if ActiveRecord::Base.connection.supports_transaction_isolation?
     end
 
     # We are testing that a nonrepeatable read does not happen
-    if ActiveRecord::Base.connection.transaction_isolation_levels.include?(:repeatable_read)
+    if ActiveRecord4116::Base.connection.transaction_isolation_levels.include?(:repeatable_read)
       test "repeatable read" do
         tag = Tag.create(name: 'jon')
 
@@ -89,7 +89,7 @@ if ActiveRecord::Base.connection.supports_transaction_isolation?
 
     test "setting isolation when joining a transaction raises an error" do
       Tag.transaction do
-        assert_raises(ActiveRecord::TransactionIsolationError) do
+        assert_raises(ActiveRecord4116::TransactionIsolationError) do
           Tag.transaction(isolation: :serializable) { }
         end
       end
@@ -97,7 +97,7 @@ if ActiveRecord::Base.connection.supports_transaction_isolation?
 
     test "setting isolation when starting a nested transaction raises error" do
       Tag.transaction do
-        assert_raises(ActiveRecord::TransactionIsolationError) do
+        assert_raises(ActiveRecord4116::TransactionIsolationError) do
           Tag.transaction(requires_new: true, isolation: :serializable) { }
         end
       end

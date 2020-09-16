@@ -1,2 +1,2 @@
-class Record < ActiveRecord::Base
+class Record < ActiveRecord4116::Base
 end

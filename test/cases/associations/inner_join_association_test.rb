@@ -9,7 +9,7 @@ require 'models/person'
 require 'models/tagging'
 require 'models/tag'
 
-class InnerJoinAssociationTest < ActiveRecord::TestCase
+class InnerJoinAssociationTest < ActiveRecord4116::TestCase
   fixtures :authors, :essays, :posts, :comments, :categories, :categories_posts, :categorizations,
            :taggings, :tags
 

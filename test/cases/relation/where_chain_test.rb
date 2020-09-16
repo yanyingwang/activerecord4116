@@ -2,8 +2,8 @@ require 'cases/helper'
 require 'models/post'
 require 'models/comment'
 
-module ActiveRecord
-  class WhereChainTest < ActiveRecord::TestCase
+module ActiveRecord4116
+  class WhereChainTest < ActiveRecord4116::TestCase
     fixtures :posts
 
     def setup

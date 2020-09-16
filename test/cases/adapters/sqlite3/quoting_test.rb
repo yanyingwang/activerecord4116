@@ -3,10 +3,10 @@ require 'bigdecimal'
 require 'yaml'
 require 'securerandom'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     class SQLite3Adapter
-      class QuotingTest < ActiveRecord::TestCase
+      class QuotingTest < ActiveRecord4116::TestCase
         def setup
           @conn = Base.sqlite3_connection :database => ':memory:',
             :adapter => 'sqlite3',

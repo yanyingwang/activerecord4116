@@ -3,12 +3,12 @@ require "cases/helper"
 require 'models/owner'
 require 'tempfile'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
-    class SQLite3AdapterTest < ActiveRecord::TestCase
+    class SQLite3AdapterTest < ActiveRecord4116::TestCase
       self.use_transactional_fixtures = false
 
-      class DualEncoding < ActiveRecord::Base
+      class DualEncoding < ActiveRecord4116::Base
       end
 
       def setup
@@ -27,32 +27,32 @@ module ActiveRecord
       end
 
       def test_bad_connection
-        assert_raise ActiveRecord::NoDatabaseError do
-          connection = ActiveRecord::Base.sqlite3_connection(adapter: "sqlite3", database: "/tmp/should/_not/_exist/-cinco-dog.db")
+        assert_raise ActiveRecord4116::NoDatabaseError do
+          connection = ActiveRecord4116::Base.sqlite3_connection(adapter: "sqlite3", database: "/tmp/should/_not/_exist/-cinco-dog.db")
           connection.exec_query('drop table if exists ex')
         end
       end
 
       unless in_memory_db?
         def test_connect_with_url
-          original_connection = ActiveRecord::Base.remove_connection
+          original_connection = ActiveRecord4116::Base.remove_connection
           tf = Tempfile.open 'whatever'
           url = "sqlite3:#{tf.path}"
-          ActiveRecord::Base.establish_connection(url)
-          assert ActiveRecord::Base.connection
+          ActiveRecord4116::Base.establish_connection(url)
+          assert ActiveRecord4116::Base.connection
         ensure
           tf.close
           tf.unlink
-          ActiveRecord::Base.establish_connection(original_connection)
+          ActiveRecord4116::Base.establish_connection(original_connection)
         end
 
         def test_connect_memory_with_url
-          original_connection = ActiveRecord::Base.remove_connection
+          original_connection = ActiveRecord4116::Base.remove_connection
           url = "sqlite3::memory:"
-          ActiveRecord::Base.establish_connection(url)
-          assert ActiveRecord::Base.connection
+          ActiveRecord4116::Base.establish_connection(url)
+          assert ActiveRecord4116::Base.connection
         ensure
-          ActiveRecord::Base.establish_connection(original_connection)
+          ActiveRecord4116::Base.establish_connection(original_connection)
         end
       end
 
@@ -398,7 +398,7 @@ module ActiveRecord
       end
 
       def test_statement_closed
-        db = SQLite3::Database.new(ActiveRecord::Base.
+        db = SQLite3::Database.new(ActiveRecord4116::Base.
                                    configurations['arunit']['database'])
         statement = SQLite3::Statement.new(db,
                                            'CREATE TABLE statement_test (number integer not null)')
@@ -407,7 +407,7 @@ module ActiveRecord
         statement.expects(:close).once
         SQLite3::Statement.stubs(:new).returns(statement)
 
-        assert_raises ActiveRecord::StatementInvalid do
+        assert_raises ActiveRecord4116::StatementInvalid do
           @conn.exec_query 'select * from statement_test'
         end
       end

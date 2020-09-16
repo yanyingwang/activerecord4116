@@ -20,7 +20,7 @@ require 'active_record/log_subscriber'
 require 'active_record/explain_subscriber'
 require 'active_record/relation/delegation'
 
-module ActiveRecord #:nodoc:
+module ActiveRecord4116 #:nodoc:
   # = Active Record
   #
   # Active Record objects don't specify their attributes directly, but rather infer them from
@@ -60,7 +60,7 @@ module ActiveRecord #:nodoc:
   # be used for statements that don't involve tainted data. The hash form works much like the array form, except
   # only equality and range is possible. Examples:
   #
-  #   class User < ActiveRecord::Base
+  #   class User < ActiveRecord4116::Base
   #     def self.authenticate_unsafely(user_name, password)
   #       where("user_name = '#{user_name}' AND password = '#{password}'").first
   #     end
@@ -119,7 +119,7 @@ module ActiveRecord #:nodoc:
   # <tt>read_attribute(attr_name)</tt> and <tt>write_attribute(attr_name, value)</tt> to actually
   # change things.
   #
-  #   class Song < ActiveRecord::Base
+  #   class Song < ActiveRecord4116::Base
   #     # Uses an integer of seconds to hold the length of the song
   #
   #     def length=(minutes)
@@ -168,7 +168,7 @@ module ActiveRecord #:nodoc:
   # <tt>Person.find_by_user_name(user_name)</tt>.
   #
   # It's possible to add an exclamation point (!) on the end of the dynamic finders to get them to raise an
-  # <tt>ActiveRecord::RecordNotFound</tt> error if they do not return any records,
+  # <tt>ActiveRecord4116::RecordNotFound</tt> error if they do not return any records,
   # like <tt>Person.find_by_last_name!</tt>.
   #
   # It's also possible to use multiple attributes in the same find by separating them with "_and_".
@@ -187,7 +187,7 @@ module ActiveRecord #:nodoc:
   # This makes it possible to store arrays, hashes, and other non-mappable objects without doing
   # any additional work.
   #
-  #   class User < ActiveRecord::Base
+  #   class User < ActiveRecord4116::Base
   #     serialize :preferences
   #   end
   #
@@ -197,7 +197,7 @@ module ActiveRecord #:nodoc:
   # You can also specify a class option as the second parameter that'll raise an exception
   # if a serialized object is retrieved as a descendant of a class not in the hierarchy.
   #
-  #   class User < ActiveRecord::Base
+  #   class User < ActiveRecord4116::Base
   #     serialize :preferences, Hash
   #   end
   #
@@ -207,7 +207,7 @@ module ActiveRecord #:nodoc:
   # When you specify a class option, the default value for that attribute will be a new
   # instance of that class.
   #
-  #   class User < ActiveRecord::Base
+  #   class User < ActiveRecord4116::Base
   #     serialize :preferences, OpenStruct
   #   end
   #
@@ -221,7 +221,7 @@ module ActiveRecord #:nodoc:
   # default is named "type" (can be changed by overwriting <tt>Base.inheritance_column</tt>).
   # This means that an inheritance looking like this:
   #
-  #   class Company < ActiveRecord::Base; end
+  #   class Company < ActiveRecord4116::Base; end
   #   class Firm < Company; end
   #   class Client < Company; end
   #   class PriorityClient < Client; end
@@ -239,19 +239,19 @@ module ActiveRecord #:nodoc:
   #
   # == Connection to multiple databases in different models
   #
-  # Connections are usually created through ActiveRecord::Base.establish_connection and retrieved
-  # by ActiveRecord::Base.connection. All classes inheriting from ActiveRecord::Base will use this
+  # Connections are usually created through ActiveRecord4116::Base.establish_connection and retrieved
+  # by ActiveRecord4116::Base.connection. All classes inheriting from ActiveRecord4116::Base will use this
   # connection. But you can also set a class-specific connection. For example, if Course is an
-  # ActiveRecord::Base, but resides in a different database, you can just say <tt>Course.establish_connection</tt>
+  # ActiveRecord4116::Base, but resides in a different database, you can just say <tt>Course.establish_connection</tt>
   # and Course and all of its subclasses will use this connection instead.
   #
-  # This feature is implemented by keeping a connection pool in ActiveRecord::Base that is
+  # This feature is implemented by keeping a connection pool in ActiveRecord4116::Base that is
   # a Hash indexed by the class. If a connection is requested, the retrieve_connection method
   # will go up the class-hierarchy until a connection is found in the connection pool.
   #
   # == Exceptions
   #
-  # * ActiveRecordError - Generic error class and superclass of all other errors raised by Active Record.
+  # * ActiveRecord4116Error - Generic error class and superclass of all other errors raised by Active Record.
   # * AdapterNotSpecified - The configuration hash used in <tt>establish_connection</tt> didn't include an
   #   <tt>:adapter</tt> key.
   # * AdapterNotFound - The <tt>:adapter</tt> key used in <tt>establish_connection</tt> specified a

@@ -5,10 +5,10 @@ require "models/book"
 require "models/post"
 require "models/author"
 
-module ActiveRecord
-  class AdapterTest < ActiveRecord::TestCase
+module ActiveRecord4116
+  class AdapterTest < ActiveRecord4116::TestCase
     def setup
-      @connection = ActiveRecord::Base.connection
+      @connection = ActiveRecord4116::Base.connection
     end
 
     ##
@@ -87,16 +87,16 @@ module ActiveRecord
       def test_not_specifying_database_name_for_cross_database_selects
         begin
           assert_nothing_raised do
-            ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations['arunit'].except(:database))
+            ActiveRecord4116::Base.establish_connection(ActiveRecord4116::Base.configurations['arunit'].except(:database))
 
             config = ARTest.connection_config
-            ActiveRecord::Base.connection.execute(
+            ActiveRecord4116::Base.connection.execute(
               "SELECT #{config['arunit']['database']}.pirates.*, #{config['arunit2']['database']}.courses.* " \
               "FROM #{config['arunit']['database']}.pirates, #{config['arunit2']['database']}.courses"
             )
           end
         ensure
-          ActiveRecord::Base.establish_connection :arunit
+          ActiveRecord4116::Base.establish_connection :arunit
         end
       end
     end
@@ -119,7 +119,7 @@ module ActiveRecord
     end
 
     # test resetting sequences in odd tables in PostgreSQL
-    if ActiveRecord::Base.connection.respond_to?(:reset_pk_sequence!)
+    if ActiveRecord4116::Base.connection.respond_to?(:reset_pk_sequence!)
       require 'models/movie'
       require 'models/subscriber'
 
@@ -129,7 +129,7 @@ module ActiveRecord
         assert_equal 1, Movie.create(:name => 'fight club').id
       end
 
-      if ActiveRecord::Base.connection.adapter_name != "FrontBase"
+      if ActiveRecord4116::Base.connection.adapter_name != "FrontBase"
         def test_reset_table_with_non_integer_pk
           Subscriber.delete_all
           Subscriber.connection.reset_pk_sequence! 'subscribers'
@@ -142,14 +142,14 @@ module ActiveRecord
 
     def test_uniqueness_violations_are_translated_to_specific_exception
       @connection.execute "INSERT INTO subscribers(nick) VALUES('me')"
-      assert_raises(ActiveRecord::RecordNotUnique) do
+      assert_raises(ActiveRecord4116::RecordNotUnique) do
         @connection.execute "INSERT INTO subscribers(nick) VALUES('me')"
       end
     end
 
     def test_foreign_key_violations_are_translated_to_specific_exception
       unless @connection.adapter_name == 'SQLite'
-        assert_raises(ActiveRecord::InvalidForeignKey) do
+        assert_raises(ActiveRecord4116::InvalidForeignKey) do
           # Oracle adapter uses prefetched primary key values from sequence and passes them to connection adapter insert method
           if @connection.prefetch_primary_key?
             id_value = @connection.next_sequence_value(@connection.default_sequence_name("fk_test_has_fk", "id"))
@@ -180,7 +180,7 @@ module ActiveRecord
 
     def test_select_all_always_return_activerecord_result
       result = @connection.select_all "SELECT * FROM posts"
-      assert result.is_a?(ActiveRecord::Result)
+      assert result.is_a?(ActiveRecord4116::Result)
     end
 
     def test_select_methods_passing_a_association_relation
@@ -189,7 +189,7 @@ module ActiveRecord
       query = author.posts.select(:title)
       assert_equal({"title" => "foo"}, @connection.select_one(query.arel, nil, query.bind_values))
       assert_equal({"title" => "foo"}, @connection.select_one(query))
-      assert @connection.select_all(query).is_a?(ActiveRecord::Result)
+      assert @connection.select_all(query).is_a?(ActiveRecord4116::Result)
       assert_equal "foo", @connection.select_value(query)
       assert_equal ["foo"], @connection.select_values(query)
     end
@@ -199,7 +199,7 @@ module ActiveRecord
       query = Post.where(title: 'foo').select(:title)
       assert_equal({"title" => "foo"}, @connection.select_one(query.arel, nil, query.bind_values))
       assert_equal({"title" => "foo"}, @connection.select_one(query))
-      assert @connection.select_all(query).is_a?(ActiveRecord::Result)
+      assert @connection.select_all(query).is_a?(ActiveRecord4116::Result)
       assert_equal "foo", @connection.select_value(query)
       assert_equal ["foo"], @connection.select_values(query)
     end
@@ -210,7 +210,7 @@ module ActiveRecord
 
     unless current_adapter?(:PostgreSQLAdapter)
       def test_log_invalid_encoding
-        assert_raise ActiveRecord::StatementInvalid do
+        assert_raise ActiveRecord4116::StatementInvalid do
           @connection.send :log, "SELECT 'ы' FROM DUAL" do
             raise 'ы'.force_encoding(Encoding::ASCII_8BIT)
           end
@@ -219,10 +219,10 @@ module ActiveRecord
     end
   end
 
-  class AdapterTestWithoutTransaction < ActiveRecord::TestCase
+  class AdapterTestWithoutTransaction < ActiveRecord4116::TestCase
     self.use_transactional_fixtures = false
 
-    class Klass < ActiveRecord::Base
+    class Klass < ActiveRecord4116::Base
     end
 
     def setup

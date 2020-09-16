@@ -1,11 +1,11 @@
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     class MysqlAdapter
-      class QuotingTest < ActiveRecord::TestCase
+      class QuotingTest < ActiveRecord4116::TestCase
         def setup
-          @conn = ActiveRecord::Base.connection
+          @conn = ActiveRecord4116::Base.connection
         end
 
         def test_type_cast_true

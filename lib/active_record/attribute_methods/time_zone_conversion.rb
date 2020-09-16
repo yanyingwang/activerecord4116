@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module AttributeMethods
     module TimeZoneConversion
       class Type # :nodoc:

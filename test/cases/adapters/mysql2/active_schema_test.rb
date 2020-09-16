@@ -1,24 +1,24 @@
 require "cases/helper"
 
-class ActiveSchemaTest < ActiveRecord::TestCase
+class ActiveSchemaTest < ActiveRecord4116::TestCase
   def setup
-    @connection = ActiveRecord::Base.remove_connection
-    ActiveRecord::Base.establish_connection(@connection)
+    @connection = ActiveRecord4116::Base.remove_connection
+    ActiveRecord4116::Base.establish_connection(@connection)
 
-    ActiveRecord::Base.connection.singleton_class.class_eval do
+    ActiveRecord4116::Base.connection.singleton_class.class_eval do
       alias_method :execute_without_stub, :execute
       def execute(sql, name = nil) return sql end
     end
   end
 
   def teardown
-    ActiveRecord::Base.remove_connection
-    ActiveRecord::Base.establish_connection(@connection)
+    ActiveRecord4116::Base.remove_connection
+    ActiveRecord4116::Base.establish_connection(@connection)
   end
 
   def test_add_index
     # add_index calls index_name_exists? which can't work since execute is stubbed
-    def (ActiveRecord::Base.connection).index_name_exists?(*); false; end
+    def (ActiveRecord4116::Base.connection).index_name_exists?(*); false; end
 
     expected = "CREATE  INDEX `index_people_on_last_name`  ON `people` (`last_name`) "
     assert_equal expected, add_index(:people, :last_name, :length => nil)
@@ -91,12 +91,12 @@ class ActiveSchemaTest < ActiveRecord::TestCase
   def test_add_timestamps
     with_real_execute do
       begin
-        ActiveRecord::Base.connection.create_table :delete_me
-        ActiveRecord::Base.connection.add_timestamps :delete_me
+        ActiveRecord4116::Base.connection.create_table :delete_me
+        ActiveRecord4116::Base.connection.add_timestamps :delete_me
         assert column_present?('delete_me', 'updated_at', 'datetime')
         assert column_present?('delete_me', 'created_at', 'datetime')
       ensure
-        ActiveRecord::Base.connection.drop_table :delete_me rescue nil
+        ActiveRecord4116::Base.connection.drop_table :delete_me rescue nil
       end
     end
   end
@@ -104,21 +104,21 @@ class ActiveSchemaTest < ActiveRecord::TestCase
   def test_remove_timestamps
     with_real_execute do
       begin
-        ActiveRecord::Base.connection.create_table :delete_me do |t|
+        ActiveRecord4116::Base.connection.create_table :delete_me do |t|
           t.timestamps
         end
-        ActiveRecord::Base.connection.remove_timestamps :delete_me
+        ActiveRecord4116::Base.connection.remove_timestamps :delete_me
         assert !column_present?('delete_me', 'updated_at', 'datetime')
         assert !column_present?('delete_me', 'created_at', 'datetime')
       ensure
-        ActiveRecord::Base.connection.drop_table :delete_me rescue nil
+        ActiveRecord4116::Base.connection.drop_table :delete_me rescue nil
       end
     end
   end
 
   private
     def with_real_execute
-      ActiveRecord::Base.connection.singleton_class.class_eval do
+      ActiveRecord4116::Base.connection.singleton_class.class_eval do
         alias_method :execute_with_stub, :execute
         remove_method :execute
         alias_method :execute, :execute_without_stub
@@ -126,18 +126,18 @@ class ActiveSchemaTest < ActiveRecord::TestCase
 
       yield
     ensure
-      ActiveRecord::Base.connection.singleton_class.class_eval do
+      ActiveRecord4116::Base.connection.singleton_class.class_eval do
         remove_method :execute
         alias_method :execute, :execute_with_stub
       end
     end
 
     def method_missing(method_symbol, *arguments)
-      ActiveRecord::Base.connection.send(method_symbol, *arguments)
+      ActiveRecord4116::Base.connection.send(method_symbol, *arguments)
     end
 
     def column_present?(table_name, column_name, type)
-      results = ActiveRecord::Base.connection.select_all("SHOW FIELDS FROM #{table_name} LIKE '#{column_name}'")
+      results = ActiveRecord4116::Base.connection.select_all("SHOW FIELDS FROM #{table_name} LIKE '#{column_name}'")
       results.first && results.first['Type'] == type
     end
 end

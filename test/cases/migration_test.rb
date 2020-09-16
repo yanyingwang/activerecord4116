@@ -11,13 +11,13 @@ require MIGRATIONS_ROOT + "/rename/1_we_need_things"
 require MIGRATIONS_ROOT + "/rename/2_rename_things"
 require MIGRATIONS_ROOT + "/decimal/1_give_me_big_numbers"
 
-class BigNumber < ActiveRecord::Base; end
+class BigNumber < ActiveRecord4116::Base; end
 
-class Reminder < ActiveRecord::Base; end
+class Reminder < ActiveRecord4116::Base; end
 
-class Thing < ActiveRecord::Base; end
+class Thing < ActiveRecord4116::Base; end
 
-class MigrationTest < ActiveRecord::TestCase
+class MigrationTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
 
   fixtures :people
@@ -28,17 +28,17 @@ class MigrationTest < ActiveRecord::TestCase
       Reminder.connection.drop_table(table) rescue nil
     end
     Reminder.reset_column_information
-    ActiveRecord::Migration.verbose = true
-    ActiveRecord::Migration.message_count = 0
-    ActiveRecord::Base.connection.schema_cache.clear!
+    ActiveRecord4116::Migration.verbose = true
+    ActiveRecord4116::Migration.message_count = 0
+    ActiveRecord4116::Base.connection.schema_cache.clear!
   end
 
   def teardown
-    ActiveRecord::Base.table_name_prefix = ""
-    ActiveRecord::Base.table_name_suffix = ""
+    ActiveRecord4116::Base.table_name_prefix = ""
+    ActiveRecord4116::Base.table_name_suffix = ""
 
-    ActiveRecord::Base.connection.initialize_schema_migrations_table
-    ActiveRecord::Base.connection.execute "DELETE FROM #{ActiveRecord::Migrator.schema_migrations_table_name}"
+    ActiveRecord4116::Base.connection.initialize_schema_migrations_table
+    ActiveRecord4116::Base.connection.execute "DELETE FROM #{ActiveRecord4116::Migrator.schema_migrations_table_name}"
 
     %w(things awesome_things prefix_things_suffix p_awesome_things_s ).each do |table|
       Thing.connection.drop_table(table) rescue nil
@@ -63,39 +63,39 @@ class MigrationTest < ActiveRecord::TestCase
 
   def test_migrator_versions
     migrations_path = MIGRATIONS_ROOT + "/valid"
-    old_path = ActiveRecord::Migrator.migrations_paths
-    ActiveRecord::Migrator.migrations_paths = migrations_path
+    old_path = ActiveRecord4116::Migrator.migrations_paths
+    ActiveRecord4116::Migrator.migrations_paths = migrations_path
 
-    ActiveRecord::Migrator.up(migrations_path)
-    assert_equal 3, ActiveRecord::Migrator.current_version
-    assert_equal 3, ActiveRecord::Migrator.last_version
-    assert_equal false, ActiveRecord::Migrator.needs_migration?
+    ActiveRecord4116::Migrator.up(migrations_path)
+    assert_equal 3, ActiveRecord4116::Migrator.current_version
+    assert_equal 3, ActiveRecord4116::Migrator.last_version
+    assert_equal false, ActiveRecord4116::Migrator.needs_migration?
 
-    ActiveRecord::Migrator.down(MIGRATIONS_ROOT + "/valid")
-    assert_equal 0, ActiveRecord::Migrator.current_version
-    assert_equal 3, ActiveRecord::Migrator.last_version
-    assert_equal true, ActiveRecord::Migrator.needs_migration?
+    ActiveRecord4116::Migrator.down(MIGRATIONS_ROOT + "/valid")
+    assert_equal 0, ActiveRecord4116::Migrator.current_version
+    assert_equal 3, ActiveRecord4116::Migrator.last_version
+    assert_equal true, ActiveRecord4116::Migrator.needs_migration?
 
-    ActiveRecord::SchemaMigration.create!(:version => ActiveRecord::Migrator.last_version)
-    assert_equal true, ActiveRecord::Migrator.needs_migration?
+    ActiveRecord4116::SchemaMigration.create!(:version => ActiveRecord4116::Migrator.last_version)
+    assert_equal true, ActiveRecord4116::Migrator.needs_migration?
   ensure
-    ActiveRecord::Migrator.migrations_paths = old_path
+    ActiveRecord4116::Migrator.migrations_paths = old_path
   end
 
   def test_migration_detection_without_schema_migration_table
-    ActiveRecord::Base.connection.drop_table :schema_migrations
+    ActiveRecord4116::Base.connection.drop_table :schema_migrations
 
     migrations_path = MIGRATIONS_ROOT + "/valid"
-    old_path = ActiveRecord::Migrator.migrations_paths
-    ActiveRecord::Migrator.migrations_paths = migrations_path
+    old_path = ActiveRecord4116::Migrator.migrations_paths
+    ActiveRecord4116::Migrator.migrations_paths = migrations_path
 
-    assert_equal true, ActiveRecord::Migrator.needs_migration?
+    assert_equal true, ActiveRecord4116::Migrator.needs_migration?
   ensure
-    ActiveRecord::Migrator.migrations_paths = old_path
+    ActiveRecord4116::Migrator.migrations_paths = old_path
   end
 
   def test_migration_version
-    ActiveRecord::Migrator.run(:up, MIGRATIONS_ROOT + "/version_check", 20131219224947)
+    ActiveRecord4116::Migrator.run(:up, MIGRATIONS_ROOT + "/version_check", 20131219224947)
   end
 
   def test_create_table_with_force_true_does_not_drop_nonexisting_table
@@ -117,16 +117,16 @@ class MigrationTest < ActiveRecord::TestCase
   end
 
   def connection
-    ActiveRecord::Base.connection
+    ActiveRecord4116::Base.connection
   end
 
   def test_migration_instance_has_connection
-    migration = Class.new(ActiveRecord::Migration).new
+    migration = Class.new(ActiveRecord4116::Migration).new
     assert_equal connection, migration.connection
   end
 
   def test_method_missing_delegates_to_connection
-    migration = Class.new(ActiveRecord::Migration) {
+    migration = Class.new(ActiveRecord4116::Migration) {
       def connection
         Class.new {
           def create_table; "hi mom!"; end
@@ -195,7 +195,7 @@ class MigrationTest < ActiveRecord::TestCase
     end
 
     GiveMeBigNumbers.down
-    assert_raise(ActiveRecord::StatementInvalid) { BigNumber.first }
+    assert_raise(ActiveRecord4116::StatementInvalid) { BigNumber.first }
   end
 
   def test_filtering_migrations
@@ -203,18 +203,18 @@ class MigrationTest < ActiveRecord::TestCase
     assert !Reminder.table_exists?
 
     name_filter = lambda { |migration| migration.name == "ValidPeopleHaveLastNames" }
-    ActiveRecord::Migrator.up(MIGRATIONS_ROOT + "/valid", &name_filter)
+    ActiveRecord4116::Migrator.up(MIGRATIONS_ROOT + "/valid", &name_filter)
 
     assert_column Person, :last_name
-    assert_raise(ActiveRecord::StatementInvalid) { Reminder.first }
+    assert_raise(ActiveRecord4116::StatementInvalid) { Reminder.first }
 
-    ActiveRecord::Migrator.down(MIGRATIONS_ROOT + "/valid", &name_filter)
+    ActiveRecord4116::Migrator.down(MIGRATIONS_ROOT + "/valid", &name_filter)
 
     assert_no_column Person, :last_name
-    assert_raise(ActiveRecord::StatementInvalid) { Reminder.first }
+    assert_raise(ActiveRecord4116::StatementInvalid) { Reminder.first }
   end
 
-  class MockMigration < ActiveRecord::Migration
+  class MockMigration < ActiveRecord4116::Migration
     attr_reader :went_up, :went_down
     def initialize
       @went_up   = false
@@ -252,11 +252,11 @@ class MigrationTest < ActiveRecord::TestCase
     assert migration.went_down, 'have not gone down'
   end
 
-  if ActiveRecord::Base.connection.supports_ddl_transactions?
+  if ActiveRecord4116::Base.connection.supports_ddl_transactions?
     def test_migrator_one_up_with_exception_and_rollback
       assert_no_column Person, :last_name
 
-      migration = Class.new(ActiveRecord::Migration) {
+      migration = Class.new(ActiveRecord4116::Migration) {
         def version; 100 end
         def migrate(x)
           add_column "people", "last_name", :string
@@ -264,7 +264,7 @@ class MigrationTest < ActiveRecord::TestCase
         end
       }.new
 
-      migrator = ActiveRecord::Migrator.new(:up, [migration], 100)
+      migrator = ActiveRecord4116::Migrator.new(:up, [migration], 100)
 
       e = assert_raise(StandardError) { migrator.migrate }
 
@@ -277,7 +277,7 @@ class MigrationTest < ActiveRecord::TestCase
     def test_migrator_one_up_with_exception_and_rollback_using_run
       assert_no_column Person, :last_name
 
-      migration = Class.new(ActiveRecord::Migration) {
+      migration = Class.new(ActiveRecord4116::Migration) {
         def version; 100 end
         def migrate(x)
           add_column "people", "last_name", :string
@@ -285,7 +285,7 @@ class MigrationTest < ActiveRecord::TestCase
         end
       }.new
 
-      migrator = ActiveRecord::Migrator.new(:up, [migration], 100)
+      migrator = ActiveRecord4116::Migrator.new(:up, [migration], 100)
 
       e = assert_raise(StandardError) { migrator.run }
 
@@ -298,7 +298,7 @@ class MigrationTest < ActiveRecord::TestCase
     def test_migration_without_transaction
       assert_no_column Person, :last_name
 
-      migration = Class.new(ActiveRecord::Migration) {
+      migration = Class.new(ActiveRecord4116::Migration) {
         self.disable_ddl_transaction!
 
         def version; 101 end
@@ -308,7 +308,7 @@ class MigrationTest < ActiveRecord::TestCase
         end
       }.new
 
-      migrator = ActiveRecord::Migrator.new(:up, [migration], 101)
+      migrator = ActiveRecord4116::Migrator.new(:up, [migration], 101)
       e = assert_raise(StandardError) { migrator.migrate }
       assert_equal "An error has occurred, all later migrations canceled:\n\nSomething broke", e.message
 
@@ -323,69 +323,69 @@ class MigrationTest < ActiveRecord::TestCase
   end
 
   def test_schema_migrations_table_name
-    original_schema_migrations_table_name = ActiveRecord::Migrator.schema_migrations_table_name
+    original_schema_migrations_table_name = ActiveRecord4116::Migrator.schema_migrations_table_name
 
-    assert_equal "schema_migrations", ActiveRecord::Migrator.schema_migrations_table_name
-    ActiveRecord::Base.table_name_prefix = "prefix_"
-    ActiveRecord::Base.table_name_suffix = "_suffix"
+    assert_equal "schema_migrations", ActiveRecord4116::Migrator.schema_migrations_table_name
+    ActiveRecord4116::Base.table_name_prefix = "prefix_"
+    ActiveRecord4116::Base.table_name_suffix = "_suffix"
     Reminder.reset_table_name
-    assert_equal "prefix_schema_migrations_suffix", ActiveRecord::Migrator.schema_migrations_table_name
-    ActiveRecord::Base.schema_migrations_table_name = "changed"
+    assert_equal "prefix_schema_migrations_suffix", ActiveRecord4116::Migrator.schema_migrations_table_name
+    ActiveRecord4116::Base.schema_migrations_table_name = "changed"
     Reminder.reset_table_name
-    assert_equal "prefix_changed_suffix", ActiveRecord::Migrator.schema_migrations_table_name
-    ActiveRecord::Base.table_name_prefix = ""
-    ActiveRecord::Base.table_name_suffix = ""
+    assert_equal "prefix_changed_suffix", ActiveRecord4116::Migrator.schema_migrations_table_name
+    ActiveRecord4116::Base.table_name_prefix = ""
+    ActiveRecord4116::Base.table_name_suffix = ""
     Reminder.reset_table_name
-    assert_equal "changed", ActiveRecord::Migrator.schema_migrations_table_name
+    assert_equal "changed", ActiveRecord4116::Migrator.schema_migrations_table_name
   ensure
-    ActiveRecord::Base.schema_migrations_table_name = original_schema_migrations_table_name
+    ActiveRecord4116::Base.schema_migrations_table_name = original_schema_migrations_table_name
     Reminder.reset_table_name
   end
 
   def test_proper_table_name_on_migrator
     reminder_class = new_isolated_reminder_class
     assert_deprecated do
-      assert_equal "table", ActiveRecord::Migrator.proper_table_name('table')
+      assert_equal "table", ActiveRecord4116::Migrator.proper_table_name('table')
     end
     assert_deprecated do
-      assert_equal "table", ActiveRecord::Migrator.proper_table_name(:table)
+      assert_equal "table", ActiveRecord4116::Migrator.proper_table_name(:table)
     end
     assert_deprecated do
-      assert_equal "reminders", ActiveRecord::Migrator.proper_table_name(reminder_class)
+      assert_equal "reminders", ActiveRecord4116::Migrator.proper_table_name(reminder_class)
     end
     reminder_class.reset_table_name
     assert_deprecated do
-      assert_equal reminder_class.table_name, ActiveRecord::Migrator.proper_table_name(reminder_class)
+      assert_equal reminder_class.table_name, ActiveRecord4116::Migrator.proper_table_name(reminder_class)
     end
 
     # Use the model's own prefix/suffix if a model is given
-    ActiveRecord::Base.table_name_prefix = "ARprefix_"
-    ActiveRecord::Base.table_name_suffix = "_ARsuffix"
+    ActiveRecord4116::Base.table_name_prefix = "ARprefix_"
+    ActiveRecord4116::Base.table_name_suffix = "_ARsuffix"
     reminder_class.table_name_prefix = 'prefix_'
     reminder_class.table_name_suffix = '_suffix'
     reminder_class.reset_table_name
     assert_deprecated do
-      assert_equal "prefix_reminders_suffix", ActiveRecord::Migrator.proper_table_name(reminder_class)
+      assert_equal "prefix_reminders_suffix", ActiveRecord4116::Migrator.proper_table_name(reminder_class)
     end
     reminder_class.table_name_prefix = ''
     reminder_class.table_name_suffix = ''
     reminder_class.reset_table_name
 
     # Use AR::Base's prefix/suffix if string or symbol is given
-    ActiveRecord::Base.table_name_prefix = "prefix_"
-    ActiveRecord::Base.table_name_suffix = "_suffix"
+    ActiveRecord4116::Base.table_name_prefix = "prefix_"
+    ActiveRecord4116::Base.table_name_suffix = "_suffix"
     reminder_class.reset_table_name
     assert_deprecated do
-      assert_equal "prefix_table_suffix", ActiveRecord::Migrator.proper_table_name('table')
+      assert_equal "prefix_table_suffix", ActiveRecord4116::Migrator.proper_table_name('table')
     end
     assert_deprecated do
-      assert_equal "prefix_table_suffix", ActiveRecord::Migrator.proper_table_name(:table)
+      assert_equal "prefix_table_suffix", ActiveRecord4116::Migrator.proper_table_name(:table)
     end
   end
 
   def test_proper_table_name_on_migration
     reminder_class = new_isolated_reminder_class
-    migration = ActiveRecord::Migration.new
+    migration = ActiveRecord4116::Migration.new
     assert_equal "table", migration.proper_table_name('table')
     assert_equal "table", migration.proper_table_name(:table)
     assert_equal "reminders", migration.proper_table_name(reminder_class)
@@ -393,8 +393,8 @@ class MigrationTest < ActiveRecord::TestCase
     assert_equal reminder_class.table_name, migration.proper_table_name(reminder_class)
 
     # Use the model's own prefix/suffix if a model is given
-    ActiveRecord::Base.table_name_prefix = "ARprefix_"
-    ActiveRecord::Base.table_name_suffix = "_ARsuffix"
+    ActiveRecord4116::Base.table_name_prefix = "ARprefix_"
+    ActiveRecord4116::Base.table_name_suffix = "_ARsuffix"
     reminder_class.table_name_prefix = 'prefix_'
     reminder_class.table_name_suffix = '_suffix'
     reminder_class.reset_table_name
@@ -404,8 +404,8 @@ class MigrationTest < ActiveRecord::TestCase
     reminder_class.reset_table_name
 
     # Use AR::Base's prefix/suffix if string or symbol is given
-    ActiveRecord::Base.table_name_prefix = "prefix_"
-    ActiveRecord::Base.table_name_suffix = "_suffix"
+    ActiveRecord4116::Base.table_name_prefix = "prefix_"
+    ActiveRecord4116::Base.table_name_suffix = "_suffix"
     reminder_class.reset_table_name
     assert_equal "prefix_table_suffix", migration.proper_table_name('table', migration.table_name_options)
     assert_equal "prefix_table_suffix", migration.proper_table_name(:table, migration.table_name_options)
@@ -413,8 +413,8 @@ class MigrationTest < ActiveRecord::TestCase
 
   def test_rename_table_with_prefix_and_suffix
     assert !Thing.table_exists?
-    ActiveRecord::Base.table_name_prefix = 'p_'
-    ActiveRecord::Base.table_name_suffix = '_s'
+    ActiveRecord4116::Base.table_name_prefix = 'p_'
+    ActiveRecord4116::Base.table_name_suffix = '_s'
     Thing.reset_table_name
     Thing.reset_sequence_name
     WeNeedThings.up
@@ -433,8 +433,8 @@ class MigrationTest < ActiveRecord::TestCase
 
   def test_add_drop_table_with_prefix_and_suffix
     assert !Reminder.table_exists?
-    ActiveRecord::Base.table_name_prefix = 'prefix_'
-    ActiveRecord::Base.table_name_suffix = '_suffix'
+    ActiveRecord4116::Base.table_name_prefix = 'prefix_'
+    ActiveRecord4116::Base.table_name_suffix = '_suffix'
     Reminder.reset_table_name
     Reminder.reset_sequence_name
     WeNeedReminders.up
@@ -442,7 +442,7 @@ class MigrationTest < ActiveRecord::TestCase
     assert_equal "hello world", Reminder.first.content
 
     WeNeedReminders.down
-    assert_raise(ActiveRecord::StatementInvalid) { Reminder.first }
+    assert_raise(ActiveRecord4116::StatementInvalid) { Reminder.first }
   ensure
     Reminder.reset_sequence_name
   end
@@ -521,7 +521,7 @@ class MigrationTest < ActiveRecord::TestCase
       end
 
       # confirm the custom sequence got dropped
-      assert_raise(ActiveRecord::StatementInvalid) do
+      assert_raise(ActiveRecord4116::StatementInvalid) do
         Person.connection.execute("select suitably_short_seq.nextval from dual")
       end
     end
@@ -530,14 +530,14 @@ class MigrationTest < ActiveRecord::TestCase
   if current_adapter?(:MysqlAdapter, :Mysql2Adapter, :PostgreSQLAdapter)
     def test_out_of_range_limit_should_raise
       Person.connection.drop_table :test_limits rescue nil
-      assert_raise(ActiveRecord::ActiveRecordError, "integer limit didn't raise") do
+      assert_raise(ActiveRecord4116::ActiveRecord4116Error, "integer limit didn't raise") do
         Person.connection.create_table :test_integer_limits, :force => true do |t|
           t.column :bigone, :integer, :limit => 10
         end
       end
 
       unless current_adapter?(:PostgreSQLAdapter)
-        assert_raise(ActiveRecord::ActiveRecordError, "text limit didn't raise") do
+        assert_raise(ActiveRecord4116::ActiveRecord4116Error, "text limit didn't raise") do
           Person.connection.create_table :test_text_limits, :force => true do |t|
             t.column :bigtext, :text, :limit => 0xfffffffff
           end
@@ -559,7 +559,7 @@ class MigrationTest < ActiveRecord::TestCase
     end
 end
 
-class ReservedWordsMigrationTest < ActiveRecord::TestCase
+class ReservedWordsMigrationTest < ActiveRecord4116::TestCase
   def test_drop_index_from_table_named_values
     connection = Person.connection
     connection.create_table :values, :force => true do |t|
@@ -575,7 +575,7 @@ class ReservedWordsMigrationTest < ActiveRecord::TestCase
   end
 end
 
-class ExplicitlyNamedIndexMigrationTest < ActiveRecord::TestCase
+class ExplicitlyNamedIndexMigrationTest < ActiveRecord4116::TestCase
   def test_drop_index_by_name
     connection = Person.connection
     connection.create_table :values, force: true do |t|
@@ -591,8 +591,8 @@ class ExplicitlyNamedIndexMigrationTest < ActiveRecord::TestCase
   end
 end
 
-if ActiveRecord::Base.connection.supports_bulk_alter?
-  class BulkAlterTableMigrationsTest < ActiveRecord::TestCase
+if ActiveRecord4116::Base.connection.supports_bulk_alter?
+  class BulkAlterTableMigrationsTest < ActiveRecord4116::TestCase
     def setup
       @connection = Person.connection
       @connection.create_table(:delete_me, :force => true) {|t| }
@@ -736,22 +736,22 @@ if ActiveRecord::Base.connection.supports_bulk_alter?
 
 end
 
-class CopyMigrationsTest < ActiveRecord::TestCase
+class CopyMigrationsTest < ActiveRecord4116::TestCase
   def setup
   end
 
   def clear
-    ActiveRecord::Base.timestamped_migrations = true
+    ActiveRecord4116::Base.timestamped_migrations = true
     to_delete = Dir[@migrations_path + "/*.rb"] - @existing_migrations
     File.delete(*to_delete)
   end
 
   def test_copying_migrations_without_timestamps
-    ActiveRecord::Base.timestamped_migrations = false
+    ActiveRecord4116::Base.timestamped_migrations = false
     @migrations_path = MIGRATIONS_ROOT + "/valid"
     @existing_migrations = Dir[@migrations_path + "/*.rb"]
 
-    copied = ActiveRecord::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy"})
+    copied = ActiveRecord4116::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy"})
     assert File.exist?(@migrations_path + "/4_people_have_hobbies.bukkits.rb")
     assert File.exist?(@migrations_path + "/5_people_have_descriptions.bukkits.rb")
     assert_equal [@migrations_path + "/4_people_have_hobbies.bukkits.rb", @migrations_path + "/5_people_have_descriptions.bukkits.rb"], copied.map(&:filename)
@@ -760,7 +760,7 @@ class CopyMigrationsTest < ActiveRecord::TestCase
     assert_equal expected, IO.readlines(@migrations_path + "/4_people_have_hobbies.bukkits.rb")[0].chomp
 
     files_count = Dir[@migrations_path + "/*.rb"].length
-    copied = ActiveRecord::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy"})
+    copied = ActiveRecord4116::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy"})
     assert_equal files_count, Dir[@migrations_path + "/*.rb"].length
     assert copied.empty?
   ensure
@@ -768,21 +768,21 @@ class CopyMigrationsTest < ActiveRecord::TestCase
   end
 
   def test_copying_migrations_without_timestamps_from_2_sources
-    ActiveRecord::Base.timestamped_migrations = false
+    ActiveRecord4116::Base.timestamped_migrations = false
     @migrations_path = MIGRATIONS_ROOT + "/valid"
     @existing_migrations = Dir[@migrations_path + "/*.rb"]
 
     sources = {}
     sources[:bukkits] = MIGRATIONS_ROOT + "/to_copy"
     sources[:omg] = MIGRATIONS_ROOT + "/to_copy2"
-    ActiveRecord::Migration.copy(@migrations_path, sources)
+    ActiveRecord4116::Migration.copy(@migrations_path, sources)
     assert File.exist?(@migrations_path + "/4_people_have_hobbies.bukkits.rb")
     assert File.exist?(@migrations_path + "/5_people_have_descriptions.bukkits.rb")
     assert File.exist?(@migrations_path + "/6_create_articles.omg.rb")
     assert File.exist?(@migrations_path + "/7_create_comments.omg.rb")
 
     files_count = Dir[@migrations_path + "/*.rb"].length
-    ActiveRecord::Migration.copy(@migrations_path, sources)
+    ActiveRecord4116::Migration.copy(@migrations_path, sources)
     assert_equal files_count, Dir[@migrations_path + "/*.rb"].length
   ensure
     clear
@@ -793,7 +793,7 @@ class CopyMigrationsTest < ActiveRecord::TestCase
     @existing_migrations = Dir[@migrations_path + "/*.rb"]
 
     travel_to(Time.utc(2010, 7, 26, 10, 10, 10)) do
-      copied = ActiveRecord::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy_with_timestamps"})
+      copied = ActiveRecord4116::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy_with_timestamps"})
       assert File.exist?(@migrations_path + "/20100726101010_people_have_hobbies.bukkits.rb")
       assert File.exist?(@migrations_path + "/20100726101011_people_have_descriptions.bukkits.rb")
       expected = [@migrations_path + "/20100726101010_people_have_hobbies.bukkits.rb",
@@ -801,7 +801,7 @@ class CopyMigrationsTest < ActiveRecord::TestCase
       assert_equal expected, copied.map(&:filename)
 
       files_count = Dir[@migrations_path + "/*.rb"].length
-      copied = ActiveRecord::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy_with_timestamps"})
+      copied = ActiveRecord4116::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy_with_timestamps"})
       assert_equal files_count, Dir[@migrations_path + "/*.rb"].length
       assert copied.empty?
     end
@@ -818,7 +818,7 @@ class CopyMigrationsTest < ActiveRecord::TestCase
     sources[:omg]     = MIGRATIONS_ROOT + "/to_copy_with_timestamps2"
 
     travel_to(Time.utc(2010, 7, 26, 10, 10, 10)) do
-      copied = ActiveRecord::Migration.copy(@migrations_path, sources)
+      copied = ActiveRecord4116::Migration.copy(@migrations_path, sources)
       assert File.exist?(@migrations_path + "/20100726101010_people_have_hobbies.bukkits.rb")
       assert File.exist?(@migrations_path + "/20100726101011_people_have_descriptions.bukkits.rb")
       assert File.exist?(@migrations_path + "/20100726101012_create_articles.omg.rb")
@@ -826,7 +826,7 @@ class CopyMigrationsTest < ActiveRecord::TestCase
       assert_equal 4, copied.length
 
       files_count = Dir[@migrations_path + "/*.rb"].length
-      ActiveRecord::Migration.copy(@migrations_path, sources)
+      ActiveRecord4116::Migration.copy(@migrations_path, sources)
       assert_equal files_count, Dir[@migrations_path + "/*.rb"].length
     end
   ensure
@@ -838,12 +838,12 @@ class CopyMigrationsTest < ActiveRecord::TestCase
     @existing_migrations = Dir[@migrations_path + "/*.rb"]
 
     travel_to(Time.utc(2010, 2, 20, 10, 10, 10)) do
-      ActiveRecord::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy_with_timestamps"})
+      ActiveRecord4116::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy_with_timestamps"})
       assert File.exist?(@migrations_path + "/20100301010102_people_have_hobbies.bukkits.rb")
       assert File.exist?(@migrations_path + "/20100301010103_people_have_descriptions.bukkits.rb")
 
       files_count = Dir[@migrations_path + "/*.rb"].length
-      copied = ActiveRecord::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy_with_timestamps"})
+      copied = ActiveRecord4116::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy_with_timestamps"})
       assert_equal files_count, Dir[@migrations_path + "/*.rb"].length
       assert copied.empty?
     end
@@ -852,11 +852,11 @@ class CopyMigrationsTest < ActiveRecord::TestCase
   end
 
   def test_copying_migrations_preserving_magic_comments
-    ActiveRecord::Base.timestamped_migrations = false
+    ActiveRecord4116::Base.timestamped_migrations = false
     @migrations_path = MIGRATIONS_ROOT + "/valid"
     @existing_migrations = Dir[@migrations_path + "/*.rb"]
 
-    copied = ActiveRecord::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/magic"})
+    copied = ActiveRecord4116::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/magic"})
     assert File.exist?(@migrations_path + "/4_currencies_have_symbols.bukkits.rb")
     assert_equal [@migrations_path + "/4_currencies_have_symbols.bukkits.rb"], copied.map(&:filename)
 
@@ -864,7 +864,7 @@ class CopyMigrationsTest < ActiveRecord::TestCase
     assert_equal expected, IO.readlines(@migrations_path + "/4_currencies_have_symbols.bukkits.rb")[0..1].join.chomp
 
     files_count = Dir[@migrations_path + "/*.rb"].length
-    copied = ActiveRecord::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/magic"})
+    copied = ActiveRecord4116::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/magic"})
     assert_equal files_count, Dir[@migrations_path + "/*.rb"].length
     assert copied.empty?
   ensure
@@ -881,7 +881,7 @@ class CopyMigrationsTest < ActiveRecord::TestCase
 
     skipped = []
     on_skip = Proc.new { |name, migration| skipped << "#{name} #{migration.name}" }
-    copied = ActiveRecord::Migration.copy(@migrations_path, sources, :on_skip => on_skip)
+    copied = ActiveRecord4116::Migration.copy(@migrations_path, sources, :on_skip => on_skip)
     assert_equal 2, copied.length
 
     assert_equal 1, skipped.length
@@ -899,8 +899,8 @@ class CopyMigrationsTest < ActiveRecord::TestCase
 
     skipped = []
     on_skip = Proc.new { |name, migration| skipped << "#{name} #{migration.name}" }
-    copied = ActiveRecord::Migration.copy(@migrations_path, sources, :on_skip => on_skip)
-    ActiveRecord::Migration.copy(@migrations_path, sources, :on_skip => on_skip)
+    copied = ActiveRecord4116::Migration.copy(@migrations_path, sources, :on_skip => on_skip)
+    ActiveRecord4116::Migration.copy(@migrations_path, sources, :on_skip => on_skip)
 
     assert_equal 2, copied.length
     assert_equal 0, skipped.length
@@ -913,7 +913,7 @@ class CopyMigrationsTest < ActiveRecord::TestCase
     @existing_migrations = []
 
     travel_to(Time.utc(2010, 7, 26, 10, 10, 10)) do
-      copied = ActiveRecord::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy_with_timestamps"})
+      copied = ActiveRecord4116::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy_with_timestamps"})
       assert File.exist?(@migrations_path + "/20100726101010_people_have_hobbies.bukkits.rb")
       assert File.exist?(@migrations_path + "/20100726101011_people_have_descriptions.bukkits.rb")
       assert_equal 2, copied.length
@@ -928,7 +928,7 @@ class CopyMigrationsTest < ActiveRecord::TestCase
     @existing_migrations = []
 
     travel_to(Time.utc(2010, 7, 26, 10, 10, 10)) do
-      copied = ActiveRecord::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy_with_timestamps"})
+      copied = ActiveRecord4116::Migration.copy(@migrations_path, {:bukkits => MIGRATIONS_ROOT + "/to_copy_with_timestamps"})
       assert File.exist?(@migrations_path + "/20100726101010_people_have_hobbies.bukkits.rb")
       assert File.exist?(@migrations_path + "/20100726101011_people_have_descriptions.bukkits.rb")
       assert_equal 2, copied.length
@@ -938,11 +938,11 @@ class CopyMigrationsTest < ActiveRecord::TestCase
   end
 
   def test_check_pending_with_stdlib_logger
-    old, ActiveRecord::Base.logger = ActiveRecord::Base.logger, ::Logger.new($stdout)
+    old, ActiveRecord4116::Base.logger = ActiveRecord4116::Base.logger, ::Logger.new($stdout)
     quietly do
-      assert_nothing_raised { ActiveRecord::Migration::CheckPending.new(Proc.new {}).call({}) }
+      assert_nothing_raised { ActiveRecord4116::Migration::CheckPending.new(Proc.new {}).call({}) }
     end
   ensure
-    ActiveRecord::Base.logger = old
+    ActiveRecord4116::Base.logger = old
   end
 end

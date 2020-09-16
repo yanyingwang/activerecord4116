@@ -21,7 +21,7 @@ require 'models/electron'
 require 'models/man'
 require 'models/interest'
 
-class AssociationsTest < ActiveRecord::TestCase
+class AssociationsTest < ActiveRecord4116::TestCase
   fixtures :accounts, :companies, :developers, :projects, :developers_projects,
            :computers, :people, :readers, :authors, :author_favorites
 
@@ -88,8 +88,8 @@ class AssociationsTest < ActiveRecord::TestCase
   end
 
   def test_bad_collection_keys
-    assert_raise(ArgumentError, 'ActiveRecord should have barked on bad collection keys') do
-      Class.new(ActiveRecord::Base).has_many(:wheels, :name => 'wheels')
+    assert_raise(ArgumentError, 'ActiveRecord4116 should have barked on bad collection keys') do
+      Class.new(ActiveRecord4116::Base).has_many(:wheels, :name => 'wheels')
     end
   end
 
@@ -131,7 +131,7 @@ class AssociationsTest < ActiveRecord::TestCase
   def test_force_reload_is_uncached
     firm = Firm.create!("name" => "A New Firm, Inc")
     Client.create!("name" => "TheClient.com", :firm => firm)
-    ActiveRecord::Base.cache do
+    ActiveRecord4116::Base.cache do
       firm.clients.each {}
       assert_queries(0) { assert_not_nil firm.clients.each {} }
       assert_queries(1) { assert_not_nil firm.clients(true).each {} }
@@ -145,7 +145,7 @@ class AssociationsTest < ActiveRecord::TestCase
 
 end
 
-class AssociationProxyTest < ActiveRecord::TestCase
+class AssociationProxyTest < ActiveRecord4116::TestCase
   fixtures :authors, :posts, :categorizations, :categories, :developers, :projects, :developers_projects
 
   def test_push_does_not_load_target
@@ -243,7 +243,7 @@ class AssociationProxyTest < ActiveRecord::TestCase
   test "getting a scope from an association" do
     david = developers(:david)
 
-    assert david.projects.scope.is_a?(ActiveRecord::Relation)
+    assert david.projects.scope.is_a?(ActiveRecord4116::Relation)
     assert_equal david.projects, david.projects.scope
   end
 
@@ -273,10 +273,10 @@ class AssociationProxyTest < ActiveRecord::TestCase
   end
 end
 
-class OverridingAssociationsTest < ActiveRecord::TestCase
-  class DifferentPerson < ActiveRecord::Base; end
+class OverridingAssociationsTest < ActiveRecord4116::TestCase
+  class DifferentPerson < ActiveRecord4116::Base; end
 
-  class PeopleList < ActiveRecord::Base
+  class PeopleList < ActiveRecord4116::Base
     has_and_belongs_to_many :has_and_belongs_to_many, :before_add => :enlist
     has_many :has_many, :before_add => :enlist
     belongs_to :belongs_to
@@ -344,7 +344,7 @@ class OverridingAssociationsTest < ActiveRecord::TestCase
   end
 end
 
-class GeneratedMethodsTest < ActiveRecord::TestCase
+class GeneratedMethodsTest < ActiveRecord4116::TestCase
   fixtures :developers, :computers, :posts, :comments
   def test_association_methods_override_attribute_methods_of_same_name
     assert_equal(developers(:david), computers(:workstation).developer)
@@ -362,7 +362,7 @@ class GeneratedMethodsTest < ActiveRecord::TestCase
     def comments; :none end
   end
 
-  class MyArticle < ActiveRecord::Base
+  class MyArticle < ActiveRecord4116::Base
     self.table_name = "articles"
     include MyModule
     has_many :comments, inverse_of: false

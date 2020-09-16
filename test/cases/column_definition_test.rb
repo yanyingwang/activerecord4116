@@ -1,8 +1,8 @@
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
-    class ColumnDefinitionTest < ActiveRecord::TestCase
+    class ColumnDefinitionTest < ActiveRecord4116::TestCase
       def setup
         @adapter = AbstractAdapter.new(nil)
         def @adapter.native_database_types

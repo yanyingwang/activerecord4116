@@ -6,7 +6,7 @@ require 'models/interest'
 require 'models/speedometer'
 require 'models/dashboard'
 
-class PresenceValidationTest < ActiveRecord::TestCase
+class PresenceValidationTest < ActiveRecord4116::TestCase
   class Boy < Man; end
 
   repair_validations(Boy)

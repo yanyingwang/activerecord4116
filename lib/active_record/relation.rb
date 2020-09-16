@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Relation
   class Relation
     JoinOperation = Struct.new(:relation, :join_class, :on)
@@ -201,7 +201,7 @@ module ActiveRecord
     #
     #  begin
     #    CreditAccount.find_or_create_by(user_id: user.id)
-    #  rescue ActiveRecord::RecordNotUnique
+    #  rescue ActiveRecord4116::RecordNotUnique
     #    retry
     #  end
     #
@@ -376,7 +376,7 @@ module ActiveRecord
     #
     # * +conditions+ - A string, array, or hash that specifies which records
     #   to destroy. If omitted, all records are destroyed. See the
-    #   Conditions section in the introduction to ActiveRecord::Base for
+    #   Conditions section in the introduction to ActiveRecord4116::Base for
     #   more information.
     #
     # ==== Examples
@@ -394,7 +394,7 @@ module ActiveRecord
 
     # Destroy an object (or multiple objects) that has the given id. The object is instantiated first,
     # therefore all callbacks and filters are fired off before the object is deleted. This method is
-    # less efficient than ActiveRecord#delete but allows cleanup methods and other actions to be run.
+    # less efficient than ActiveRecord4116#delete but allows cleanup methods and other actions to be run.
     #
     # This essentially finds the object (or multiple objects) with the given id, creates a new object
     # from the attributes, and then calls destroy on it.
@@ -434,12 +434,12 @@ module ActiveRecord
     # If you need to destroy dependent associations or call your <tt>before_*</tt> or
     # +after_destroy+ callbacks, use the +destroy_all+ method instead.
     #
-    # If a limit scope is supplied, +delete_all+ raises an ActiveRecord error:
+    # If a limit scope is supplied, +delete_all+ raises an ActiveRecord4116 error:
     #
     #   Post.limit(100).delete_all
-    #   # => ActiveRecord::ActiveRecordError: delete_all doesn't support limit scope
+    #   # => ActiveRecord4116::ActiveRecord4116Error: delete_all doesn't support limit scope
     def delete_all(conditions = nil)
-      raise ActiveRecordError.new("delete_all doesn't support limit scope") if self.limit_value
+      raise ActiveRecord4116Error.new("delete_all doesn't support limit scope") if self.limit_value
 
       if conditions
         where(conditions).delete_all
@@ -488,7 +488,7 @@ module ActiveRecord
     # to explicitly load some records before actually using them. The
     # return value is the relation itself, not the records.
     #
-    #   Post.where(published: true).load # => #<ActiveRecord::Relation>
+    #   Post.where(published: true).load # => #<ActiveRecord4116::Relation>
     def load
       exec_queries unless loaded?
 
@@ -612,7 +612,7 @@ module ActiveRecord
 
       preload = preload_values
       preload +=  includes_values unless eager_loading?
-      preloader = ActiveRecord::Associations::Preloader.new
+      preloader = ActiveRecord4116::Associations::Preloader.new
       preload.each do |associations|
         preloader.preload @records, associations
       end

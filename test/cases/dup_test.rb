@@ -1,8 +1,8 @@
 require "cases/helper"
 require 'models/topic'
 
-module ActiveRecord
-  class DupTest < ActiveRecord::TestCase
+module ActiveRecord4116
+  class DupTest < ActiveRecord4116::TestCase
     fixtures :topics
 
     def test_dup

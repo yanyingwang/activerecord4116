@@ -1,5 +1,5 @@
-ActiveRecord::Base.connection.begin_transaction(joinable: false)
+ActiveRecord4116::Base.connection.begin_transaction(joinable: false)
 
 at_exit do
-  ActiveRecord::Base.connection.rollback_transaction
+  ActiveRecord4116::Base.connection.rollback_transaction
 end

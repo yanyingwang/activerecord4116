@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module Associations
     # Implements the details of eager loading of Active Record associations.
     #
@@ -53,7 +53,7 @@ module ActiveRecord
       # names +:author+ and +:buyers+.
       #
       # == Parameters
-      # +records+ is an array of ActiveRecord::Base. This array needs not be flat,
+      # +records+ is an array of ActiveRecord4116::Base. This array needs not be flat,
       # i.e. +records+ itself may also contain arrays of records. In any case,
       # +preload_associations+ will preload the all associations records by
       # flattening +records+.
@@ -73,7 +73,7 @@ module ActiveRecord
       #   book's author, as well as that author's avatar.
       #
       # +:associations+ has the same format as the +:include+ option for
-      # <tt>ActiveRecord::Base.find</tt>. So +associations+ could look like this:
+      # <tt>ActiveRecord4116::Base.find</tt>. So +associations+ could look like this:
       #
       #   :books
       #   [ :books, :author ]

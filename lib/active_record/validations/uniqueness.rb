@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module Validations
     class UniquenessValidator < ActiveModel::EachValidator # :nodoc:
       def initialize(options)
@@ -113,14 +113,14 @@ module ActiveRecord
       # across the system. Useful for making sure that only one user
       # can be named "davidhh".
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     validates_uniqueness_of :user_name
       #   end
       #
       # It can also validate whether the value of the specified attributes are
       # unique based on a <tt>:scope</tt> parameter:
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     validates_uniqueness_of :user_name, scope: :account_id
       #   end
       #
@@ -128,7 +128,7 @@ module ActiveRecord
       # teacher can only be on the schedule once per semester for a particular
       # class.
       #
-      #   class TeacherSchedule < ActiveRecord::Base
+      #   class TeacherSchedule < ActiveRecord4116::Base
       #     validates_uniqueness_of :teacher_id, scope: [:semester_id, :class_id]
       #   end
       #
@@ -137,7 +137,7 @@ module ActiveRecord
       # are not being taken into consideration when validating uniqueness
       # of the title attribute:
       #
-      #   class Article < ActiveRecord::Base
+      #   class Article < ActiveRecord4116::Base
       #     validates_uniqueness_of :title, conditions: -> { where.not(status: 'archived') }
       #   end
       #
@@ -173,7 +173,7 @@ module ActiveRecord
       #
       # === Concurrency and integrity
       #
-      # Using this validation method in conjunction with ActiveRecord::Base#save
+      # Using this validation method in conjunction with ActiveRecord4116::Base#save
       # does not guarantee the absence of duplicate record insertions, because
       # uniqueness checks on the application level are inherently prone to race
       # conditions. For example, suppose that two users try to post a Comment at
@@ -210,12 +210,12 @@ module ActiveRecord
       # This could even happen if you use transactions with the 'serializable'
       # isolation level. The best way to work around this problem is to add a unique
       # index to the database table using
-      # ActiveRecord::ConnectionAdapters::SchemaStatements#add_index. In the
+      # ActiveRecord4116::ConnectionAdapters::SchemaStatements#add_index. In the
       # rare case that a race condition occurs, the database will guarantee
       # the field's uniqueness.
       #
       # When the database catches such a duplicate insertion,
-      # ActiveRecord::Base#save will raise an ActiveRecord::StatementInvalid
+      # ActiveRecord4116::Base#save will raise an ActiveRecord4116::StatementInvalid
       # exception. You can either choose to let this error propagate (which
       # will result in the default Rails exception page being shown), or you
       # can catch it and restart the transaction (e.g. by telling the user
@@ -223,18 +223,18 @@ module ActiveRecord
       # This technique is also known as
       # {optimistic concurrency control}[http://en.wikipedia.org/wiki/Optimistic_concurrency_control].
       #
-      # The bundled ActiveRecord::ConnectionAdapters distinguish unique index
+      # The bundled ActiveRecord4116::ConnectionAdapters distinguish unique index
       # constraint errors from other types of database errors by throwing an
-      # ActiveRecord::RecordNotUnique exception. For other adapters you will
+      # ActiveRecord4116::RecordNotUnique exception. For other adapters you will
       # have to parse the (database-specific) exception message to detect such
       # a case.
       #
-      # The following bundled adapters throw the ActiveRecord::RecordNotUnique exception:
+      # The following bundled adapters throw the ActiveRecord4116::RecordNotUnique exception:
       #
-      # * ActiveRecord::ConnectionAdapters::MysqlAdapter.
-      # * ActiveRecord::ConnectionAdapters::Mysql2Adapter.
-      # * ActiveRecord::ConnectionAdapters::SQLite3Adapter.
-      # * ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.
+      # * ActiveRecord4116::ConnectionAdapters::MysqlAdapter.
+      # * ActiveRecord4116::ConnectionAdapters::Mysql2Adapter.
+      # * ActiveRecord4116::ConnectionAdapters::SQLite3Adapter.
+      # * ActiveRecord4116::ConnectionAdapters::PostgreSQLAdapter.
       def validates_uniqueness_of(*attr_names)
         validates_with UniquenessValidator, _merge_attributes(attr_names)
       end

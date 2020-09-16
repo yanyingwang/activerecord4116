@@ -1,4 +1,4 @@
-class Vegetable < ActiveRecord::Base
+class Vegetable < ActiveRecord4116::Base
 
   validates_presence_of :name
 

@@ -1,5 +1,5 @@
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     class SchemaCache
       attr_reader :version
@@ -75,7 +75,7 @@ module ActiveRecord
 
       def marshal_dump
         # if we get current version during initialization, it happens stack over flow.
-        @version = ActiveRecord::Migrator.current_version
+        @version = ActiveRecord4116::Migrator.current_version
         [@version] + [@columns, @columns_hash, @primary_keys, @tables].map { |val|
           Hash[val]
         }

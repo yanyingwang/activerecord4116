@@ -1,5 +1,5 @@
-module ActiveRecord
-  # Returns the version of the currently loaded ActiveRecord as a <tt>Gem::Version</tt>
+module ActiveRecord4116
+  # Returns the version of the currently loaded ActiveRecord4116 as a <tt>Gem::Version</tt>
   def self.gem_version
     Gem::Version.new VERSION::STRING
   end

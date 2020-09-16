@@ -1,9 +1,9 @@
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     class ConnectionSpecification
-      class ResolverTest < ActiveRecord::TestCase
+      class ResolverTest < ActiveRecord4116::TestCase
         def resolve(spec, config={})
           Resolver.new(config).resolve(spec)
         end

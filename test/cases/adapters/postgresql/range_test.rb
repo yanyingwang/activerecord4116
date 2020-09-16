@@ -2,18 +2,18 @@ require "cases/helper"
 require 'active_record/base'
 require 'active_record/connection_adapters/postgresql_adapter'
 
-if ActiveRecord::Base.connection.supports_ranges?
-  class PostgresqlRange < ActiveRecord::Base
+if ActiveRecord4116::Base.connection.supports_ranges?
+  class PostgresqlRange < ActiveRecord4116::Base
     self.table_name = "postgresql_ranges"
   end
 
-  class PostgresqlRangeTest < ActiveRecord::TestCase
+  class PostgresqlRangeTest < ActiveRecord4116::TestCase
     def teardown
       @connection.execute 'DROP TABLE IF EXISTS postgresql_ranges'
     end
 
     def setup
-      @connection = ActiveRecord::Base.connection
+      @connection = ActiveRecord4116::Base.connection
       begin
         @connection.transaction do
           @connection.create_table('postgresql_ranges') do |t|
@@ -25,7 +25,7 @@ if ActiveRecord::Base.connection.supports_ranges?
             t.int8range :int8_range
           end
         end
-      rescue ActiveRecord::StatementInvalid
+      rescue ActiveRecord4116::StatementInvalid
         skip "do not test on PG without range"
       end
 
@@ -119,7 +119,7 @@ if ActiveRecord::Base.connection.supports_ranges?
     end
 
     def test_tsrange_values
-      tz = ::ActiveRecord::Base.default_timezone
+      tz = ::ActiveRecord4116::Base.default_timezone
       assert_equal Time.send(tz, 2010, 1, 1, 14, 30, 0)..Time.send(tz, 2011, 1, 1, 14, 30, 0), @first_range.ts_range
       assert_equal Time.send(tz, 2010, 1, 1, 14, 30, 0)...Time.send(tz, 2011, 1, 1, 14, 30, 0), @second_range.ts_range
       assert_equal(-Float::INFINITY...Float::INFINITY, @fourth_range.ts_range)
@@ -148,13 +148,13 @@ if ActiveRecord::Base.connection.supports_ranges?
     end
 
     def test_create_tsrange
-      tz = ::ActiveRecord::Base.default_timezone
+      tz = ::ActiveRecord4116::Base.default_timezone
       assert_equal_round_trip(@new_range, :ts_range,
                               Time.send(tz, 2010, 1, 1, 14, 30, 0)...Time.send(tz, 2011, 2, 2, 14, 30, 0))
     end
 
     def test_update_tsrange
-      tz = ::ActiveRecord::Base.default_timezone
+      tz = ::ActiveRecord4116::Base.default_timezone
       assert_equal_round_trip(@first_range, :ts_range,
                               Time.send(tz, 2010, 1, 1, 14, 30, 0)...Time.send(tz, 2011, 2, 2, 14, 30, 0))
       assert_nil_round_trip(@first_range, :ts_range,
@@ -225,13 +225,13 @@ if ActiveRecord::Base.connection.supports_ranges?
     end
 
     def test_ranges_correctly_escape_input
-      e = assert_raises(ActiveRecord::StatementInvalid) do
+      e = assert_raises(ActiveRecord4116::StatementInvalid) do
         range = "1,2]'; SELECT * FROM users; --".."a"
         PostgresqlRange.update_all(int8_range: range)
       end
 
       assert e.message.starts_with?("PG::InvalidTextRepresentation")
-      ActiveRecord::Base.connection.rollback_transaction
+      ActiveRecord4116::Base.connection.rollback_transaction
     end
 
     private

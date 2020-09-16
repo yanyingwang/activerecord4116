@@ -1,10 +1,10 @@
 require 'cases/helper'
 require 'models/post'
 
-module ActiveRecord
+module ActiveRecord4116
   class RelationMutationTest < ActiveSupport::TestCase
     class FakeKlass < Struct.new(:table_name, :name)
-      extend ActiveRecord::Delegation::DelegateCache
+      extend ActiveRecord4116::Delegation::DelegateCache
       inherited self
 
       def connection

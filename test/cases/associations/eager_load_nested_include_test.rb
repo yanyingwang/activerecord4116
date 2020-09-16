@@ -22,45 +22,45 @@ module Remembered
   end
 end
 
-class ShapeExpression < ActiveRecord::Base
+class ShapeExpression < ActiveRecord4116::Base
   belongs_to :shape, :polymorphic => true
   belongs_to :paint, :polymorphic => true
 end
 
-class Circle < ActiveRecord::Base
+class Circle < ActiveRecord4116::Base
   has_many :shape_expressions, :as => :shape
   include Remembered
 end
-class Square < ActiveRecord::Base
+class Square < ActiveRecord4116::Base
   has_many :shape_expressions, :as => :shape
   include Remembered
 end
-class Triangle < ActiveRecord::Base
+class Triangle < ActiveRecord4116::Base
   has_many :shape_expressions, :as => :shape
   include Remembered
 end
-class PaintColor  < ActiveRecord::Base
+class PaintColor  < ActiveRecord4116::Base
   has_many   :shape_expressions, :as => :paint
   belongs_to :non_poly, :foreign_key => "non_poly_one_id", :class_name => "NonPolyOne"
   include Remembered
 end
-class PaintTexture < ActiveRecord::Base
+class PaintTexture < ActiveRecord4116::Base
   has_many   :shape_expressions, :as => :paint
   belongs_to :non_poly, :foreign_key => "non_poly_two_id", :class_name => "NonPolyTwo"
   include Remembered
 end
-class NonPolyOne < ActiveRecord::Base
+class NonPolyOne < ActiveRecord4116::Base
   has_many :paint_colors
   include Remembered
 end
-class NonPolyTwo < ActiveRecord::Base
+class NonPolyTwo < ActiveRecord4116::Base
   has_many :paint_textures
   include Remembered
 end
 
 
 
-class EagerLoadPolyAssocsTest < ActiveRecord::TestCase
+class EagerLoadPolyAssocsTest < ActiveRecord4116::TestCase
   NUM_SIMPLE_OBJS = 50
   NUM_SHAPE_EXPRESSIONS = 100
 
@@ -103,7 +103,7 @@ class EagerLoadPolyAssocsTest < ActiveRecord::TestCase
   end
 end
 
-class EagerLoadNestedIncludeWithMissingDataTest < ActiveRecord::TestCase
+class EagerLoadNestedIncludeWithMissingDataTest < ActiveRecord4116::TestCase
   def setup
     @davey_mcdave = Author.create(:name => 'Davey McDave')
     @first_post = @davey_mcdave.posts.create(:title => 'Davey Speaks', :body => 'Expressive wordage')

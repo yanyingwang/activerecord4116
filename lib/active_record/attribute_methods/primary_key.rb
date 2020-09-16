@@ -1,6 +1,6 @@
 require 'set'
 
-module ActiveRecord
+module ActiveRecord4116
   module AttributeMethods
     module PrimaryKey
       extend ActiveSupport::Concern
@@ -96,7 +96,7 @@ module ActiveRecord
           when :table_name_with_underscore
             base_name.foreign_key
           else
-            if ActiveRecord::Base != self && table_exists?
+            if ActiveRecord4116::Base != self && table_exists?
               connection.schema_cache.primary_keys(table_name)
             else
               'id'
@@ -106,13 +106,13 @@ module ActiveRecord
 
         # Sets the name of the primary key column.
         #
-        #   class Project < ActiveRecord::Base
+        #   class Project < ActiveRecord4116::Base
         #     self.primary_key = 'sysid'
         #   end
         #
         # You can also define the +primary_key+ method yourself:
         #
-        #   class Project < ActiveRecord::Base
+        #   class Project < ActiveRecord4116::Base
         #     def self.primary_key
         #       'foo_' + super
         #     end

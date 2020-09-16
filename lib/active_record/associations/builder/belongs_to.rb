@@ -1,4 +1,4 @@
-module ActiveRecord::Associations::Builder
+module ActiveRecord4116::Associations::Builder
   class BelongsTo < SingularAssociation #:nodoc:
     def macro
       :belongs_to

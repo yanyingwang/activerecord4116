@@ -30,7 +30,7 @@ require 'models/tyre'
 require 'models/zine'
 require 'models/interest'
 
-class HasManyAssociationsTestForReorderWithJoinDependency < ActiveRecord::TestCase
+class HasManyAssociationsTestForReorderWithJoinDependency < ActiveRecord4116::TestCase
   fixtures :authors, :posts, :comments
 
   def test_should_generate_valid_sql
@@ -42,7 +42,7 @@ class HasManyAssociationsTestForReorderWithJoinDependency < ActiveRecord::TestCa
 end
 
 
-class HasManyAssociationsTest < ActiveRecord::TestCase
+class HasManyAssociationsTest < ActiveRecord4116::TestCase
   fixtures :accounts, :categories, :companies, :developers, :projects,
            :developers_projects, :topics, :authors, :comments,
            :people, :posts, :readers, :taggings, :cars, :essays,
@@ -53,11 +53,11 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_anonymous_has_many
-    developer = Class.new(ActiveRecord::Base) {
+    developer = Class.new(ActiveRecord4116::Base) {
       self.table_name = 'developers'
       dev = self
 
-      developer_project = Class.new(ActiveRecord::Base) {
+      developer_project = Class.new(ActiveRecord4116::Base) {
         self.table_name = 'developers_projects'
         belongs_to :developer, :anonymous_class => dev
       }
@@ -154,12 +154,12 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
 
   def test_building_the_associated_object_with_an_invalid_type
     firm = DependentFirm.new
-    assert_raise(ActiveRecord::SubclassNotFound) { firm.companies.build(:type => "Invalid") }
+    assert_raise(ActiveRecord4116::SubclassNotFound) { firm.companies.build(:type => "Invalid") }
   end
 
   def test_building_the_associated_object_with_an_unrelated_type
     firm = DependentFirm.new
-    assert_raise(ActiveRecord::SubclassNotFound) { firm.companies.build(:type => "Account") }
+    assert_raise(ActiveRecord4116::SubclassNotFound) { firm.companies.build(:type => "Account") }
   end
 
   test "building the association with an array" do
@@ -350,9 +350,9 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
 
   def test_taking_not_found
     authors(:bob).posts.delete_all
-    assert_raise(ActiveRecord::RecordNotFound) { authors(:bob).posts.take! }
+    assert_raise(ActiveRecord4116::RecordNotFound) { authors(:bob).posts.take! }
     authors(:bob).posts.to_a
-    assert_raise(ActiveRecord::RecordNotFound) { authors(:bob).posts.take! }
+    assert_raise(ActiveRecord4116::RecordNotFound) { authors(:bob).posts.take! }
   end
 
   def test_taking_with_a_number
@@ -379,7 +379,7 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_cant_save_has_many_readonly_association
-    authors(:david).readonly_comments.each { |c| assert_raise(ActiveRecord::ReadOnlyRecord) { c.save! } }
+    authors(:david).readonly_comments.each { |c| assert_raise(ActiveRecord4116::ReadOnlyRecord) { c.save! } }
     authors(:david).readonly_comments.each { |c| assert c.readonly? }
   end
 
@@ -422,7 +422,7 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
   def test_find_ids
     firm = Firm.all.merge!(:order => "id").first
 
-    assert_raise(ActiveRecord::RecordNotFound) { firm.clients.find }
+    assert_raise(ActiveRecord4116::RecordNotFound) { firm.clients.find }
 
     client = firm.clients.find(2)
     assert_kind_of Client, client
@@ -436,7 +436,7 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
     assert_equal 2, client_ary.size
     assert_equal client, client_ary.first
 
-    assert_raise(ActiveRecord::RecordNotFound) { firm.clients.find(2, 99) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { firm.clients.find(2, 99) }
   end
 
   def test_find_ids_and_inverse_of
@@ -526,7 +526,7 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
 
   def test_find_in_collection
     assert_equal Client.find(2).name, companies(:first_firm).clients.find(2).name
-    assert_raise(ActiveRecord::RecordNotFound) { companies(:first_firm).clients.find(6) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { companies(:first_firm).clients.find(6) }
   end
 
   def test_find_grouped
@@ -582,36 +582,36 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_create_with_bang_on_has_many_when_parent_is_new_raises
-    assert_raise(ActiveRecord::RecordNotSaved) do
+    assert_raise(ActiveRecord4116::RecordNotSaved) do
       firm = Firm.new
       firm.plain_clients.create! :name=>"Whoever"
     end
   end
 
   def test_regular_create_on_has_many_when_parent_is_new_raises
-    assert_raise(ActiveRecord::RecordNotSaved) do
+    assert_raise(ActiveRecord4116::RecordNotSaved) do
       firm = Firm.new
       firm.plain_clients.create :name=>"Whoever"
     end
   end
 
   def test_create_with_bang_on_has_many_raises_when_record_not_saved
-    assert_raise(ActiveRecord::RecordInvalid) do
+    assert_raise(ActiveRecord4116::RecordInvalid) do
       firm = Firm.all.merge!(:order => "id").first
       firm.plain_clients.create!
     end
   end
 
   def test_create_with_bang_on_habtm_when_parent_is_new_raises
-    assert_raise(ActiveRecord::RecordNotSaved) do
+    assert_raise(ActiveRecord4116::RecordNotSaved) do
       Developer.new("name" => "Aredridel").projects.create!
     end
   end
 
   def test_adding_a_mismatch_class
-    assert_raise(ActiveRecord::AssociationTypeMismatch) { companies(:first_firm).clients_of_firm << nil }
-    assert_raise(ActiveRecord::AssociationTypeMismatch) { companies(:first_firm).clients_of_firm << 1 }
-    assert_raise(ActiveRecord::AssociationTypeMismatch) { companies(:first_firm).clients_of_firm << Topic.find(1) }
+    assert_raise(ActiveRecord4116::AssociationTypeMismatch) { companies(:first_firm).clients_of_firm << nil }
+    assert_raise(ActiveRecord4116::AssociationTypeMismatch) { companies(:first_firm).clients_of_firm << 1 }
+    assert_raise(ActiveRecord4116::AssociationTypeMismatch) { companies(:first_firm).clients_of_firm << Topic.find(1) }
   end
 
   def test_adding_a_collection
@@ -1114,7 +1114,7 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
   def test_deleting_self_type_mismatch
     david = Developer.find(1)
     david.projects.reload
-    assert_raise(ActiveRecord::AssociationTypeMismatch) { david.projects.delete(Project.find(1).developers) }
+    assert_raise(ActiveRecord4116::AssociationTypeMismatch) { david.projects.delete(Project.find(1).developers) }
   end
 
   def test_destroying
@@ -1194,8 +1194,8 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
     client = firm.clients.first
     firm.clients.delete(client)
 
-    assert_raise(ActiveRecord::RecordNotFound) { Client.find(client.id) }
-    assert_raise(ActiveRecord::RecordNotFound) { firm.clients.find(client.id) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Client.find(client.id) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { firm.clients.find(client.id) }
     assert_equal 2, firm.clients.size
   end
 
@@ -1244,7 +1244,7 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
     firm.companies.create(:name => 'child')
 
     assert !firm.companies.empty?
-    assert_raise(ActiveRecord::DeleteRestrictionError) { firm.destroy }
+    assert_raise(ActiveRecord4116::DeleteRestrictionError) { firm.destroy }
     assert RestrictedWithExceptionFirm.exists?(:name => 'restrict')
     assert firm.companies.exists?(:name => 'child')
   end
@@ -1309,7 +1309,7 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
 
     assert !account.valid?
     assert !orig_accounts.empty?
-    assert_raise ActiveRecord::RecordNotSaved do
+    assert_raise ActiveRecord4116::RecordNotSaved do
       firm.accounts = [account]
     end
     assert_equal orig_accounts, firm.accounts
@@ -1410,7 +1410,7 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
       lambda { authors(:mary).comments = [comments(:greetings), comments(:more_greetings)] },
       lambda { authors(:mary).comments << Comment.create!(:body => "Yay", :post_id => 424242) },
       lambda { authors(:mary).comments.delete(authors(:mary).comments.first) },
-    ].each {|block| assert_raise(ActiveRecord::HasManyThroughCantAssociateThroughHasOneOrManyReflection, &block) }
+    ].each {|block| assert_raise(ActiveRecord4116::HasManyThroughCantAssociateThroughHasOneOrManyReflection, &block) }
   end
 
   def test_dynamic_find_should_respect_association_order_for_through
@@ -1600,8 +1600,8 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_joins_with_namespaced_model_should_use_correct_type
-    old = ActiveRecord::Base.store_full_sti_class
-    ActiveRecord::Base.store_full_sti_class = true
+    old = ActiveRecord4116::Base.store_full_sti_class
+    ActiveRecord4116::Base.store_full_sti_class = true
 
     firm = Namespaced::Firm.create({ :name => 'Some Company' })
     firm.clients.create({ :name => 'Some Client' })
@@ -1613,7 +1613,7 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
     ).find firm.id
     assert_equal 1, stats.num_clients.to_i
   ensure
-    ActiveRecord::Base.store_full_sti_class = old
+    ActiveRecord4116::Base.store_full_sti_class = old
   end
 
   def test_association_proxy_transaction_method_starts_transaction_in_association_class
@@ -1641,18 +1641,18 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_defining_has_many_association_with_delete_all_dependency_lazily_evaluates_target_class
-    ActiveRecord::Reflection::AssociationReflection.any_instance.expects(:class_name).never
+    ActiveRecord4116::Reflection::AssociationReflection.any_instance.expects(:class_name).never
     class_eval(<<-EOF, __FILE__, __LINE__ + 1)
-      class DeleteAllModel < ActiveRecord::Base
+      class DeleteAllModel < ActiveRecord4116::Base
         has_many :nonentities, :dependent => :delete_all
       end
     EOF
   end
 
   def test_defining_has_many_association_with_nullify_dependency_lazily_evaluates_target_class
-    ActiveRecord::Reflection::AssociationReflection.any_instance.expects(:class_name).never
+    ActiveRecord4116::Reflection::AssociationReflection.any_instance.expects(:class_name).never
     class_eval(<<-EOF, __FILE__, __LINE__ + 1)
-      class NullifyModel < ActiveRecord::Base
+      class NullifyModel < ActiveRecord4116::Base
         has_many :nonentities, :dependent => :nullify
       end
     EOF
@@ -1887,7 +1887,7 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
     car = Car.create!
     original_child = FailedBulb.create!(car: car)
 
-    assert_raise(ActiveRecord::RecordNotDestroyed) do
+    assert_raise(ActiveRecord4116::RecordNotDestroyed) do
       car.failed_bulbs = [FailedBulb.create!]
     end
 
@@ -1905,7 +1905,7 @@ class HasManyAssociationsTest < ActiveRecord::TestCase
   test 'dangerous association name raises ArgumentError' do
     [:errors, 'errors', :save, 'save'].each do |name|
       assert_raises(ArgumentError, "Association #{name} should not be allowed") do
-        Class.new(ActiveRecord::Base) do
+        Class.new(ActiveRecord4116::Base) do
           has_many name
         end
       end

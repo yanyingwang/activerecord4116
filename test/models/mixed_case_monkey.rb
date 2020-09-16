@@ -1,3 +1,3 @@
-class MixedCaseMonkey < ActiveRecord::Base
+class MixedCaseMonkey < ActiveRecord4116::Base
   belongs_to :man
 end

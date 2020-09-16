@@ -1,4 +1,4 @@
-class Man < ActiveRecord::Base
+class Man < ActiveRecord4116::Base
   has_one :face, :inverse_of => :man
   has_one :polymorphic_face, :class_name => 'Face', :as => :polymorphic_man, :inverse_of => :polymorphic_man
   has_one :polymorphic_face_without_inverse, :class_name => 'Face', :as => :poly_man_without_inverse

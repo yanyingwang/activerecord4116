@@ -1,4 +1,4 @@
-class Speedometer < ActiveRecord::Base
+class Speedometer < ActiveRecord4116::Base
   self.primary_key = :speedometer_id
   belongs_to :dashboard
 

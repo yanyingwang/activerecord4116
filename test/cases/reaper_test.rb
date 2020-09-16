@@ -1,13 +1,13 @@
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
-    class ReaperTest < ActiveRecord::TestCase
+    class ReaperTest < ActiveRecord4116::TestCase
       attr_reader :pool
 
       def setup
         super
-        @pool = ConnectionPool.new ActiveRecord::Base.connection_pool.spec
+        @pool = ConnectionPool.new ActiveRecord4116::Base.connection_pool.spec
       end
 
       def teardown
@@ -53,14 +53,14 @@ module ActiveRecord
       end
 
       def test_reaping_frequency_configuration
-        spec = ActiveRecord::Base.connection_pool.spec.dup
+        spec = ActiveRecord4116::Base.connection_pool.spec.dup
         spec.config[:reaping_frequency] = 100
         pool = ConnectionPool.new spec
         assert_equal 100, pool.reaper.frequency
       end
 
       def test_connection_pool_starts_reaper
-        spec = ActiveRecord::Base.connection_pool.spec.dup
+        spec = ActiveRecord4116::Base.connection_pool.spec.dup
         spec.config[:reaping_frequency] = '0.0001'
 
         pool = ConnectionPool.new spec

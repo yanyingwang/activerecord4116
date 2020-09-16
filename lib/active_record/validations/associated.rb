@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module Validations
     class AssociatedValidator < ActiveModel::EachValidator #:nodoc:
       def validate_each(record, attribute, value)
@@ -12,7 +12,7 @@ module ActiveRecord
       # Validates whether the associated object or objects are all valid.
       # Works with any kind of association.
       #
-      #   class Book < ActiveRecord::Base
+      #   class Book < ActiveRecord4116::Base
       #     has_many :pages
       #     belongs_to :library
       #

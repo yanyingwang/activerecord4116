@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   class AssociationRelation < Relation
     def initialize(klass, table, association)
       super(klass, table)

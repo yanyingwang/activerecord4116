@@ -1,6 +1,6 @@
 require 'ipaddr'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters # :nodoc:
     # The goal of this module is to move Adapter specific column
     # definitions to the Adapter instead of having it in the schema

@@ -5,7 +5,7 @@ require 'arel/visitors/bind_visitor'
 gem 'sqlite3', '~> 1.3.6'
 require 'sqlite3'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionHandling # :nodoc:
     # sqlite3 adapter reuses sqlite_connection.
     def sqlite3_connection(config)
@@ -33,7 +33,7 @@ module ActiveRecord
       ConnectionAdapters::SQLite3Adapter.new(db, logger, config)
     rescue Errno::ENOENT => error
       if error.message.include?("No such file or directory")
-        raise ActiveRecord::NoDatabaseError.new(error.message)
+        raise ActiveRecord4116::NoDatabaseError.new(error.message)
       else
         raise error
       end
@@ -316,7 +316,7 @@ module ActiveRecord
             stmt.bind_params type_casted_binds.map { |_, val| val }
           end
 
-          ActiveRecord::Result.new(cols, stmt.to_a)
+          ActiveRecord4116::Result.new(cols, stmt.to_a)
         end
       end
 
@@ -499,7 +499,7 @@ module ActiveRecord
 
       def rename_column(table_name, column_name, new_column_name) #:nodoc:
         unless columns(table_name).detect{|c| c.name == column_name.to_s }
-          raise ActiveRecord::ActiveRecordError, "Missing column #{table_name}.#{column_name}"
+          raise ActiveRecord4116::ActiveRecord4116Error, "Missing column #{table_name}.#{column_name}"
         end
         alter_table(table_name, :rename => {column_name.to_s => new_column_name.to_s})
         rename_column_indexes(table_name, column_name, new_column_name)
@@ -512,7 +512,7 @@ module ActiveRecord
 
         def table_structure(table_name)
           structure = exec_query("PRAGMA table_info(#{quote_table_name(table_name)})", 'SCHEMA').to_hash
-          raise(ActiveRecord::StatementInvalid, "Could not find table '#{table_name}'") if structure.empty?
+          raise(ActiveRecord4116::StatementInvalid, "Could not find table '#{table_name}'") if structure.empty?
           structure
         end
 

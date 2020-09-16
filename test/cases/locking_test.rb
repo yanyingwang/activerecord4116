@@ -13,9 +13,9 @@ require 'models/engine'
 require 'models/wheel'
 require 'models/treasure'
 
-class LockWithoutDefault < ActiveRecord::Base; end
+class LockWithoutDefault < ActiveRecord4116::Base; end
 
-class LockWithCustomColumnWithoutDefault < ActiveRecord::Base
+class LockWithCustomColumnWithoutDefault < ActiveRecord4116::Base
   self.table_name = :lock_without_defaults_cust
   self.column_defaults # to test @column_defaults caching.
   self.locking_column = :custom_lock_version
@@ -25,7 +25,7 @@ class ReadonlyNameShip < Ship
   attr_readonly :name
 end
 
-class OptimisticLockingTest < ActiveRecord::TestCase
+class OptimisticLockingTest < ActiveRecord4116::TestCase
   fixtures :people, :legacy_things, :references, :string_key_objects, :peoples_treasures
 
   def test_quote_value_passed_lock_col
@@ -52,7 +52,7 @@ class OptimisticLockingTest < ActiveRecord::TestCase
     assert_equal 0, s2.lock_version
 
     s2.name = 'doubly updated record'
-    assert_raise(ActiveRecord::StaleObjectError) { s2.save! }
+    assert_raise(ActiveRecord4116::StaleObjectError) { s2.save! }
   end
 
   def test_non_integer_lock_destroy
@@ -65,12 +65,12 @@ class OptimisticLockingTest < ActiveRecord::TestCase
     s1.save!
     assert_equal 1, s1.lock_version
     assert_equal 0, s2.lock_version
-    assert_raise(ActiveRecord::StaleObjectError) { s2.destroy }
+    assert_raise(ActiveRecord4116::StaleObjectError) { s2.destroy }
 
     assert s1.destroy
     assert s1.frozen?
     assert s1.destroyed?
-    assert_raises(ActiveRecord::RecordNotFound) { StringKeyObject.find("record1") }
+    assert_raises(ActiveRecord4116::RecordNotFound) { StringKeyObject.find("record1") }
   end
 
   def test_lock_existing
@@ -85,7 +85,7 @@ class OptimisticLockingTest < ActiveRecord::TestCase
     assert_equal 0, p2.lock_version
 
     p2.first_name = 'sue'
-    assert_raise(ActiveRecord::StaleObjectError) { p2.save! }
+    assert_raise(ActiveRecord4116::StaleObjectError) { p2.save! }
   end
 
   # See Lighthouse ticket #1966
@@ -100,12 +100,12 @@ class OptimisticLockingTest < ActiveRecord::TestCase
     assert_equal 1, p1.lock_version
     assert_equal 0, p2.lock_version
 
-    assert_raises(ActiveRecord::StaleObjectError) { p2.destroy }
+    assert_raises(ActiveRecord4116::StaleObjectError) { p2.destroy }
 
     assert p1.destroy
     assert p1.frozen?
     assert p1.destroyed?
-    assert_raises(ActiveRecord::RecordNotFound) { Person.find(1) }
+    assert_raises(ActiveRecord4116::RecordNotFound) { Person.find(1) }
   end
 
   def test_lock_repeating
@@ -120,9 +120,9 @@ class OptimisticLockingTest < ActiveRecord::TestCase
     assert_equal 0, p2.lock_version
 
     p2.first_name = 'sue'
-    assert_raise(ActiveRecord::StaleObjectError) { p2.save! }
+    assert_raise(ActiveRecord4116::StaleObjectError) { p2.save! }
     p2.first_name = 'sue2'
-    assert_raise(ActiveRecord::StaleObjectError) { p2.save! }
+    assert_raise(ActiveRecord4116::StaleObjectError) { p2.save! }
   end
 
   def test_lock_new
@@ -141,7 +141,7 @@ class OptimisticLockingTest < ActiveRecord::TestCase
     assert_equal 0, p2.lock_version
 
     p2.first_name = 'sue'
-    assert_raise(ActiveRecord::StaleObjectError) { p2.save! }
+    assert_raise(ActiveRecord4116::StaleObjectError) { p2.save! }
   end
 
   def test_lock_exception_record
@@ -158,7 +158,7 @@ class OptimisticLockingTest < ActiveRecord::TestCase
     p1.save!
 
     p2.first_name = 'sue'
-    error = assert_raise(ActiveRecord::StaleObjectError) { p2.save! }
+    error = assert_raise(ActiveRecord4116::StaleObjectError) { p2.save! }
     assert_equal(error.record.object_id, p2.object_id)
   end
 
@@ -190,7 +190,7 @@ class OptimisticLockingTest < ActiveRecord::TestCase
     assert_equal 0, t2.version
 
     t2.tps_report_number = 800
-    assert_raise(ActiveRecord::StaleObjectError) { t2.save! }
+    assert_raise(ActiveRecord4116::StaleObjectError) { t2.save! }
   end
 
   def test_lock_column_is_mass_assignable
@@ -274,11 +274,11 @@ class OptimisticLockingTest < ActiveRecord::TestCase
   end
 
   def test_quoted_locking_column_is_deprecated
-    assert_deprecated { ActiveRecord::Base.quoted_locking_column }
+    assert_deprecated { ActiveRecord4116::Base.quoted_locking_column }
   end
 end
 
-class OptimisticLockingWithSchemaChangeTest < ActiveRecord::TestCase
+class OptimisticLockingWithSchemaChangeTest < ActiveRecord4116::TestCase
   fixtures :people, :legacy_things, :references
 
   # need to disable transactional fixtures, because otherwise the sqlite3
@@ -328,8 +328,8 @@ class OptimisticLockingWithSchemaChangeTest < ActiveRecord::TestCase
     assert_equal 1, p1.legacy_things_count
     assert p1.destroy
     assert_equal true, p1.frozen?
-    assert_raises(ActiveRecord::RecordNotFound) { Person.find(p1.id) }
-    assert_raises(ActiveRecord::RecordNotFound) { LegacyThing.find(t.id) }
+    assert_raises(ActiveRecord4116::RecordNotFound) { Person.find(p1.id) }
+    assert_raises(ActiveRecord4116::RecordNotFound) { LegacyThing.find(t.id) }
   ensure
     remove_counter_column_from(Person, 'legacy_things_count')
   end
@@ -368,7 +368,7 @@ end
 # blocks, so separate script called by Kernel#system is needed.
 # (See exec vs. async_exec in the PostgreSQL adapter.)
 unless current_adapter?(:SybaseAdapter, :OpenBaseAdapter) || in_memory_db?
-  class PessimisticLockingTest < ActiveRecord::TestCase
+  class PessimisticLockingTest < ActiveRecord4116::TestCase
     self.use_transactional_fixtures = false
     fixtures :people, :readers
 

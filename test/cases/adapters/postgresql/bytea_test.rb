@@ -4,13 +4,13 @@ require "cases/helper"
 require 'active_record/base'
 require 'active_record/connection_adapters/postgresql_adapter'
 
-class PostgresqlByteaTest < ActiveRecord::TestCase
-  class ByteaDataType < ActiveRecord::Base
+class PostgresqlByteaTest < ActiveRecord4116::TestCase
+  class ByteaDataType < ActiveRecord4116::Base
     self.table_name = 'bytea_data_type'
   end
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     begin
       @connection.transaction do
         @connection.create_table('bytea_data_type') do |t|
@@ -20,7 +20,7 @@ class PostgresqlByteaTest < ActiveRecord::TestCase
       end
     end
     @column = ByteaDataType.columns.find { |c| c.name == 'payload' }
-    assert(@column.is_a?(ActiveRecord::ConnectionAdapters::PostgreSQLColumn))
+    assert(@column.is_a?(ActiveRecord4116::ConnectionAdapters::PostgreSQLColumn))
   end
 
   def teardown

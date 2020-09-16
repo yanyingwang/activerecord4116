@@ -1,5 +1,5 @@
 
-module ActiveRecord
+module ActiveRecord4116
   module Batches
     # Looping through a collection of records from the database
     # (using the +all+ method, for example) is very inefficient

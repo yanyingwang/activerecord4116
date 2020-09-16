@@ -3,7 +3,7 @@ require 'models/company_in_module'
 require 'models/shop'
 require 'models/developer'
 
-class ModulesTest < ActiveRecord::TestCase
+class ModulesTest < ActiveRecord4116::TestCase
   fixtures :accounts, :companies, :projects, :developers, :collections, :products, :variants
 
   def setup
@@ -15,7 +15,7 @@ class ModulesTest < ActiveRecord::TestCase
       @undefined_consts.merge! const => Object.send(:remove_const, const) if Object.const_defined?(const)
     end
 
-    ActiveRecord::Base.store_full_sti_class = false
+    ActiveRecord4116::Base.store_full_sti_class = false
   end
 
   def teardown
@@ -24,7 +24,7 @@ class ModulesTest < ActiveRecord::TestCase
       Object.send :const_set, constant, value unless value.nil?
     end
 
-    ActiveRecord::Base.store_full_sti_class = true
+    ActiveRecord4116::Base.store_full_sti_class = true
   end
 
   def test_module_spanning_associations
@@ -54,9 +54,9 @@ class ModulesTest < ActiveRecord::TestCase
   end
 
   def test_table_name
-    assert_equal 'accounts', MyApplication::Billing::Account.table_name, 'table_name for ActiveRecord model in module'
-    assert_equal 'companies', MyApplication::Business::Client.table_name, 'table_name for ActiveRecord model subclass'
-    assert_equal 'company_contacts', MyApplication::Business::Client::Contact.table_name, 'table_name for ActiveRecord model enclosed by another ActiveRecord model'
+    assert_equal 'accounts', MyApplication::Billing::Account.table_name, 'table_name for ActiveRecord4116 model in module'
+    assert_equal 'companies', MyApplication::Business::Client.table_name, 'table_name for ActiveRecord4116 model subclass'
+    assert_equal 'company_contacts', MyApplication::Business::Client::Contact.table_name, 'table_name for ActiveRecord4116 model enclosed by another ActiveRecord4116 model'
   end
 
   def test_assign_ids
@@ -85,9 +85,9 @@ class ModulesTest < ActiveRecord::TestCase
   end
 
   def test_module_table_name_prefix
-    assert_equal 'prefixed_companies', MyApplication::Business::Prefixed::Company.table_name, 'inferred table_name for ActiveRecord model in module with table_name_prefix'
-    assert_equal 'prefixed_companies', MyApplication::Business::Prefixed::Nested::Company.table_name, 'table_name for ActiveRecord model in nested module with a parent table_name_prefix'
-    assert_equal 'companies', MyApplication::Business::Prefixed::Firm.table_name, 'explicit table_name for ActiveRecord model in module with table_name_prefix should not be prefixed'
+    assert_equal 'prefixed_companies', MyApplication::Business::Prefixed::Company.table_name, 'inferred table_name for ActiveRecord4116 model in module with table_name_prefix'
+    assert_equal 'prefixed_companies', MyApplication::Business::Prefixed::Nested::Company.table_name, 'table_name for ActiveRecord4116 model in nested module with a parent table_name_prefix'
+    assert_equal 'companies', MyApplication::Business::Prefixed::Firm.table_name, 'explicit table_name for ActiveRecord4116 model in module with table_name_prefix should not be prefixed'
   end
 
   def test_module_table_name_prefix_with_global_prefix
@@ -101,44 +101,44 @@ class ModulesTest < ActiveRecord::TestCase
                 MyApplication::Business::Prefixed::Nested::Company,
                 MyApplication::Billing::Account ]
 
-    ActiveRecord::Base.table_name_prefix = 'global_'
+    ActiveRecord4116::Base.table_name_prefix = 'global_'
     classes.each(&:reset_table_name)
-    assert_equal 'global_companies', MyApplication::Business::Company.table_name, 'inferred table_name for ActiveRecord model in module without table_name_prefix'
-    assert_equal 'prefixed_companies', MyApplication::Business::Prefixed::Company.table_name, 'inferred table_name for ActiveRecord model in module with table_name_prefix'
-    assert_equal 'prefixed_companies', MyApplication::Business::Prefixed::Nested::Company.table_name, 'table_name for ActiveRecord model in nested module with a parent table_name_prefix'
-    assert_equal 'companies', MyApplication::Business::Prefixed::Firm.table_name, 'explicit table_name for ActiveRecord model in module with table_name_prefix should not be prefixed'
+    assert_equal 'global_companies', MyApplication::Business::Company.table_name, 'inferred table_name for ActiveRecord4116 model in module without table_name_prefix'
+    assert_equal 'prefixed_companies', MyApplication::Business::Prefixed::Company.table_name, 'inferred table_name for ActiveRecord4116 model in module with table_name_prefix'
+    assert_equal 'prefixed_companies', MyApplication::Business::Prefixed::Nested::Company.table_name, 'table_name for ActiveRecord4116 model in nested module with a parent table_name_prefix'
+    assert_equal 'companies', MyApplication::Business::Prefixed::Firm.table_name, 'explicit table_name for ActiveRecord4116 model in module with table_name_prefix should not be prefixed'
   ensure
-    ActiveRecord::Base.table_name_prefix = ''
+    ActiveRecord4116::Base.table_name_prefix = ''
     classes.each(&:reset_table_name)
   end
 
   def test_compute_type_can_infer_class_name_of_sibling_inside_module
-    old = ActiveRecord::Base.store_full_sti_class
-    ActiveRecord::Base.store_full_sti_class = true
+    old = ActiveRecord4116::Base.store_full_sti_class
+    ActiveRecord4116::Base.store_full_sti_class = true
     assert_equal MyApplication::Business::Firm, MyApplication::Business::Client.send(:compute_type, "Firm")
   ensure
-    ActiveRecord::Base.store_full_sti_class = old
+    ActiveRecord4116::Base.store_full_sti_class = old
   end
 
   def test_nested_models_should_not_raise_exception_when_using_delete_all_dependency_on_association
-    old = ActiveRecord::Base.store_full_sti_class
-    ActiveRecord::Base.store_full_sti_class = true
+    old = ActiveRecord4116::Base.store_full_sti_class
+    ActiveRecord4116::Base.store_full_sti_class = true
 
     collection = Shop::Collection.first
     assert !collection.products.empty?, "Collection should have products"
     assert_nothing_raised { collection.destroy }
   ensure
-    ActiveRecord::Base.store_full_sti_class = old
+    ActiveRecord4116::Base.store_full_sti_class = old
   end
 
   def test_nested_models_should_not_raise_exception_when_using_nullify_dependency_on_association
-    old = ActiveRecord::Base.store_full_sti_class
-    ActiveRecord::Base.store_full_sti_class = true
+    old = ActiveRecord4116::Base.store_full_sti_class
+    ActiveRecord4116::Base.store_full_sti_class = true
 
     product = Shop::Product.first
     assert !product.variants.empty?, "Product should have variants"
     assert_nothing_raised { product.destroy }
   ensure
-    ActiveRecord::Base.store_full_sti_class = old
+    ActiveRecord4116::Base.store_full_sti_class = old
   end
 end

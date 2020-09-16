@@ -1,7 +1,7 @@
 george_blackbeard:
-  parrot_id: <%= ActiveRecord::FixtureSet.identify(:george) %>
-  pirate_id: <%= ActiveRecord::FixtureSet.identify(:blackbeard) %>
+  parrot_id: <%= ActiveRecord4116::FixtureSet.identify(:george) %>
+  pirate_id: <%= ActiveRecord4116::FixtureSet.identify(:blackbeard) %>
 
 louis_blackbeard:
-  parrot_id: <%= ActiveRecord::FixtureSet.identify(:louis) %>
-  pirate_id: <%= ActiveRecord::FixtureSet.identify(:blackbeard) %>
+  parrot_id: <%= ActiveRecord4116::FixtureSet.identify(:louis) %>
+  pirate_id: <%= ActiveRecord4116::FixtureSet.identify(:blackbeard) %>

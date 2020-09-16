@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record No Touching
   module NoTouching
     extend ActiveSupport::Concern
@@ -8,7 +8,7 @@ module ActiveRecord
       # duration of a block.
       #
       # ==== Examples
-      #   ActiveRecord::Base.no_touching do
+      #   ActiveRecord4116::Base.no_touching do
       #     Project.first.touch  # does nothing
       #     Message.first.touch  # does nothing
       #   end

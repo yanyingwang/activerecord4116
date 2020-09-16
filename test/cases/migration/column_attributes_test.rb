@@ -1,9 +1,9 @@
 require "cases/migration/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   class Migration
-    class ColumnAttributesTest < ActiveRecord::TestCase
-      include ActiveRecord::Migration::TestHelper
+    class ColumnAttributesTest < ActiveRecord4116::TestCase
+      include ActiveRecord4116::Migration::TestHelper
 
       self.use_transactional_fixtures = false
 
@@ -165,10 +165,10 @@ module ActiveRecord
 
       if current_adapter?(:MysqlAdapter, :Mysql2Adapter, :PostgreSQLAdapter)
         def test_out_of_range_limit_should_raise
-          assert_raise(ActiveRecordError) { add_column :test_models, :integer_too_big, :integer, :limit => 10 }
+          assert_raise(ActiveRecord4116Error) { add_column :test_models, :integer_too_big, :integer, :limit => 10 }
 
           unless current_adapter?(:PostgreSQLAdapter)
-            assert_raise(ActiveRecordError) { add_column :test_models, :text_too_big, :integer, :limit => 0xfffffffff }
+            assert_raise(ActiveRecord4116Error) { add_column :test_models, :text_too_big, :integer, :limit => 0xfffffffff }
           end
         end
       end

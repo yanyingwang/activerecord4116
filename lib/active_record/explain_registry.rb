@@ -1,9 +1,9 @@
 require 'active_support/per_thread_registry'
 
-module ActiveRecord
+module ActiveRecord4116
   # This is a thread locals registry for EXPLAIN. For example
   #
-  #   ActiveRecord::ExplainRegistry.queries
+  #   ActiveRecord4116::ExplainRegistry.queries
   #
   # returns the collected queries local to the current thread.
   #

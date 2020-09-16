@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-ActiveRecord::Schema.define do
+ActiveRecord4116::Schema.define do
   def except(adapter_names_to_exclude)
     unless [adapter_names_to_exclude].flatten.include?(adapter_name)
       yield
@@ -14,8 +14,8 @@ ActiveRecord::Schema.define do
     # and fixture-based (YAML) records.
   when "Firebird"
     def create_table(*args, &block)
-      ActiveRecord::Base.connection.create_table(*args, &block)
-      ActiveRecord::Base.connection.execute "SET GENERATOR #{args.first}_seq TO 10000"
+      ActiveRecord4116::Base.connection.create_table(*args, &block)
+      ActiveRecord4116::Base.connection.execute "SET GENERATOR #{args.first}_seq TO 10000"
     end
   end
 

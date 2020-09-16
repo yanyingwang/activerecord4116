@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module ValidationsRepairHelper
     extend ActiveSupport::Concern
 

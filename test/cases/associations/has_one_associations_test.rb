@@ -9,7 +9,7 @@ require 'models/bulb'
 require 'models/author'
 require 'models/post'
 
-class HasOneAssociationsTest < ActiveRecord::TestCase
+class HasOneAssociationsTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false unless supports_savepoints?
   fixtures :accounts, :companies, :developers, :projects, :developers_projects, :ships, :pirates
 
@@ -23,10 +23,10 @@ class HasOneAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_has_one_does_not_use_order_by
-    ActiveRecord::SQLCounter.clear_log
+    ActiveRecord4116::SQLCounter.clear_log
     companies(:first_firm).account
   ensure
-    assert ActiveRecord::SQLCounter.log_all.all? { |sql| /order by/i !~ sql }, 'ORDER BY was used in the query'
+    assert ActiveRecord4116::SQLCounter.log_all.all? { |sql| /order by/i !~ sql }, 'ORDER BY was used in the query'
   end
 
   def test_has_one_cache_nils
@@ -77,8 +77,8 @@ class HasOneAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_type_mismatch
-    assert_raise(ActiveRecord::AssociationTypeMismatch) { companies(:first_firm).account = 1 }
-    assert_raise(ActiveRecord::AssociationTypeMismatch) { companies(:first_firm).account = Project.find(1) }
+    assert_raise(ActiveRecord4116::AssociationTypeMismatch) { companies(:first_firm).account = 1 }
+    assert_raise(ActiveRecord4116::AssociationTypeMismatch) { companies(:first_firm).account = Project.find(1) }
   end
 
   def test_natural_assignment
@@ -94,7 +94,7 @@ class HasOneAssociationsTest < ActiveRecord::TestCase
     companies(:first_firm).save
     assert_nil companies(:first_firm).account
     # account is dependent, therefore is destroyed when reference to owner is lost
-    assert_raise(ActiveRecord::RecordNotFound) { Account.find(old_account_id) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Account.find(old_account_id) }
   end
 
   def test_nullification_on_association_change
@@ -111,7 +111,7 @@ class HasOneAssociationsTest < ActiveRecord::TestCase
     firm.account.destroy
     firm.account = nil
     assert_nil companies(:rails_core).account
-    assert_raise(ActiveRecord::RecordNotFound) { Account.find(old_account_id) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Account.find(old_account_id) }
   end
 
   def test_association_change_calls_delete
@@ -171,7 +171,7 @@ class HasOneAssociationsTest < ActiveRecord::TestCase
 
     assert_not_nil firm.account
 
-    assert_raise(ActiveRecord::DeleteRestrictionError) { firm.destroy }
+    assert_raise(ActiveRecord4116::DeleteRestrictionError) { firm.destroy }
     assert RestrictedWithExceptionFirm.exists?(:name => 'restrict')
     assert firm.account.present?
   end
@@ -225,12 +225,12 @@ class HasOneAssociationsTest < ActiveRecord::TestCase
 
   def test_building_the_associated_object_with_an_invalid_type
     firm = DependentFirm.new
-    assert_raise(ActiveRecord::SubclassNotFound) { firm.build_company(:type => "Invalid") }
+    assert_raise(ActiveRecord4116::SubclassNotFound) { firm.build_company(:type => "Invalid") }
   end
 
   def test_building_the_associated_object_with_an_unrelated_type
     firm = DependentFirm.new
-    assert_raise(ActiveRecord::SubclassNotFound) { firm.build_company(:type => "Account") }
+    assert_raise(ActiveRecord4116::SubclassNotFound) { firm.build_company(:type => "Account") }
   end
 
   def test_build_and_create_should_not_happen_within_scope
@@ -261,7 +261,7 @@ class HasOneAssociationsTest < ActiveRecord::TestCase
 
   def test_create_association_with_bang_failing
     firm = Firm.create(:name => "GlobalMegaCorp")
-    assert_raise ActiveRecord::RecordInvalid do
+    assert_raise ActiveRecord4116::RecordInvalid do
       firm.create_account!
     end
     account = firm.account
@@ -335,7 +335,7 @@ class HasOneAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_cant_save_readonly_association
-    assert_raise(ActiveRecord::ReadOnlyRecord) { companies(:first_firm).readonly_account.save!  }
+    assert_raise(ActiveRecord4116::ReadOnlyRecord) { companies(:first_firm).readonly_account.save!  }
     assert companies(:first_firm).readonly_account.readonly?
   end
 
@@ -409,7 +409,7 @@ class HasOneAssociationsTest < ActiveRecord::TestCase
     pirate = pirates(:redbeard)
     new_ship = Ship.new
 
-    assert_raise(ActiveRecord::RecordNotSaved) do
+    assert_raise(ActiveRecord4116::RecordNotSaved) do
       pirate.ship = new_ship
     end
     assert_nil pirate.ship
@@ -421,7 +421,7 @@ class HasOneAssociationsTest < ActiveRecord::TestCase
     pirate.ship.name = nil
 
     assert !pirate.ship.valid?
-    assert_raise(ActiveRecord::RecordNotSaved) do
+    assert_raise(ActiveRecord4116::RecordNotSaved) do
       pirate.ship = ships(:interceptor)
     end
     assert_equal ships(:black_pearl), pirate.ship
@@ -432,7 +432,7 @@ class HasOneAssociationsTest < ActiveRecord::TestCase
     pirate = pirates(:blackbeard)
     new_ship = Ship.new
 
-    assert_raise(ActiveRecord::RecordNotSaved) do
+    assert_raise(ActiveRecord4116::RecordNotSaved) do
       pirate.ship = new_ship
     end
     assert_equal ships(:black_pearl), pirate.ship
@@ -559,7 +559,7 @@ class HasOneAssociationsTest < ActiveRecord::TestCase
 
   def test_has_one_relationship_cannot_have_a_counter_cache
     assert_raise(ArgumentError) do
-      Class.new(ActiveRecord::Base) do
+      Class.new(ActiveRecord4116::Base) do
         has_one :thing, counter_cache: true
       end
     end
@@ -568,7 +568,7 @@ class HasOneAssociationsTest < ActiveRecord::TestCase
   test 'dangerous association name raises ArgumentError' do
     [:errors, 'errors', :save, 'save'].each do |name|
       assert_raises(ArgumentError, "Association #{name} should not be allowed") do
-        Class.new(ActiveRecord::Base) do
+        Class.new(ActiveRecord4116::Base) do
           has_one name
         end
       end

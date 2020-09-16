@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   class Migration
     module JoinTable #:nodoc:
       private

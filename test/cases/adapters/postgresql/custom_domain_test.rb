@@ -1,11 +1,11 @@
 require 'cases/helper'
 
-class PostgreSQLCustomDomainTest < ActiveRecord::TestCase
-  class CustomDomain < ActiveRecord::Base
+class PostgreSQLCustomDomainTest < ActiveRecord4116::TestCase
+  class CustomDomain < ActiveRecord4116::Base
   end
 
   setup do
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     @connection.execute "CREATE DOMAIN password AS TEXT"
     @connection.create_table :custom_domains do |t|
       t.column :passwd, 'password'

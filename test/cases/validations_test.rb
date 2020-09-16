@@ -7,7 +7,7 @@ require 'models/developer'
 require 'models/parrot'
 require 'models/company'
 
-class ValidationsTest < ActiveRecord::TestCase
+class ValidationsTest < ActiveRecord4116::TestCase
   fixtures :topics, :developers
 
   # Most of the tests mess with the validations of Topic, so lets repair it all the time.
@@ -53,24 +53,24 @@ class ValidationsTest < ActiveRecord::TestCase
   end
 
   def test_invalid_record_exception
-    assert_raise(ActiveRecord::RecordInvalid) { WrongReply.create! }
-    assert_raise(ActiveRecord::RecordInvalid) { WrongReply.new.save! }
+    assert_raise(ActiveRecord4116::RecordInvalid) { WrongReply.create! }
+    assert_raise(ActiveRecord4116::RecordInvalid) { WrongReply.new.save! }
 
     r = WrongReply.new
-    invalid = assert_raise ActiveRecord::RecordInvalid do
+    invalid = assert_raise ActiveRecord4116::RecordInvalid do
       r.save!
     end
     assert_equal r, invalid.record
   end
 
   def test_exception_on_create_bang_many
-    assert_raise(ActiveRecord::RecordInvalid) do
+    assert_raise(ActiveRecord4116::RecordInvalid) do
       WrongReply.create!([ { "title" => "OK" }, { "title" => "Wrong Create" }])
     end
   end
 
   def test_exception_on_create_bang_with_block
-    assert_raise(ActiveRecord::RecordInvalid) do
+    assert_raise(ActiveRecord4116::RecordInvalid) do
       WrongReply.create!({ "title" => "OK" }) do |r|
         r.content = nil
       end
@@ -78,7 +78,7 @@ class ValidationsTest < ActiveRecord::TestCase
   end
 
   def test_exception_on_create_bang_many_with_block
-    assert_raise(ActiveRecord::RecordInvalid) do
+    assert_raise(ActiveRecord4116::RecordInvalid) do
       WrongReply.create!([{ "title" => "OK" }, { "title" => "Wrong Create" }]) do |r|
         r.content = nil
       end
@@ -92,9 +92,9 @@ class ValidationsTest < ActiveRecord::TestCase
   end
 
   def test_validates_acceptance_of_with_non_existent_table
-    Object.const_set :IncorporealModel, Class.new(ActiveRecord::Base)
+    Object.const_set :IncorporealModel, Class.new(ActiveRecord4116::Base)
 
-    assert_nothing_raised ActiveRecord::StatementInvalid do
+    assert_nothing_raised ActiveRecord4116::StatementInvalid do
       IncorporealModel.validates_acceptance_of(:incorporeal_column)
     end
   end

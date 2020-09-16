@@ -1,9 +1,9 @@
 require "cases/helper"
 
-class SchemaThing < ActiveRecord::Base
+class SchemaThing < ActiveRecord4116::Base
 end
 
-class SchemaAuthorizationTest < ActiveRecord::TestCase
+class SchemaAuthorizationTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
 
   TABLE_NAME = 'schema_things'
@@ -14,7 +14,7 @@ class SchemaAuthorizationTest < ActiveRecord::TestCase
   USERS = ['rails_pg_schema_user1', 'rails_pg_schema_user2']
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     @connection.execute "SET search_path TO '$user',public"
     set_session_auth
     USERS.each do |u|
@@ -37,14 +37,14 @@ class SchemaAuthorizationTest < ActiveRecord::TestCase
   end
 
   def test_schema_invisible
-    assert_raise(ActiveRecord::StatementInvalid) do
+    assert_raise(ActiveRecord4116::StatementInvalid) do
       set_session_auth
       @connection.execute "SELECT * FROM #{TABLE_NAME}"
     end
   end
 
   def test_session_auth=
-    assert_raise(ActiveRecord::StatementInvalid) do
+    assert_raise(ActiveRecord4116::StatementInvalid) do
       @connection.session_auth = 'DEFAULT'
       @connection.execute "SELECT * FROM #{TABLE_NAME}"
     end

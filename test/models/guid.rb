@@ -1,2 +1,2 @@
-class Guid < ActiveRecord::Base
+class Guid < ActiveRecord4116::Base
 end

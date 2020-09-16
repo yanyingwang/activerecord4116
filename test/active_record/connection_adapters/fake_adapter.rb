@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionHandling
     def fake_connection(config)
       ConnectionAdapters::FakeAdapter.new nil, logger
@@ -26,7 +26,7 @@ module ActiveRecord
       end
 
       def merge_column(table_name, name, sql_type = nil, options = {})
-        @columns[table_name] << ActiveRecord::ConnectionAdapters::Column.new(
+        @columns[table_name] << ActiveRecord4116::ConnectionAdapters::Column.new(
           name.to_s,
           options[:default],
           sql_type.to_s,

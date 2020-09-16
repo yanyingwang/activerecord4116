@@ -1,7 +1,7 @@
 require 'thread'
 
-module ActiveRecord
-  # See ActiveRecord::Transactions::ClassMethods for documentation.
+module ActiveRecord4116
+  # See ActiveRecord4116::Transactions::ClassMethods for documentation.
   module Transactions
     extend ActiveSupport::Concern
     ACTIONS = [:create, :destroy, :update]
@@ -24,7 +24,7 @@ module ActiveRecord
     #
     # For example:
     #
-    #   ActiveRecord::Base.transaction do
+    #   ActiveRecord4116::Base.transaction do
     #     david.withdrawal(100)
     #     mary.deposit(100)
     #   end
@@ -95,11 +95,11 @@ module ActiveRecord
     # be propagated (after triggering the ROLLBACK), so you should be ready to
     # catch those in your application code.
     #
-    # One exception is the <tt>ActiveRecord::Rollback</tt> exception, which will trigger
+    # One exception is the <tt>ActiveRecord4116::Rollback</tt> exception, which will trigger
     # a ROLLBACK when raised, but not be re-raised by the transaction block.
     #
-    # *Warning*: one should not catch <tt>ActiveRecord::StatementInvalid</tt> exceptions
-    # inside a transaction block. <tt>ActiveRecord::StatementInvalid</tt> exceptions indicate that an
+    # *Warning*: one should not catch <tt>ActiveRecord4116::StatementInvalid</tt> exceptions
+    # inside a transaction block. <tt>ActiveRecord4116::StatementInvalid</tt> exceptions indicate that an
     # error occurred at the database level, for example when a unique constraint
     # is violated. On some database systems, such as PostgreSQL, database errors
     # inside a transaction cause the entire transaction to become unusable
@@ -112,7 +112,7 @@ module ActiveRecord
     #     begin
     #       # This will raise a unique constraint error...
     #       Number.create(i: 0)
-    #     rescue ActiveRecord::StatementInvalid
+    #     rescue ActiveRecord4116::StatementInvalid
     #       # ...which we ignore.
     #     end
     #
@@ -125,7 +125,7 @@ module ActiveRecord
     #   end
     #
     # One should restart the entire transaction if an
-    # <tt>ActiveRecord::StatementInvalid</tt> occurred.
+    # <tt>ActiveRecord4116::StatementInvalid</tt> occurred.
     #
     # == Nested transactions
     #
@@ -137,11 +137,11 @@ module ActiveRecord
     #     User.create(username: 'Kotori')
     #     User.transaction do
     #       User.create(username: 'Nemu')
-    #       raise ActiveRecord::Rollback
+    #       raise ActiveRecord4116::Rollback
     #     end
     #   end
     #
-    # creates both "Kotori" and "Nemu". Reason is the <tt>ActiveRecord::Rollback</tt>
+    # creates both "Kotori" and "Nemu". Reason is the <tt>ActiveRecord4116::Rollback</tt>
     # exception in the nested block does not issue a ROLLBACK. Since these exceptions
     # are captured in transaction blocks, the parent block does not see it and the
     # real transaction is committed.
@@ -155,7 +155,7 @@ module ActiveRecord
     #     User.create(username: 'Kotori')
     #     User.transaction(requires_new: true) do
     #       User.create(username: 'Nemu')
-    #       raise ActiveRecord::Rollback
+    #       raise ActiveRecord4116::Rollback
     #     end
     #   end
     #
@@ -202,7 +202,7 @@ module ActiveRecord
     #
     # Note that "TRUNCATE" is also a MySQL DDL statement!
     module ClassMethods
-      # See ActiveRecord::Transactions::ClassMethods for detailed documentation.
+      # See ActiveRecord4116::Transactions::ClassMethods for detailed documentation.
       def transaction(options = {}, &block)
         # See the ConnectionAdapters::DatabaseStatements#transaction API docs.
         connection.transaction(options, &block)
@@ -254,7 +254,7 @@ module ActiveRecord
       end
     end
 
-    # See ActiveRecord::Transactions::ClassMethods for detailed documentation.
+    # See ActiveRecord4116::Transactions::ClassMethods for detailed documentation.
     def transaction(options = {}, &block)
       self.class.transaction(options, &block)
     end
@@ -319,7 +319,7 @@ module ActiveRecord
     # status flag. If the status is true the transaction is committed, otherwise
     # a ROLLBACK is issued. In any case the status flag is returned.
     #
-    # This method is available within the context of an ActiveRecord::Base
+    # This method is available within the context of an ActiveRecord4116::Base
     # instance.
     def with_transaction_returning_status
       status = nil
@@ -327,12 +327,12 @@ module ActiveRecord
         add_to_transaction
         begin
           status = yield
-        rescue ActiveRecord::Rollback
+        rescue ActiveRecord4116::Rollback
           @_start_transaction_state[:level] = (@_start_transaction_state[:level] || 0) - 1
           status = nil
         end
 
-        raise ActiveRecord::Rollback unless status
+        raise ActiveRecord4116::Rollback unless status
       end
       status
     end

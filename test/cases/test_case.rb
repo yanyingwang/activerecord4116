@@ -1,6 +1,6 @@
 require 'active_support/test_case'
 
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Test Case
   #
   # Defines some test assertions to test against SQL queries.

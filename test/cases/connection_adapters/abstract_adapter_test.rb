@@ -1,6 +1,6 @@
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     class ConnectionPool
       def insert_connection_for_test!(c)
@@ -11,7 +11,7 @@ module ActiveRecord
       end
     end
 
-    class AbstractAdapterTest < ActiveRecord::TestCase
+    class AbstractAdapterTest < ActiveRecord4116::TestCase
       attr_reader :adapter
 
       def setup

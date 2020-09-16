@@ -23,11 +23,11 @@ private
   end
 end
 
-class NumericData < ActiveRecord::Base
+class NumericData < ActiveRecord4116::Base
   self.table_name = 'numeric_data'
 end
 
-class DirtyTest < ActiveRecord::TestCase
+class DirtyTest < ActiveRecord4116::TestCase
   include InTimeZone
 
   # Dummy to force column loads so query counts are clean.
@@ -60,7 +60,7 @@ class DirtyTest < ActiveRecord::TestCase
 
   def test_time_attributes_changes_with_time_zone
     in_time_zone 'Paris' do
-      target = Class.new(ActiveRecord::Base)
+      target = Class.new(ActiveRecord4116::Base)
       target.table_name = 'pirates'
 
       # New record - no changes.
@@ -87,7 +87,7 @@ class DirtyTest < ActiveRecord::TestCase
 
   def test_setting_time_attributes_with_time_zone_field_to_itself_should_not_be_marked_as_a_change
     in_time_zone 'Paris' do
-      target = Class.new(ActiveRecord::Base)
+      target = Class.new(ActiveRecord4116::Base)
       target.table_name = 'pirates'
 
       pirate = target.create
@@ -98,7 +98,7 @@ class DirtyTest < ActiveRecord::TestCase
 
   def test_time_attributes_changes_without_time_zone_by_skip
     in_time_zone 'Paris' do
-      target = Class.new(ActiveRecord::Base)
+      target = Class.new(ActiveRecord4116::Base)
       target.table_name = 'pirates'
 
       target.skip_time_zone_conversion_for_attributes = [:created_on]
@@ -127,7 +127,7 @@ class DirtyTest < ActiveRecord::TestCase
 
   def test_time_attributes_changes_without_time_zone
     with_timezone_config aware_attributes: false do
-      target = Class.new(ActiveRecord::Base)
+      target = Class.new(ActiveRecord4116::Base)
       target.table_name = 'pirates'
 
       # New record - no changes.
@@ -208,7 +208,7 @@ class DirtyTest < ActiveRecord::TestCase
 
   def test_nullable_datetime_not_marked_as_changed_if_new_value_is_blank
     in_time_zone 'Edinburgh' do
-      target = Class.new(ActiveRecord::Base)
+      target = Class.new(ActiveRecord4116::Base)
       target.table_name = 'topics'
 
       topic = target.create
@@ -394,7 +394,7 @@ class DirtyTest < ActiveRecord::TestCase
 
     pirate = Pirate.new
     pirate.parrot_id = 1
-    assert_raise(ActiveRecord::RecordInvalid) { pirate.save! }
+    assert_raise(ActiveRecord4116::RecordInvalid) { pirate.save! }
     check_pirate_after_save_failure(pirate)
   end
 
@@ -565,23 +565,23 @@ class DirtyTest < ActiveRecord::TestCase
     assert !pirate.previous_changes.key?('created_on')
   end
 
-  if ActiveRecord::Base.connection.supports_migrations?
-    class Testings < ActiveRecord::Base; end
+  if ActiveRecord4116::Base.connection.supports_migrations?
+    class Testings < ActiveRecord4116::Base; end
     def test_field_named_field
-      ActiveRecord::Base.connection.create_table :testings do |t|
+      ActiveRecord4116::Base.connection.create_table :testings do |t|
         t.string :field
       end
       assert_nothing_raised do
         Testings.new.attributes
       end
     ensure
-      ActiveRecord::Base.connection.drop_table :testings rescue nil
+      ActiveRecord4116::Base.connection.drop_table :testings rescue nil
     end
   end
 
   def test_datetime_attribute_can_be_updated_with_fractional_seconds
     in_time_zone 'Paris' do
-      target = Class.new(ActiveRecord::Base)
+      target = Class.new(ActiveRecord4116::Base)
       target.table_name = 'topics'
 
       written_on = Time.utc(2012, 12, 1, 12, 0, 0).in_time_zone('Paris')
@@ -608,7 +608,7 @@ class DirtyTest < ActiveRecord::TestCase
         jon = Person.create! first_name: 'Jon'
       end
 
-      assert ActiveRecord::SQLCounter.log_all.none? { |sql| sql =~ /followers_count/ }
+      assert ActiveRecord4116::SQLCounter.log_all.none? { |sql| sql =~ /followers_count/ }
 
       jon.reload
       assert_equal 'Jon', jon.first_name

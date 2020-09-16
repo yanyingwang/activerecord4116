@@ -16,7 +16,7 @@ require 'models/aircraft'
 require 'models/engine'
 require 'models/car'
 
-class AssociationsJoinModelTest < ActiveRecord::TestCase
+class AssociationsJoinModelTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false unless supports_savepoints?
 
   fixtures :posts, :authors, :categories, :categorizations, :comments, :tags, :taggings, :author_favorites, :vertices, :items, :books,
@@ -334,7 +334,7 @@ class AssociationsJoinModelTest < ActiveRecord::TestCase
   end
 
   def test_unavailable_through_reflection
-    assert_raise(ActiveRecord::HasManyThroughAssociationNotFoundError) { authors(:david).nothings }
+    assert_raise(ActiveRecord4116::HasManyThroughAssociationNotFoundError) { authors(:david).nothings }
   end
 
   def test_has_many_through_join_model_with_conditions
@@ -343,15 +343,15 @@ class AssociationsJoinModelTest < ActiveRecord::TestCase
   end
 
   def test_has_many_polymorphic
-    assert_raise ActiveRecord::HasManyThroughAssociationPolymorphicSourceError do
+    assert_raise ActiveRecord4116::HasManyThroughAssociationPolymorphicSourceError do
       tags(:general).taggables
     end
 
-    assert_raise ActiveRecord::HasManyThroughAssociationPolymorphicThroughError do
+    assert_raise ActiveRecord4116::HasManyThroughAssociationPolymorphicThroughError do
       taggings(:welcome_general).things
     end
 
-    assert_raise ActiveRecord::EagerLoadPolymorphicError do
+    assert_raise ActiveRecord4116::EagerLoadPolymorphicError do
       tags(:general).taggings.includes(:taggable).where('bogus_table.column = 1').references(:bogus_table).to_a
     end
   end
@@ -530,7 +530,7 @@ class AssociationsJoinModelTest < ActiveRecord::TestCase
   end
 
   def test_adding_junk_to_has_many_through_should_raise_type_mismatch
-    assert_raise(ActiveRecord::AssociationTypeMismatch) { posts(:thinking).tags << "Uhh what now?" }
+    assert_raise(ActiveRecord4116::AssociationTypeMismatch) { posts(:thinking).tags << "Uhh what now?" }
   end
 
   def test_adding_to_has_many_through_should_return_self
@@ -585,7 +585,7 @@ class AssociationsJoinModelTest < ActiveRecord::TestCase
   end
 
   def test_deleting_junk_from_has_many_through_should_raise_type_mismatch
-    assert_raise(ActiveRecord::AssociationTypeMismatch) { posts(:thinking).tags.delete(Object.new) }
+    assert_raise(ActiveRecord4116::AssociationTypeMismatch) { posts(:thinking).tags.delete(Object.new) }
   end
 
   def test_deleting_by_fixnum_id_from_has_many_through
@@ -742,7 +742,7 @@ class AssociationsJoinModelTest < ActiveRecord::TestCase
     def find_post_with_dependency(post_id, association, association_name, dependency)
       class_name = "PostWith#{association.to_s.classify}#{dependency.to_s.classify}"
       Post.find(post_id).update_columns type: class_name
-      klass = Object.const_set(class_name, Class.new(ActiveRecord::Base))
+      klass = Object.const_set(class_name, Class.new(ActiveRecord4116::Base))
       klass.table_name = 'posts'
       klass.send(association, association_name, :as => :taggable, :dependent => dependency)
       klass.find(post_id)

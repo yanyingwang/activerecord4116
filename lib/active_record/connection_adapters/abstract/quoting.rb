@@ -1,6 +1,6 @@
 require 'active_support/core_ext/big_decimal/conversions'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters # :nodoc:
     module Quoting
       # Quotes the column value to help prevent
@@ -120,7 +120,7 @@ module ActiveRecord
 
       def quoted_date(value)
         if value.acts_like?(:time)
-          zone_conversion_method = ActiveRecord::Base.default_timezone == :utc ? :getutc : :getlocal
+          zone_conversion_method = ActiveRecord4116::Base.default_timezone == :utc ? :getutc : :getlocal
 
           if value.respond_to?(zone_conversion_method)
             value = value.send(zone_conversion_method)

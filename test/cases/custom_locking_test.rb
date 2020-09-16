@@ -1,8 +1,8 @@
 require "cases/helper"
 require 'models/person'
 
-module ActiveRecord
-  class CustomLockingTest < ActiveRecord::TestCase
+module ActiveRecord4116
+  class CustomLockingTest < ActiveRecord4116::TestCase
     fixtures :people
 
     def test_custom_lock

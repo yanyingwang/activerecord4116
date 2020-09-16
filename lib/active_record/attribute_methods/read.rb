@@ -1,6 +1,6 @@
 require 'active_support/core_ext/module/method_transplanting'
 
-module ActiveRecord
+module ActiveRecord4116
   module AttributeMethods
     module Read
       ReaderMethodCache = Class.new(AttributeMethodCache) {
@@ -26,7 +26,7 @@ module ActiveRecord
         def method_body(method_name, const_name)
           <<-EOMETHOD
           def #{method_name}
-            name = ::ActiveRecord::AttributeMethods::AttrNames::ATTR_#{const_name}
+            name = ::ActiveRecord4116::AttributeMethods::AttrNames::ATTR_#{const_name}
             read_attribute(name) { |n| missing_attribute(n, caller) }
           end
           EOMETHOD
@@ -74,11 +74,11 @@ module ActiveRecord
             safe_name = name.unpack('h*').first
             temp_method = "__temp__#{safe_name}"
 
-            ActiveRecord::AttributeMethods::AttrNames.set_name_cache safe_name, name
+            ActiveRecord4116::AttributeMethods::AttrNames.set_name_cache safe_name, name
 
             generated_attribute_methods.module_eval <<-STR, __FILE__, __LINE__ + 1
               def #{temp_method}
-                name = ::ActiveRecord::AttributeMethods::AttrNames::ATTR_#{safe_name}
+                name = ::ActiveRecord4116::AttributeMethods::AttrNames::ATTR_#{safe_name}
                 read_attribute(name) { |n| missing_attribute(n, caller) }
               end
             STR

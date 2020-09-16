@@ -1,6 +1,6 @@
 require 'active_support/core_ext/string/filters'
 
-module ActiveRecord
+module ActiveRecord4116
   module Integration
     extend ActiveSupport::Concern
 
@@ -29,7 +29,7 @@ module ActiveRecord
     # You can override +to_param+ in your model to make +user_path+ construct
     # a path using the user's name instead of the user's id:
     #
-    #   class User < ActiveRecord::Base
+    #   class User < ActiveRecord4116::Base
     #     def to_param  # overridden
     #       name
     #     end
@@ -73,7 +73,7 @@ module ActiveRecord
       # using +method_name+, which can be any attribute or method that
       # responds to +to_s+.
       #
-      #   class User < ActiveRecord::Base
+      #   class User < ActiveRecord4116::Base
       #     to_param :name
       #   end
       #

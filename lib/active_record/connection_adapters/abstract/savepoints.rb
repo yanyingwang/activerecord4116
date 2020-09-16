@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     module Savepoints #:nodoc:
       def supports_savepoints?

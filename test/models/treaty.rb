@@ -1,4 +1,4 @@
-class Treaty < ActiveRecord::Base
+class Treaty < ActiveRecord4116::Base
 
   self.primary_key = :treaty_id
 

@@ -3,15 +3,15 @@ require "cases/helper"
 require 'active_record/base'
 require 'active_record/connection_adapters/postgresql_adapter'
 
-class PostgresqlArrayTest < ActiveRecord::TestCase
+class PostgresqlArrayTest < ActiveRecord4116::TestCase
   include InTimeZone
 
-  class PgArray < ActiveRecord::Base
+  class PgArray < ActiveRecord4116::Base
     self.table_name = 'pg_arrays'
   end
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     @connection.transaction do
       @connection.create_table('pg_arrays') do |t|
         t.string 'tags', array: true
@@ -73,7 +73,7 @@ class PostgresqlArrayTest < ActiveRecord::TestCase
 
   def test_change_column_cant_make_non_array_column_to_array
     @connection.add_column :pg_arrays, :a_string, :string
-    assert_raises ActiveRecord::StatementInvalid do
+    assert_raises ActiveRecord4116::StatementInvalid do
       @connection.transaction do
         @connection.change_column :pg_arrays, :a_string, :string, array: true
       end

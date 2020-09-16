@@ -1,12 +1,12 @@
 require 'active_support/core_ext/hash/conversions'
 
-module ActiveRecord #:nodoc:
+module ActiveRecord4116 #:nodoc:
   module Serialization
     include ActiveModel::Serializers::Xml
 
     # Builds an XML document to represent the model. Some configuration is
     # available through +options+. However more complicated cases should
-    # override ActiveRecord::Base#to_xml.
+    # override ActiveRecord4116::Base#to_xml.
     #
     # By default the generated XML document will include the processing
     # instruction and all the object's attributes. For example:
@@ -156,11 +156,11 @@ module ActiveRecord #:nodoc:
     #     </creator>
     #   </firm>
     #
-    # As noted above, you may override +to_xml+ in your ActiveRecord::Base
+    # As noted above, you may override +to_xml+ in your ActiveRecord4116::Base
     # subclasses to have complete control about what's generated. The general
     # form of doing this is:
     #
-    #   class IHaveMyOwnXML < ActiveRecord::Base
+    #   class IHaveMyOwnXML < ActiveRecord4116::Base
     #     def to_xml(options = {})
     #       require 'builder'
     #       options[:indent] ||= 2

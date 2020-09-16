@@ -11,7 +11,7 @@ require 'models/person'
 require 'models/vertex'
 require 'models/edge'
 
-class CascadedEagerLoadingTest < ActiveRecord::TestCase
+class CascadedEagerLoadingTest < ActiveRecord4116::TestCase
   fixtures :authors, :mixins, :companies, :posts, :topics, :accounts, :comments,
            :categorizations, :people, :categories, :edges, :vertices
 

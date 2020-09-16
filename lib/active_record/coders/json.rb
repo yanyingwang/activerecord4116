@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module Coders # :nodoc:
     class JSON # :nodoc:
       def self.dump(obj)

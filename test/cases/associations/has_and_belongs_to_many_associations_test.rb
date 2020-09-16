@@ -27,7 +27,7 @@ require 'models/publisher/article'
 require 'models/publisher/magazine'
 require 'active_support/core_ext/string/conversions'
 
-class ProjectWithAfterCreateHook < ActiveRecord::Base
+class ProjectWithAfterCreateHook < ActiveRecord4116::Base
   self.table_name = 'projects'
   has_and_belongs_to_many :developers,
     :class_name => "DeveloperForProjectWithAfterCreateHook",
@@ -43,7 +43,7 @@ class ProjectWithAfterCreateHook < ActiveRecord::Base
   end
 end
 
-class DeveloperForProjectWithAfterCreateHook < ActiveRecord::Base
+class DeveloperForProjectWithAfterCreateHook < ActiveRecord4116::Base
   self.table_name = 'developers'
   has_and_belongs_to_many :projects,
     :class_name => "ProjectWithAfterCreateHook",
@@ -52,7 +52,7 @@ class DeveloperForProjectWithAfterCreateHook < ActiveRecord::Base
     :foreign_key => "developer_id"
 end
 
-class ProjectWithSymbolsForKeys < ActiveRecord::Base
+class ProjectWithSymbolsForKeys < ActiveRecord4116::Base
   self.table_name = 'projects'
   has_and_belongs_to_many :developers,
     :class_name => "DeveloperWithSymbolsForKeys",
@@ -61,7 +61,7 @@ class ProjectWithSymbolsForKeys < ActiveRecord::Base
     :association_foreign_key => "developer_id"
 end
 
-class DeveloperWithSymbolsForKeys < ActiveRecord::Base
+class DeveloperWithSymbolsForKeys < ActiveRecord4116::Base
   self.table_name = 'developers'
   has_and_belongs_to_many :projects,
     :class_name => "ProjectWithSymbolsForKeys",
@@ -78,12 +78,12 @@ class SubDeveloper < Developer
     :association_foreign_key => "developer_id"
 end
 
-class HasAndBelongsToManyAssociationsTest < ActiveRecord::TestCase
+class HasAndBelongsToManyAssociationsTest < ActiveRecord4116::TestCase
   fixtures :accounts, :companies, :categories, :posts, :categories_posts, :developers, :projects, :developers_projects,
            :parrots, :pirates, :parrots_pirates, :treasures, :price_estimates, :tags, :taggings
 
   def setup_data_for_habtm_case
-    ActiveRecord::Base.connection.execute('delete from countries_treaties')
+    ActiveRecord4116::Base.connection.execute('delete from countries_treaties')
 
     country = Country.new(:name => 'India')
     country.country_id = 'c1'
@@ -103,7 +103,7 @@ class HasAndBelongsToManyAssociationsTest < ActiveRecord::TestCase
   def test_should_property_quote_string_primary_keys
     setup_data_for_habtm_case
 
-    con = ActiveRecord::Base.connection
+    con = ActiveRecord4116::Base.connection
     sql = 'select * from countries_treaties'
     record = con.select_rows(sql).last
     assert_equal 'c1', record[0]
@@ -148,8 +148,8 @@ class HasAndBelongsToManyAssociationsTest < ActiveRecord::TestCase
 
   def test_adding_type_mismatch
     jamis = Developer.find(2)
-    assert_raise(ActiveRecord::AssociationTypeMismatch) { jamis.projects << nil }
-    assert_raise(ActiveRecord::AssociationTypeMismatch) { jamis.projects << 1 }
+    assert_raise(ActiveRecord4116::AssociationTypeMismatch) { jamis.projects << nil }
+    assert_raise(ActiveRecord4116::AssociationTypeMismatch) { jamis.projects << 1 }
   end
 
   def test_adding_from_the_project
@@ -549,7 +549,7 @@ class HasAndBelongsToManyAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_dynamic_find_all_should_respect_readonly_access
-    projects(:active_record).readonly_developers.each { |d| assert_raise(ActiveRecord::ReadOnlyRecord) { d.save!  } if d.valid?}
+    projects(:active_record).readonly_developers.each { |d| assert_raise(ActiveRecord4116::ReadOnlyRecord) { d.save!  } if d.valid?}
     projects(:active_record).readonly_developers.each { |d| d.readonly? }
   end
 

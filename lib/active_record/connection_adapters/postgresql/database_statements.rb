@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     class PostgreSQLAdapter < AbstractAdapter
       module DatabaseStatements
@@ -145,7 +145,7 @@ module ActiveRecord
             types[fname] = get_oid_type(ftype, fmod, fname)
           end
 
-          ret = ActiveRecord::Result.new(fields, result.values, types)
+          ret = ActiveRecord4116::Result.new(fields, result.values, types)
           result.clear
           return ret
         end

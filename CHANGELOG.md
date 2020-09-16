@@ -101,7 +101,7 @@
 
 ## Rails 4.1.10 (March 19, 2015) ##
 
-*   Fixed ActiveRecord::Relation#becomes! and changed_attributes issues for type column
+*   Fixed ActiveRecord4116::Relation#becomes! and changed_attributes issues for type column
 
     Fixes #17139.
 
@@ -120,7 +120,7 @@
 
     *Sean Griffin*
 
-*   Fixed ActiveRecord::Relation#group method when argument is SQL reserved key word:
+*   Fixed ActiveRecord4116::Relation#group method when argument is SQL reserved key word:
 
       SplitTest.group(:key).count
       Property.group(:value).count
@@ -159,7 +159,7 @@
     Manual synchronization using `bin/rake db:test:prepare` is required
     when a migration is rolled-back, edited and reapplied.
 
-    `ActiveRecord::Base.maintain_test_schema` now uses `db:test:prepare`
+    `ActiveRecord4116::Base.maintain_test_schema` now uses `db:test:prepare`
     to synchronize the schema. Plugins can use this task as a hook to
     provide custom behavior after the schema has been loaded.
 
@@ -304,7 +304,7 @@
 
     Example:
 
-        class Post < ActiveRecord::Base
+        class Post < ActiveRecord4116::Base
           serialize :comment, JSON
         end
 
@@ -327,7 +327,7 @@
         post.comment # => {"category"=>"Animals", "text"=>"This is a comment about squirrels."}
 
     When using `JSON` as the coder in `serialize`, Active Record will use the
-    new `ActiveRecord::Coders::JSON` coder which delegates its `dump/load` to
+    new `ActiveRecord4116::Coders::JSON` coder which delegates its `dump/load` to
     `ActiveSupport::JSON.encode/decode`. This ensures special objects are dumped
     correctly using the `#as_json` hook.
 
@@ -374,14 +374,14 @@
 
     *Sean Griffin*
 
-*   `ActiveRecord::FinderMethods.find` with block can handle proc parameter as
+*   `ActiveRecord4116::FinderMethods.find` with block can handle proc parameter as
     `Enumerable#find` does.
 
     Fixes #15382.
 
     *James Yang*
 
-*   `ActiveRecord::SchemaMigration` has no primary key regardless of the
+*   `ActiveRecord4116::SchemaMigration` has no primary key regardless of the
     `primary_key_prefix_type` configuration.
 
     Fixes #15051.
@@ -505,7 +505,7 @@
 
     *Kassio Borges*
 
-*   `ActiveRecord::Relation::Merger#filter_binds` now compares equivalent symbols and
+*   `ActiveRecord4116::Relation::Merger#filter_binds` now compares equivalent symbols and
     strings in column names as equal.
 
     This fixes a rare case in which more bind values are passed than there are
@@ -557,7 +557,7 @@
 
     *Fred Wu*
 
-*   Revert the behaviour of `ActiveRecord::Relation#join` changed through 4.0 => 4.1 to 4.0.
+*   Revert the behaviour of `ActiveRecord4116::Relation#join` changed through 4.0 => 4.1 to 4.0.
 
     In 4.1.0 `Relation#join` is delegated to `Arel#SelectManager`.
     In 4.0 series it is delegated to `Array#join`.
@@ -603,7 +603,7 @@
 
     *Kassio Borges*
 
-*   `ActiveRecord::Base.no_touching` no longer triggers callbacks or start empty transactions.
+*   `ActiveRecord4116::Base.no_touching` no longer triggers callbacks or start empty transactions.
 
     Fixes #14841.
 
@@ -830,7 +830,7 @@
 
     Before:
 
-        class User < ActiveRecord::Base
+        class User < ActiveRecord4116::Base
           default_scope { where state: 'pending' }
           scope :active, -> { where state: 'active' }
           scope :inactive, -> { where state: 'inactive' }
@@ -847,7 +847,7 @@
 
     After:
 
-        class User < ActiveRecord::Base
+        class User < ActiveRecord4116::Base
           default_scope { where state: 'pending' }
           scope :active, -> { where state: 'active' }
           scope :inactive, -> { where state: 'inactive' }
@@ -868,7 +868,7 @@
 
     Example:
 
-        class User < ActiveRecord::Base
+        class User < ActiveRecord4116::Base
           default_scope { where state: 'pending' }
           scope :active, -> { unscope(where: :state).where(state: 'active') }
           scope :inactive, -> { rewhere state: 'inactive' }
@@ -942,7 +942,7 @@
 *   PostgreSQL implementation of `SchemaStatements#index_name_exists?`.
 
     The database agnostic implementation does not detect with indexes that are
-    not supported by the ActiveRecord schema dumper. For example, expressions
+    not supported by the ActiveRecord4116 schema dumper. For example, expressions
     indexes would not be detected.
 
     Fixes #11018.
@@ -963,11 +963,11 @@
 *   Associations now raise `ArgumentError` on name conflicts.
 
     Dangerous association names conflicts include instance or class methods already
-    defined by `ActiveRecord::Base`.
+    defined by `ActiveRecord4116::Base`.
 
     Example:
 
-        class Car < ActiveRecord::Base
+        class Car < ActiveRecord4116::Base
           has_many :errors
         end
         # Will raise ArgumentError.
@@ -1006,7 +1006,7 @@
 *   `enum` now raises on "dangerous" name conflicts.
 
     Dangerous name conflicts includes instance or class method conflicts
-    with methods defined within `ActiveRecord::Base` but not its ancestors,
+    with methods defined within `ActiveRecord4116::Base` but not its ancestors,
     as well as conflicts with methods generated by other enums on the same
     class.
 
@@ -1018,7 +1018,7 @@
 
     Similar to dangerous attribute methods, a scope name conflict is
     dangerous if it conflicts with an existing class method defined within
-    `ActiveRecord::Base` but not its ancestors.
+    `ActiveRecord4116::Base` but not its ancestors.
 
     See also #13389.
 
@@ -1110,7 +1110,7 @@
 
     The famous ordinal Array instance methods defined in ActiveSupport
     (`first`, `second`, `third`, `fourth`, and `fifth`) are now available as
-    full-fledged finders in ActiveRecord. The biggest benefit of this is ordering
+    full-fledged finders in ActiveRecord4116. The biggest benefit of this is ordering
     of the records returned now defaults to the table's primary key in ascending order.
 
     Fixes #13743.
@@ -1137,7 +1137,7 @@
 
     *Jason Meller*
 
-*   ActiveRecord states are now correctly restored after a rollback for
+*   ActiveRecord4116 states are now correctly restored after a rollback for
     models that did not define any transactional callbacks (i.e.
     `after_commit`, `after_rollback` or `after_create`).
 
@@ -1168,7 +1168,7 @@
 
     Example:
 
-        class Conversation < ActiveRecord::Base
+        class Conversation < ActiveRecord4116::Base
           enum status: [ :active, :archived ]
         end
 
@@ -1206,7 +1206,7 @@
 
     - Stand Alone (without rails)
       - `rake db:<tasks>`
-      - `ActiveRecord.establish_connection`
+      - `ActiveRecord4116.establish_connection`
 
     - With Rails
       - `rake db:<tasks>`
@@ -1244,9 +1244,9 @@
        they are discarded as the `url` sub key "wins".
     ```
 
-    Current implementation uses `ActiveRecord::Base.configurations` to resolve and merge
+    Current implementation uses `ActiveRecord4116::Base.configurations` to resolve and merge
     all connection information before returning. This is achieved through a utility
-    class: `ActiveRecord::ConnectionHandling::MergeAndResolveDefaultUrlConfig`.
+    class: `ActiveRecord4116::ConnectionHandling::MergeAndResolveDefaultUrlConfig`.
 
     To understand the exact behavior of this class, it is best to review the
     behavior in `activerecord/test/cases/connection_adapters/connection_handler_test.rb`.
@@ -1281,15 +1281,15 @@
 
     *Nishant Modak*, *Prathamesh Sonpatki*, *Rafael Mendonça França*
 
-*   Fixed ActiveRecord::Store nil conversion TypeError when using YAML coder.
+*   Fixed ActiveRecord4116::Store nil conversion TypeError when using YAML coder.
     In case the YAML passed as paramter is nil, uses an empty string.
 
     Fixes #13570.
 
     *Thales Oliveira*
 
-*   Deprecate unused `ActiveRecord::Base.symbolized_base_class`
-    and `ActiveRecord::Base.symbolized_sti_name` without replacement.
+*   Deprecate unused `ActiveRecord4116::Base.symbolized_base_class`
+    and `ActiveRecord4116::Base.symbolized_sti_name` without replacement.
 
     *Yves Senn*
 
@@ -1317,7 +1317,7 @@
 
      Example:
 
-         class Conversation < ActiveRecord::Base
+         class Conversation < ActiveRecord4116::Base
            enum gender: [:female, :male]
          end
 
@@ -1356,7 +1356,7 @@
     *Kuldeep Aggarwal*
 
 *   Deprecated use of string argument as a configuration lookup in
-    `ActiveRecord::Base.establish_connection`. Instead, a symbol must be given.
+    `ActiveRecord4116::Base.establish_connection`. Instead, a symbol must be given.
 
     *José Valim*
 
@@ -1386,7 +1386,7 @@
     *Carlos Antonio da Silva*
 
 *   When connecting to a non-existant database, the error:
-    `ActiveRecord::NoDatabaseError` will now be raised. When being used with Rails
+    `ActiveRecord4116::NoDatabaseError` will now be raised. When being used with Rails
     the error message will include information on how to create a database:
     `rake db:create`. Supported adapters: postgresql, mysql, mysql2, sqlite3
 
@@ -1458,17 +1458,17 @@
     association name.
 
     Using the name of an association in `where` previously worked only
-    if the value was a single `ActiveRecord::Base` object. e.g.
+    if the value was a single `ActiveRecord4116::Base` object. e.g.
 
         Post.where(author: Author.first)
 
     Any other values, including `nil`, would cause invalid SQL to be
     generated. This change supports arguments in the `where` query
     conditions where the key is a `belongs_to` association name and the
-    value is `nil`, an `Array` of `ActiveRecord::Base` objects, or an
-    `ActiveRecord::Relation` object.
+    value is `nil`, an `Array` of `ActiveRecord4116::Base` objects, or an
+    `ActiveRecord4116::Relation` object.
 
-        class Post < ActiveRecord::Base
+        class Post < ActiveRecord4116::Base
           belongs_to :author
         end
 
@@ -1478,14 +1478,14 @@
         # SELECT "posts".* FROM "posts" WHERE "posts"."author_id" IS NULL
 
     `Array` values find records where the association foreign key
-    matches the ids of the passed ActiveRecord models, resulting
+    matches the ids of the passed ActiveRecord4116 models, resulting
     in the same query as `Post.where(author_id: [1,2])`:
 
         authors_array = [Author.find(1), Author.find(2)]
         Post.where(author: authors_array)
         # SELECT "posts".* FROM "posts" WHERE "posts"."author_id" IN (1, 2)
 
-    `ActiveRecord::Relation` values find records using the same
+    `ActiveRecord4116::Relation` values find records using the same
     query as `Post.where(author_id: Author.where(last_name: "Emde"))`
 
         Post.where(author: Author.where(last_name: "Emde"))
@@ -1499,7 +1499,7 @@
     to the query to match the base class of the value. This feature
     previously only worked when the value was a single `ActveRecord::Base`.
 
-        class Post < ActiveRecord::Base
+        class Post < ActiveRecord4116::Base
           belongs_to :author, polymorphic: true
         end
 
@@ -1531,7 +1531,7 @@
 
 *   `db:test:clone` and `db:test:prepare` must load Rails environment.
 
-    `db:test:clone` and `db:test:prepare` use `ActiveRecord::Base`. configurations,
+    `db:test:clone` and `db:test:prepare` use `ActiveRecord4116::Base`. configurations,
     so we need to load the Rails environment, otherwise the config wont be in place.
 
     *arthurnn*
@@ -1557,7 +1557,7 @@
 
     Example:
 
-        class Rating < ActiveRecord::Base
+        class Rating < ActiveRecord4116::Base
           belongs_to :rateable, polymorphic: true, touch: true
         end
 
@@ -1600,7 +1600,7 @@
 
 *   The ERB in fixture files is no longer evaluated in the context of the main
     object. Helper methods used by multiple fixtures should be defined on the
-    class object returned by `ActiveRecord::FixtureSet.context_class`.
+    class object returned by `ActiveRecord4116::FixtureSet.context_class`.
 
     *Victor Costan*
 
@@ -1633,7 +1633,7 @@
 
     *Cody Cutrer*, *Yves Senn*
 
-*   Raise `ActiveRecord::RecordNotDestroyed` when a replaced child
+*   Raise `ActiveRecord4116::RecordNotDestroyed` when a replaced child
     marked with `dependent: destroy` fails to be destroyed.
 
     Fixes #12812.
@@ -1644,7 +1644,7 @@
 
     *Evgeny Li*
 
-*   Make `ActiveRecord::Relation#unscope` affect relations it is merged in to.
+*   Make `ActiveRecord4116::Relation#unscope` affect relations it is merged in to.
 
     *Jon Leighton*
 
@@ -1656,11 +1656,11 @@
 
     *Edo Balvers*
 
-*   Added `ActiveRecord::Base.to_param` for convenient "pretty" URLs derived from a model's attribute or method.
+*   Added `ActiveRecord4116::Base.to_param` for convenient "pretty" URLs derived from a model's attribute or method.
 
     Example:
 
-        class User < ActiveRecord::Base
+        class User < ActiveRecord4116::Base
           to_param :name
         end
 
@@ -1670,7 +1670,7 @@
 
     *Javan Makhmali*
 
-*   Added `ActiveRecord::Base.no_touching`, which allows ignoring touch on models.
+*   Added `ActiveRecord4116::Base.no_touching`, which allows ignoring touch on models.
 
     Example:
 
@@ -1719,7 +1719,7 @@
 
     *Jon Leighton*
 
-*   Added `ActiveRecord::QueryMethods#rewhere` which will overwrite an existing, named where condition.
+*   Added `ActiveRecord4116::QueryMethods#rewhere` which will overwrite an existing, named where condition.
 
     Examples:
 
@@ -1729,7 +1729,7 @@
 
     *DHH*
 
-*   Extend `ActiveRecord::Base#cache_key` to take an optional list of timestamp attributes of which the highest will be used.
+*   Extend `ActiveRecord4116::Base#cache_key` to take an optional list of timestamp attributes of which the highest will be used.
 
     Example:
 
@@ -1738,11 +1738,11 @@
 
     *DHH*
 
-*   Added `ActiveRecord::Base#enum` for declaring enum attributes where the values map to integers in the database, but can be queried by name.
+*   Added `ActiveRecord4116::Base#enum` for declaring enum attributes where the values map to integers in the database, but can be queried by name.
 
     Example:
 
-        class Conversation < ActiveRecord::Base
+        class Conversation < ActiveRecord4116::Base
           enum status: [:active, :archived]
         end
 
@@ -1763,7 +1763,7 @@
 
     *DHH*
 
-*   `ActiveRecord::Base#attribute_for_inspect` now truncates long arrays (more than 10 elements).
+*   `ActiveRecord4116::Base#attribute_for_inspect` now truncates long arrays (more than 10 elements).
 
     *Jan Bernacki*
 
@@ -1776,7 +1776,7 @@
 
     Example:
 
-        class Vendor < ActiveRecord::Base
+        class Vendor < ActiveRecord4116::Base
           has_many :relationships, -> { includes(:user) }
           has_many :users, through: :relationships
         end
@@ -1810,15 +1810,15 @@
 
     *Severin Schoepke*
 
-*   `ActiveRecord::Store` works together with PostgreSQL `hstore` columns.
+*   `ActiveRecord4116::Store` works together with PostgreSQL `hstore` columns.
 
     Fixes #12452.
 
     *Yves Senn*
 
-*   Fix bug where `ActiveRecord::Store` used a global `Hash` to keep track of
+*   Fix bug where `ActiveRecord4116::Store` used a global `Hash` to keep track of
     all registered `stored_attributes`. Now every subclass of
-    `ActiveRecord::Base` has it's own `Hash`.
+    `ActiveRecord4116::Base` has it's own `Hash`.
 
     *Yves Senn*
 
@@ -1846,7 +1846,7 @@
 
     *Kevin Mook*
 
-*   `ActiveRecord::QueryMethods#unscope` unscopes negative equality
+*   `ActiveRecord4116::QueryMethods#unscope` unscopes negative equality
 
     Allows you to call `#unscope` on a relation with negative equality
     operators, i.e. `Arel::Nodes::NotIn` and `Arel::Nodes::NotEqual` that have
@@ -1912,7 +1912,7 @@
     *Paul Nikitochkin*
 
 *   For missed association exception message
-    which is raised in `ActiveRecord::Associations::Preloader` class
+    which is raised in `ActiveRecord4116::Associations::Preloader` class
     added owner record class name in order to simplify to find problem code.
 
     *Paul Nikitochkin*
@@ -1936,7 +1936,7 @@
 
     *Paul Nikitochkin*, *Peter Brown*, *Nthalk*
 
-*   Fixed `ActiveRecord::Associations::CollectionAssociation#find`
+*   Fixed `ActiveRecord4116::Associations::CollectionAssociation#find`
     when using `has_many` association with `:inverse_of` and finding an array of one element,
     it should return an array of one element too.
 
@@ -1946,7 +1946,7 @@
 
     *arthurnn*
 
-*   `ActiveRecord::ConnectionAdapters.string_to_time` respects
+*   `ActiveRecord4116::ConnectionAdapters.string_to_time` respects
     string with timezone (e.g. Wed, 04 Sep 2013 20:30:00 JST).
 
     Fixes #12278.
@@ -1973,7 +1973,7 @@
 
     *kennyj*
 
-*   Fixed a bug in `ActiveRecord::Associations::CollectionAssociation#find_by_scan`
+*   Fixed a bug in `ActiveRecord4116::Associations::CollectionAssociation#find_by_scan`
     when using `has_many` association with `:inverse_of` option and UUID primary key.
 
     Fixes #10450.
@@ -2021,7 +2021,7 @@
     *Paul Nikitochkin*
 
 *   Fix PredicateBuilder so polymorphic association keys in `where` clause can
-    accept objects other than direct descendants of `ActiveRecord::Base` (decorated
+    accept objects other than direct descendants of `ActiveRecord4116::Base` (decorated
     models, for example).
 
     *Mikhail Dieterle*
@@ -2037,7 +2037,7 @@
 
     *Ben Woosley*
 
-*   `ActiveRecord::FinderMethods#exists?` returns `true`/`false` in all cases.
+*   `ActiveRecord4116::FinderMethods#exists?` returns `true`/`false` in all cases.
 
     *Xavier Noria*
 
@@ -2119,7 +2119,7 @@
 
     *Paul Nikitochkin*, *Michael Nikitochkin*
 
-*   Revert `ActiveRecord::Relation#order` change that make new order
+*   Revert `ActiveRecord4116::Relation#order` change that make new order
     prepend the old one.
 
     Before:
@@ -2140,7 +2140,7 @@
         regex_handler = proc do |column, value|
           Arel::Nodes::InfixOperation.new('~', column, value.source)
         end
-        ActiveRecord::PredicateBuilder.register_handler(Regexp, regex_handler)
+        ActiveRecord4116::PredicateBuilder.register_handler(Regexp, regex_handler)
 
     *Sean Griffin & @joannecheng*
 
@@ -2165,7 +2165,7 @@
 
     Fixes #11497.
 
-    As `ActiveRecord::ConnectionAdapters::ConnectionManagement` middleware does
+    As `ActiveRecord4116::ConnectionAdapters::ConnectionManagement` middleware does
     not rescue from Exception (but only from StandardError), the Connection
     Pool quickly runs out of connections when multiple erroneous Requests come
     in right after each other.
@@ -2192,7 +2192,7 @@
 *   Reset @column_defaults when assigning `locking_column`.
     We had a potential problem. For example:
 
-      class Post < ActiveRecord::Base
+      class Post < ActiveRecord4116::Base
         self.column_defaults  # if we call this unintentionally before setting locking_column ...
         self.locking_column = 'my_locking_column'
       end
@@ -2202,7 +2202,7 @@
 
     *kennyj*
 
-*   Remove extra select and update queries on save/touch/destroy ActiveRecord model
+*   Remove extra select and update queries on save/touch/destroy ActiveRecord4116 model
     with belongs to reflection with option `touch: true`.
 
     Fixes #11288.
@@ -2214,11 +2214,11 @@
 
     *Yves Senn*
 
-*   Remove deprecated block filter from `ActiveRecord::Migrator#migrate`.
+*   Remove deprecated block filter from `ActiveRecord4116::Migrator#migrate`.
 
     *Yves Senn*
 
-*   Remove deprecated String constructor from `ActiveRecord::Migrator`.
+*   Remove deprecated String constructor from `ActiveRecord4116::Migrator`.
 
     *Yves Senn*
 
@@ -2244,8 +2244,8 @@
 
     *Yves Senn*
 
-*   Remove deprecated `ActiveRecord::Fixtures.find_table_name` in favor of
-    `ActiveRecord::Fixtures.default_fixture_model_name`.
+*   Remove deprecated `ActiveRecord4116::Fixtures.find_table_name` in favor of
+    `ActiveRecord4116::Fixtures.default_fixture_model_name`.
 
     *Vipul A M*
 
@@ -2257,7 +2257,7 @@
 
     *Francesco Rodriguez*
 
-*   Move deprecated `ActiveRecord::TestCase` into the rails test
+*   Move deprecated `ActiveRecord4116::TestCase` into the rails test
     suite. The class is no longer public and is only used for internal
     Rails tests.
 
@@ -2317,7 +2317,7 @@
 
     *Neeraj Singh*
 
-*   Remove deprecated `ActiveRecord::Base#connection` method.
+*   Remove deprecated `ActiveRecord4116::Base#connection` method.
     Make sure to access it via the class.
 
     *Yves Senn*
@@ -2357,7 +2357,7 @@
 
 *   Apply default scope when joining associations. For example:
 
-        class Post < ActiveRecord::Base
+        class Post < ActiveRecord4116::Base
           default_scope -> { where published: true }
         end
 
@@ -2387,7 +2387,7 @@
 
     *Ben Woosley*
 
-*   `ActiveRecord::Result.each` now returns an `Enumerator` when called without
+*   `ActiveRecord4116::Result.each` now returns an `Enumerator` when called without
      a block, so that it can be chained with other `Enumerable` methods.
 
     *Ben Woosley*
@@ -2445,7 +2445,7 @@
 
     *Neeraj Singh*
 
-*   Fixture setup no longer depends on `ActiveRecord::Base.configurations`.
+*   Fixture setup no longer depends on `ActiveRecord4116::Base.configurations`.
     This is relevant when `ENV["DATABASE_URL"]` is used in place of a `database.yml`.
 
     *Yves Senn*
@@ -2458,32 +2458,32 @@
 *   Ambiguous reflections are on :through relationships are no longer supported.
     For example, you need to change this:
 
-        class Author < ActiveRecord::Base
+        class Author < ActiveRecord4116::Base
           has_many :posts
           has_many :taggings, through: :posts
         end
 
-        class Post < ActiveRecord::Base
+        class Post < ActiveRecord4116::Base
           has_one :tagging
           has_many :taggings
         end
 
-        class Tagging < ActiveRecord::Base
+        class Tagging < ActiveRecord4116::Base
         end
 
     To this:
 
-        class Author < ActiveRecord::Base
+        class Author < ActiveRecord4116::Base
           has_many :posts
           has_many :taggings, through: :posts, source: :tagging
         end
 
-        class Post < ActiveRecord::Base
+        class Post < ActiveRecord4116::Base
           has_one :tagging
           has_many :taggings
         end
 
-        class Tagging < ActiveRecord::Base
+        class Tagging < ActiveRecord4116::Base
         end
 
     *Aaron Patterson*
@@ -2496,7 +2496,7 @@
 
         User.select("name, username").count
         # Before => SELECT count(*) FROM users
-        # After => ActiveRecord::StatementInvalid
+        # After => ActiveRecord4116::StatementInvalid
 
         # you can still use `count(:all)` to perform a query unrelated to the
         # selected columns
@@ -2519,7 +2519,7 @@
     You can turn off the automatic detection of inverse associations by setting
     the `:inverse_of` option to `false` like so:
 
-        class Taggable < ActiveRecord::Base
+        class Taggable < ActiveRecord4116::Base
           belongs_to :tag, inverse_of: false
         end
 
@@ -2562,7 +2562,7 @@
 
     *Ben Woosley*
 
-*   Fix pending migrations error when loading schema and `ActiveRecord::Base.table_name_prefix`
+*   Fix pending migrations error when loading schema and `ActiveRecord4116::Base.table_name_prefix`
     is not blank.
 
     Call `assume_migrated_upto_version` on connection to prevent it from first
@@ -2585,7 +2585,7 @@
 
     *Ben Tucker*
 
-*   Fixed a bug in `ActiveRecord#sanitize_sql_hash_for_conditions` in which
+*   Fixed a bug in `ActiveRecord4116#sanitize_sql_hash_for_conditions` in which
     `self.class` is an argument to `PredicateBuilder#build_from_hash`
     causing `PredicateBuilder` to call non-existent method
     `Class#reflect_on_association`.
@@ -2615,7 +2615,7 @@
     child object yourself before assignment, then the NestedAttributes
     module will not overwrite it, e.g.:
 
-        class Member < ActiveRecord::Base
+        class Member < ActiveRecord4116::Base
           has_one :avatar
           accepts_nested_attributes_for :avatar
 
@@ -2637,9 +2637,9 @@
 
     *Johnny Holton*
 
-*   Handle aliased attributes in ActiveRecord::Relation.
+*   Handle aliased attributes in ActiveRecord4116::Relation.
 
-    When using symbol keys, ActiveRecord will now translate aliased attribute names to the actual column name used in the database:
+    When using symbol keys, ActiveRecord4116 will now translate aliased attribute names to the actual column name used in the database:
 
     With the model
 
@@ -2655,7 +2655,7 @@
 
         Topic.where(title: 'The First Topic')
 
-    This also applies to ActiveRecord::Relation::Calculations calls such as `Model.sum(:aliased)` and `Model.pluck(:aliased)`.
+    This also applies to ActiveRecord4116::Relation::Calculations calls such as `Model.sum(:aliased)` and `Model.pluck(:aliased)`.
 
     This will not work with SQL fragment strings like `Model.sum('DISTINCT aliased')`.
 

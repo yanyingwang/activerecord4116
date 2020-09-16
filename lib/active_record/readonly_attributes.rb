@@ -1,5 +1,5 @@
 
-module ActiveRecord
+module ActiveRecord4116
   module ReadonlyAttributes
     extend ActiveSupport::Concern
 

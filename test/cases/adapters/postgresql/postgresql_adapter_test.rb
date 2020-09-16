@@ -1,17 +1,17 @@
 # encoding: utf-8
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
-    class PostgreSQLAdapterTest < ActiveRecord::TestCase
+    class PostgreSQLAdapterTest < ActiveRecord4116::TestCase
       def setup
-        @connection = ActiveRecord::Base.connection
+        @connection = ActiveRecord4116::Base.connection
       end
 
       def test_bad_connection
-        assert_raise ActiveRecord::NoDatabaseError do
-          configuration = ActiveRecord::Base.configurations['arunit'].merge(database: 'should_not_exist-cinco-dog-db')
-          connection = ActiveRecord::Base.postgresql_connection(configuration)
+        assert_raise ActiveRecord4116::NoDatabaseError do
+          configuration = ActiveRecord4116::Base.configurations['arunit'].merge(database: 'should_not_exist-cinco-dog-db')
+          connection = ActiveRecord4116::Base.postgresql_connection(configuration)
           connection.exec_query('SELECT 1')
         end
       end
@@ -50,7 +50,7 @@ module ActiveRecord
       end
 
       def test_primary_key_raises_error_if_table_not_found
-        assert_raises(ActiveRecord::StatementInvalid) do
+        assert_raises(ActiveRecord4116::StatementInvalid) do
           @connection.primary_key('unobtainium')
         end
       end
@@ -123,7 +123,7 @@ module ActiveRecord
         assert_equal 'public.accounts_id_seq',
           @connection.serial_sequence('accounts', 'id')
 
-        assert_raises(ActiveRecord::StatementInvalid) do
+        assert_raises(ActiveRecord4116::StatementInvalid) do
           @connection.serial_sequence('zomg', 'id')
         end
       end
@@ -361,7 +361,7 @@ module ActiveRecord
       end
 
       def connection_without_insert_returning
-        ActiveRecord::Base.postgresql_connection(ActiveRecord::Base.configurations['arunit'].merge(:insert_returning => false))
+        ActiveRecord4116::Base.postgresql_connection(ActiveRecord4116::Base.configurations['arunit'].merge(:insert_returning => false))
       end
     end
   end

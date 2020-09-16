@@ -1,6 +1,6 @@
 require 'active_record/associations/join_dependency/join_part'
 
-module ActiveRecord
+module ActiveRecord4116
   module Associations
     class JoinDependency # :nodoc:
       class JoinAssociation < JoinPart # :nodoc:
@@ -49,12 +49,12 @@ module ActiveRecord
               if item.is_a?(Relation)
                 item
               else
-                ActiveRecord::Relation.create(klass, table).instance_exec(node, &item)
+                ActiveRecord4116::Relation.create(klass, table).instance_exec(node, &item)
               end
             end
             scope_chain_index += 1
 
-            scope_chain_items.concat [klass.send(:build_default_scope, ActiveRecord::Relation.create(klass, table))].compact
+            scope_chain_items.concat [klass.send(:build_default_scope, ActiveRecord4116::Relation.create(klass, table))].compact
 
             rel = scope_chain_items.inject(scope_chain_items.shift) do |left, right|
               left.merge right
@@ -81,12 +81,12 @@ module ActiveRecord
         #
         #  Example:
         #
-        #  class Physician < ActiveRecord::Base
+        #  class Physician < ActiveRecord4116::Base
         #    has_many :appointments
         #  end
         #
         #  If I execute `Physician.joins(:appointments).to_a` then
-        #    reflection    # => #<ActiveRecord::Reflection::AssociationReflection @macro=:has_many ...>
+        #    reflection    # => #<ActiveRecord4116::Reflection::AssociationReflection @macro=:has_many ...>
         #    table         # => #<Arel::Table @name="appointments" ...>
         #    key           # =>  physician_id
         #    foreign_table # => #<Arel::Table @name="physicians" ...>

@@ -2,7 +2,7 @@ require 'active_support/core_ext/object/with_options'
 
 module MyApplication
   module Business
-    class Company < ActiveRecord::Base
+    class Company < ActiveRecord4116::Base
     end
 
     class Firm < Company
@@ -17,15 +17,15 @@ module MyApplication
       belongs_to :firm, :foreign_key => "client_of"
       belongs_to :firm_with_other_name, :class_name => "Firm", :foreign_key => "client_of"
 
-      class Contact < ActiveRecord::Base; end
+      class Contact < ActiveRecord4116::Base; end
     end
 
-    class Developer < ActiveRecord::Base
+    class Developer < ActiveRecord4116::Base
       has_and_belongs_to_many :projects
       validates_length_of :name, :within => (3..20)
     end
 
-    class Project < ActiveRecord::Base
+    class Project < ActiveRecord4116::Base
       has_and_belongs_to_many :developers
     end
 
@@ -34,7 +34,7 @@ module MyApplication
         'prefixed_'
       end
 
-      class Company < ActiveRecord::Base
+      class Company < ActiveRecord4116::Base
       end
 
       class Firm < Company
@@ -42,24 +42,24 @@ module MyApplication
       end
 
       module Nested
-        class Company < ActiveRecord::Base
+        class Company < ActiveRecord4116::Base
         end
       end
     end
   end
 
   module Billing
-    class Firm < ActiveRecord::Base
+    class Firm < ActiveRecord4116::Base
       self.table_name = 'companies'
     end
 
     module Nested
-      class Firm < ActiveRecord::Base
+      class Firm < ActiveRecord4116::Base
         self.table_name = 'companies'
       end
     end
 
-    class Account < ActiveRecord::Base
+    class Account < ActiveRecord4116::Base
       with_options(:foreign_key => :firm_id) do |i|
         i.belongs_to :firm, :class_name => 'MyApplication::Business::Firm'
         i.belongs_to :qualified_billing_firm, :class_name => 'MyApplication::Billing::Firm'

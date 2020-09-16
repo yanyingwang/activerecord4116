@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   class PredicateBuilder # :nodoc:
     @handlers = []
 
@@ -106,7 +106,7 @@ module ActiveRecord
     #         Arel::Nodes::And.new([range.start, range.end])
     #       )
     #     end
-    #     ActiveRecord::PredicateBuilder.register_handler(MyCustomDateRange, handler)
+    #     ActiveRecord4116::PredicateBuilder.register_handler(MyCustomDateRange, handler)
     def self.register_handler(klass, handler)
       @handlers.unshift([klass, handler])
     end

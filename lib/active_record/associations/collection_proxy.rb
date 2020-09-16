@@ -1,14 +1,14 @@
-module ActiveRecord
+module ActiveRecord4116
   module Associations
     # Association proxies in Active Record are middlemen between the object that
     # holds the association, known as the <tt>@owner</tt>, and the actual associated
     # object, known as the <tt>@target</tt>. The kind of association any proxy is
     # about is available in <tt>@reflection</tt>. That's an instance of the class
-    # ActiveRecord::Reflection::AssociationReflection.
+    # ActiveRecord4116::Reflection::AssociationReflection.
     #
     # For example, given
     #
-    #   class Blog < ActiveRecord::Base
+    #   class Blog < ActiveRecord4116::Base
     #     has_many :posts
     #   end
     #
@@ -28,7 +28,7 @@ module ActiveRecord
     # is computed directly through SQL and does not trigger by itself the
     # instantiation of the actual post records.
     class CollectionProxy < Relation
-      delegate(*(ActiveRecord::Calculations.public_instance_methods - [:count]), to: :scope)
+      delegate(*(ActiveRecord4116::Calculations.public_instance_methods - [:count]), to: :scope)
 
       def initialize(klass, association) #:nodoc:
         @association = association
@@ -57,7 +57,7 @@ module ActiveRecord
       #
       # *First:* Specify a subset of fields to be selected from the result set.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -111,10 +111,10 @@ module ActiveRecord
       end
 
       # Finds an object in the collection responding to the +id+. Uses the same
-      # rules as <tt>ActiveRecord::Base.find</tt>. Returns <tt>ActiveRecord::RecordNotFound</tt>
+      # rules as <tt>ActiveRecord4116::Base.find</tt>. Returns <tt>ActiveRecord4116::RecordNotFound</tt>
       # error if the object cannot be found.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -126,7 +126,7 @@ module ActiveRecord
       #   #    ]
       #
       #   person.pets.find(1) # => #<Pet id: 1, name: "Fancy-Fancy", person_id: 1>
-      #   person.pets.find(4) # => ActiveRecord::RecordNotFound: Couldn't find Pet with id=4
+      #   person.pets.find(4) # => ActiveRecord4116::RecordNotFound: Couldn't find Pet with id=4
       #
       #   person.pets.find(2) { |pet| pet.name.downcase! }
       #   # => #<Pet id: 2, name: "fancy-fancy", person_id: 1>
@@ -144,7 +144,7 @@ module ActiveRecord
       # If the collection is empty, the first form returns +nil+, and the second
       # form returns an empty array.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -200,7 +200,7 @@ module ActiveRecord
       # If the collection is empty, the first form returns +nil+, and the second
       # form returns an empty array.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -300,7 +300,7 @@ module ActiveRecord
       #   end
       #
       #   person.pets.create!(name: nil)
-      #   # => ActiveRecord::RecordInvalid: Validation failed: Name can't be blank
+      #   # => ActiveRecord4116::RecordInvalid: Validation failed: Name can't be blank
       def create!(attributes = {}, &block)
         @association.create!(attributes, &block)
       end
@@ -310,7 +310,7 @@ module ActiveRecord
       # inserts each record, +push+ and +concat+ behave identically. Returns +self+
       # so method calls may be chained.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -336,7 +336,7 @@ module ActiveRecord
       # Replaces this collection with +other_array+. This will perform a diff
       # and delete/add only records that have changed.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -351,10 +351,10 @@ module ActiveRecord
       #   # => [#<Pet id: 2, name: "Puff", group: "celebrities", person_id: 1>]
       #
       # If the supplied array has an incorrect association type, it raises
-      # an <tt>ActiveRecord::AssociationTypeMismatch</tt> error:
+      # an <tt>ActiveRecord4116::AssociationTypeMismatch</tt> error:
       #
       #   person.pets.replace(["doo", "ggie", "gaga"])
-      #   # => ActiveRecord::AssociationTypeMismatch: Pet expected, got String
+      #   # => ActiveRecord4116::AssociationTypeMismatch: Pet expected, got String
       def replace(other_array)
         @association.replace(other_array)
       end
@@ -368,7 +368,7 @@ module ActiveRecord
       # sets the foreign keys to <tt>NULL</tt>. For, +has_many+ <tt>:through</tt>,
       # the default strategy is +delete_all+.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets # dependent: :nullify option by default
       #   end
       #
@@ -401,7 +401,7 @@ module ActiveRecord
       # are removed by calling their +destroy+ method. See +destroy+ for more
       # information.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets, dependent: :destroy
       #   end
       #
@@ -421,12 +421,12 @@ module ActiveRecord
       #   #    ]
       #
       #   Pet.find(1, 2, 3)
-      #   # => ActiveRecord::RecordNotFound
+      #   # => ActiveRecord4116::RecordNotFound
       #
       # If it is set to <tt>:delete_all</tt>, all the objects are deleted
       # *without* calling their +destroy+ method.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets, dependent: :delete_all
       #   end
       #
@@ -446,7 +446,7 @@ module ActiveRecord
       #   #    ]
       #
       #   Pet.find(1, 2, 3)
-      #   # => ActiveRecord::RecordNotFound
+      #   # => ActiveRecord4116::RecordNotFound
       def delete_all(dependent = nil)
         @association.delete_all(dependent)
       end
@@ -455,7 +455,7 @@ module ActiveRecord
       # ignoring the +:dependent+ option. It invokes +before_remove+,
       # +after_remove+ , +before_destroy+ and +after_destroy+ callbacks.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -487,7 +487,7 @@ module ActiveRecord
       # keys to <tt>NULL</tt>. For, +has_many+ <tt>:through</tt>, the default
       # strategy is +delete_all+.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets # dependent: :nullify option by default
       #   end
       #
@@ -515,7 +515,7 @@ module ActiveRecord
       # If it is set to <tt>:destroy</tt> all the +records+ are removed by calling
       # their +destroy+ method. See +destroy+ for more information.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets, dependent: :destroy
       #   end
       #
@@ -538,12 +538,12 @@ module ActiveRecord
       #   # => [#<Pet id: 2, name: "Spook", person_id: 1>]
       #
       #   Pet.find(1, 3)
-      #   # => ActiveRecord::RecordNotFound: Couldn't find all Pets with IDs (1, 3)
+      #   # => ActiveRecord4116::RecordNotFound: Couldn't find all Pets with IDs (1, 3)
       #
       # If it is set to <tt>:delete_all</tt>, all the +records+ are deleted
       # *without* calling their +destroy+ method.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets, dependent: :delete_all
       #   end
       #
@@ -566,12 +566,12 @@ module ActiveRecord
       #   #    ]
       #
       #   Pet.find(1)
-      #   # => ActiveRecord::RecordNotFound: Couldn't find Pet with id=1
+      #   # => ActiveRecord4116::RecordNotFound: Couldn't find Pet with id=1
       #
       # You can pass +Fixnum+ or +String+ values, it finds the records
       # responding to the +id+ and executes delete on them.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -599,7 +599,7 @@ module ActiveRecord
       # This method will _always_ remove record from the database ignoring
       # the +:dependent+ option. Returns an array with the removed records.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -630,7 +630,7 @@ module ActiveRecord
       #   person.pets.size  # => 0
       #   person.pets       # => []
       #
-      #   Pet.find(1, 2, 3) # => ActiveRecord::RecordNotFound: Couldn't find all Pets with IDs (1, 2, 3)
+      #   Pet.find(1, 2, 3) # => ActiveRecord4116::RecordNotFound: Couldn't find all Pets with IDs (1, 2, 3)
       #
       # You can pass +Fixnum+ or +String+ values, it finds the records
       # responding to the +id+ and then deletes them from the database.
@@ -662,14 +662,14 @@ module ActiveRecord
       #   person.pets.size  # => 0
       #   person.pets       # => []
       #
-      #   Pet.find(4, 5, 6) # => ActiveRecord::RecordNotFound: Couldn't find all Pets with IDs (4, 5, 6)
+      #   Pet.find(4, 5, 6) # => ActiveRecord4116::RecordNotFound: Couldn't find all Pets with IDs (4, 5, 6)
       def destroy(*records)
         @association.destroy(*records)
       end
 
       # Specifies whether the records should be unique or not.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -688,7 +688,7 @@ module ActiveRecord
 
       # Count all records using SQL.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -712,7 +712,7 @@ module ActiveRecord
       # equivalent. If not and you are going to need the records anyway
       # +length+ will take one less query. Otherwise +size+ is more efficient.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -738,7 +738,7 @@ module ActiveRecord
       # equivalent. If not and you are going to need the records anyway this
       # method will take one less query. Otherwise +size+ is more efficient.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -764,7 +764,7 @@ module ActiveRecord
       # not already been loaded and you are going to fetch the records anyway it
       # is better to check <tt>collection.length.zero?</tt>.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -781,7 +781,7 @@ module ActiveRecord
 
       # Returns +true+ if the collection is not empty.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -815,7 +815,7 @@ module ActiveRecord
       # Returns true if the collection has more than one record.
       # Equivalent to <tt>collection.size > 1</tt>.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -852,7 +852,7 @@ module ActiveRecord
 
       # Returns +true+ if the given object is present in the collection.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -891,7 +891,7 @@ module ActiveRecord
       # to the corresponding element in the other array, otherwise returns
       # +false+.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -917,7 +917,7 @@ module ActiveRecord
       # Returns a new array of objects from the collection. If the collection
       # hasn't been loaded, it fetches the records from the database.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -956,7 +956,7 @@ module ActiveRecord
       # to the association's primary key. Returns +self+, so several appends may be
       # chained together.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -993,7 +993,7 @@ module ActiveRecord
       # Reloads the collection from the database. Returns +self+.
       # Equivalent to <tt>collection(true)</tt>.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #
@@ -1015,7 +1015,7 @@ module ActiveRecord
 
       # Unloads the association. Returns +self+.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_many :pets
       #   end
       #

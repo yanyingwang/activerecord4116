@@ -1,6 +1,6 @@
 require 'rails/generators/active_record'
 
-module ActiveRecord
+module ActiveRecord4116
   module Generators # :nodoc:
     class ModelGenerator < Base # :nodoc:
       argument :attributes, :type => :array, :default => [], :banner => "field[:type][:index] field[:type][:index]"
@@ -44,7 +44,7 @@ module ActiveRecord
 
         # Used by the migration template to determine the parent name of the model
         def parent_class_name
-          options[:parent] || "ActiveRecord::Base"
+          options[:parent] || "ActiveRecord4116::Base"
         end
 
     end

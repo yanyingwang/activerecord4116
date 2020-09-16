@@ -1,13 +1,13 @@
 require 'cases/helper'
 
-module ActiveRecord
+module ActiveRecord4116
   class Migration
-    class CreateJoinTableTest < ActiveRecord::TestCase
+    class CreateJoinTableTest < ActiveRecord4116::TestCase
       attr_reader :connection
 
       def setup
         super
-        @connection = ActiveRecord::Base.connection
+        @connection = ActiveRecord4116::Base.connection
       end
 
       def teardown

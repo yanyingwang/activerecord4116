@@ -14,7 +14,7 @@ require 'models/admin'
 require 'models/admin/account'
 require 'models/admin/user'
 
-class AutomaticInverseFindingTests < ActiveRecord::TestCase
+class AutomaticInverseFindingTests < ActiveRecord4116::TestCase
   fixtures :ratings, :comments, :cars
 
   def test_has_one_and_belongs_to_should_find_inverse_automatically_on_multiple_word_name
@@ -125,18 +125,18 @@ class AutomaticInverseFindingTests < ActiveRecord::TestCase
   end
 end
 
-class InverseAssociationTests < ActiveRecord::TestCase
+class InverseAssociationTests < ActiveRecord4116::TestCase
   def test_should_allow_for_inverse_of_options_in_associations
-    assert_nothing_raised(ArgumentError, 'ActiveRecord should allow the inverse_of options on has_many') do
-      Class.new(ActiveRecord::Base).has_many(:wheels, :inverse_of => :car)
+    assert_nothing_raised(ArgumentError, 'ActiveRecord4116 should allow the inverse_of options on has_many') do
+      Class.new(ActiveRecord4116::Base).has_many(:wheels, :inverse_of => :car)
     end
 
-    assert_nothing_raised(ArgumentError, 'ActiveRecord should allow the inverse_of options on has_one') do
-      Class.new(ActiveRecord::Base).has_one(:engine, :inverse_of => :car)
+    assert_nothing_raised(ArgumentError, 'ActiveRecord4116 should allow the inverse_of options on has_one') do
+      Class.new(ActiveRecord4116::Base).has_one(:engine, :inverse_of => :car)
     end
 
-    assert_nothing_raised(ArgumentError, 'ActiveRecord should allow the inverse_of options on belongs_to') do
-      Class.new(ActiveRecord::Base).belongs_to(:car, :inverse_of => :driver)
+    assert_nothing_raised(ArgumentError, 'ActiveRecord4116 should allow the inverse_of options on belongs_to') do
+      Class.new(ActiveRecord4116::Base).belongs_to(:car, :inverse_of => :driver)
     end
   end
 
@@ -200,7 +200,7 @@ class InverseAssociationTests < ActiveRecord::TestCase
   end
 end
 
-class InverseHasOneTests < ActiveRecord::TestCase
+class InverseHasOneTests < ActiveRecord4116::TestCase
   fixtures :men, :faces
 
   def test_parent_instance_should_be_shared_with_child_on_find
@@ -278,11 +278,11 @@ class InverseHasOneTests < ActiveRecord::TestCase
   end
 
   def test_trying_to_use_inverses_that_dont_exist_should_raise_an_error
-    assert_raise(ActiveRecord::InverseOfAssociationNotFoundError) { Man.first.dirty_face }
+    assert_raise(ActiveRecord4116::InverseOfAssociationNotFoundError) { Man.first.dirty_face }
   end
 end
 
-class InverseHasManyTests < ActiveRecord::TestCase
+class InverseHasManyTests < ActiveRecord4116::TestCase
   fixtures :men, :interests
 
   def test_parent_instance_should_be_shared_with_every_child_on_find
@@ -454,20 +454,20 @@ class InverseHasManyTests < ActiveRecord::TestCase
     man = Man.create!
 
     invalid_id = 245324523
-    assert_raise(ActiveRecord::RecordNotFound) { man.interests.find(invalid_id) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { man.interests.find(invalid_id) }
 
     invalid_ids = [8432342, 2390102913, 2453245234523452]
-    assert_raise(ActiveRecord::RecordNotFound) { man.interests.find(invalid_ids) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { man.interests.find(invalid_ids) }
   end
 
   def test_raise_record_not_found_error_when_no_ids_are_passed
     man = Man.create!
 
-    assert_raise(ActiveRecord::RecordNotFound) { man.interests.find() }
+    assert_raise(ActiveRecord4116::RecordNotFound) { man.interests.find() }
   end
 
   def test_trying_to_use_inverses_that_dont_exist_should_raise_an_error
-    assert_raise(ActiveRecord::InverseOfAssociationNotFoundError) { Man.first.secret_interests }
+    assert_raise(ActiveRecord4116::InverseOfAssociationNotFoundError) { Man.first.secret_interests }
   end
 
   def test_child_instance_should_point_to_parent_without_saving
@@ -484,7 +484,7 @@ class InverseHasManyTests < ActiveRecord::TestCase
   end
 end
 
-class InverseBelongsToTests < ActiveRecord::TestCase
+class InverseBelongsToTests < ActiveRecord4116::TestCase
   fixtures :men, :faces, :interests
 
   def test_child_instance_should_be_shared_with_parent_on_find
@@ -563,11 +563,11 @@ class InverseBelongsToTests < ActiveRecord::TestCase
   end
 
   def test_trying_to_use_inverses_that_dont_exist_should_raise_an_error
-    assert_raise(ActiveRecord::InverseOfAssociationNotFoundError) { Face.first.horrible_man }
+    assert_raise(ActiveRecord4116::InverseOfAssociationNotFoundError) { Face.first.horrible_man }
   end
 end
 
-class InversePolymorphicBelongsToTests < ActiveRecord::TestCase
+class InversePolymorphicBelongsToTests < ActiveRecord4116::TestCase
   fixtures :men, :faces, :interests
 
   def test_child_instance_should_be_shared_with_parent_on_find
@@ -653,29 +653,29 @@ class InversePolymorphicBelongsToTests < ActiveRecord::TestCase
 
   def test_trying_to_access_inverses_that_dont_exist_shouldnt_raise_an_error
     # Ideally this would, if only for symmetry's sake with other association types
-    assert_nothing_raised(ActiveRecord::InverseOfAssociationNotFoundError) { Face.first.horrible_polymorphic_man }
+    assert_nothing_raised(ActiveRecord4116::InverseOfAssociationNotFoundError) { Face.first.horrible_polymorphic_man }
   end
 
   def test_trying_to_set_polymorphic_inverses_that_dont_exist_at_all_should_raise_an_error
     # fails because no class has the correct inverse_of for horrible_polymorphic_man
-    assert_raise(ActiveRecord::InverseOfAssociationNotFoundError) { Face.first.horrible_polymorphic_man = Man.first }
+    assert_raise(ActiveRecord4116::InverseOfAssociationNotFoundError) { Face.first.horrible_polymorphic_man = Man.first }
   end
 
   def test_trying_to_set_polymorphic_inverses_that_dont_exist_on_the_instance_being_set_should_raise_an_error
     # passes because Man does have the correct inverse_of
-    assert_nothing_raised(ActiveRecord::InverseOfAssociationNotFoundError) { Face.first.polymorphic_man = Man.first }
+    assert_nothing_raised(ActiveRecord4116::InverseOfAssociationNotFoundError) { Face.first.polymorphic_man = Man.first }
     # fails because Interest does have the correct inverse_of
-    assert_raise(ActiveRecord::InverseOfAssociationNotFoundError) { Face.first.polymorphic_man = Interest.first }
+    assert_raise(ActiveRecord4116::InverseOfAssociationNotFoundError) { Face.first.polymorphic_man = Interest.first }
   end
 end
 
 # NOTE - these tests might not be meaningful, ripped as they were from the parental_control plugin
 # which would guess the inverse rather than look for an explicit configuration option.
-class InverseMultipleHasManyInversesForSameModel < ActiveRecord::TestCase
+class InverseMultipleHasManyInversesForSameModel < ActiveRecord4116::TestCase
   fixtures :men, :interests, :zines
 
   def test_that_we_can_load_associations_that_have_the_same_reciprocal_name_from_different_models
-    assert_nothing_raised(ActiveRecord::AssociationTypeMismatch) do
+    assert_nothing_raised(ActiveRecord4116::AssociationTypeMismatch) do
       i = Interest.first
       i.zine
       i.man
@@ -683,7 +683,7 @@ class InverseMultipleHasManyInversesForSameModel < ActiveRecord::TestCase
   end
 
   def test_that_we_can_create_associations_that_have_the_same_reciprocal_name_from_different_models
-    assert_nothing_raised(ActiveRecord::AssociationTypeMismatch) do
+    assert_nothing_raised(ActiveRecord4116::AssociationTypeMismatch) do
       i = Interest.first
       i.build_zine(:title => 'Get Some in Winter! 2008')
       i.build_man(:name => 'Gordon')

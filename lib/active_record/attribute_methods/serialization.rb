@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module AttributeMethods
     module Serialization
       extend ActiveSupport::Concern
@@ -36,17 +36,17 @@ module ActiveRecord
         # ==== Example
         #
         #   # Serialize a preferences attribute.
-        #   class User < ActiveRecord::Base
+        #   class User < ActiveRecord4116::Base
         #     serialize :preferences
         #   end
         #
         #   # Serialize preferences using JSON as coder.
-        #   class User < ActiveRecord::Base
+        #   class User < ActiveRecord4116::Base
         #     serialize :preferences, JSON
         #   end
         #
         #   # Serialize preferences as Hash using YAML coder.
-        #   class User < ActiveRecord::Base
+        #   class User < ActiveRecord4116::Base
         #     serialize :preferences, Hash
         #   end
         def serialize(attr_name, class_name_or_coder = Object)
@@ -87,7 +87,7 @@ module ActiveRecord
         end
 
         def accessor
-          ActiveRecord::Store::IndifferentHashAccessor
+          ActiveRecord4116::Store::IndifferentHashAccessor
         end
       end
 

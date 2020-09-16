@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module ModelSchema
     extend ActiveSupport::Concern
 
@@ -51,8 +51,8 @@ module ActiveRecord
 
     module ClassMethods
       # Guesses the table name (in forced lower-case) based on the name of the class in the
-      # inheritance hierarchy descending directly from ActiveRecord::Base. So if the hierarchy
-      # looks like: Reply < Message < ActiveRecord::Base, then Message is used
+      # inheritance hierarchy descending directly from ActiveRecord4116::Base. So if the hierarchy
+      # looks like: Reply < Message < ActiveRecord4116::Base, then Message is used
       # to guess the table name even when called on Reply. The rules used to do the guess
       # are handled by the Inflector class in Active Support, which knows almost all common
       # English inflections. You can add new inflections in config/initializers/inflections.rb.
@@ -62,14 +62,14 @@ module ActiveRecord
       #
       # ==== Examples
       #
-      #   class Invoice < ActiveRecord::Base
+      #   class Invoice < ActiveRecord4116::Base
       #   end
       #
       #   file                  class               table_name
       #   invoice.rb            Invoice             invoices
       #
-      #   class Invoice < ActiveRecord::Base
-      #     class Lineitem < ActiveRecord::Base
+      #   class Invoice < ActiveRecord4116::Base
+      #     class Lineitem < ActiveRecord4116::Base
       #     end
       #   end
       #
@@ -77,7 +77,7 @@ module ActiveRecord
       #   invoice.rb            Invoice::Lineitem   invoice_lineitems
       #
       #   module Invoice
-      #     class Lineitem < ActiveRecord::Base
+      #     class Lineitem < ActiveRecord4116::Base
       #     end
       #   end
       #
@@ -91,7 +91,7 @@ module ActiveRecord
       #
       # You can also set your own table name explicitly:
       #
-      #   class Mouse < ActiveRecord::Base
+      #   class Mouse < ActiveRecord4116::Base
       #     self.table_name = "mice"
       #   end
       #
@@ -99,7 +99,7 @@ module ActiveRecord
       # own computation. (Possibly using <tt>super</tt> to manipulate the default
       # table name.) Example:
       #
-      #   class Post < ActiveRecord::Base
+      #   class Post < ActiveRecord4116::Base
       #     def self.table_name
       #       "special_" + super
       #     end
@@ -112,12 +112,12 @@ module ActiveRecord
 
       # Sets the table name explicitly. Example:
       #
-      #   class Project < ActiveRecord::Base
+      #   class Project < ActiveRecord4116::Base
       #     self.table_name = "project"
       #   end
       #
       # You can also just define your own <tt>self.table_name</tt> method; see
-      # the documentation for ActiveRecord::Base#table_name.
+      # the documentation for ActiveRecord4116::Base#table_name.
       def table_name=(value)
         value = value && value.to_s
 
@@ -196,7 +196,7 @@ module ActiveRecord
       # If a sequence name is not explicitly set when using PostgreSQL, it
       # will discover the sequence corresponding to your primary key for you.
       #
-      #   class Project < ActiveRecord::Base
+      #   class Project < ActiveRecord4116::Base
       #     self.sequence_name = "projectseq"   # default would have been "project_seq"
       #   end
       def sequence_name=(value)
@@ -273,7 +273,7 @@ module ActiveRecord
       # when just after creating a table you want to populate it with some default
       # values, eg:
       #
-      #  class CreateJobLevels < ActiveRecord::Migration
+      #  class CreateJobLevels < ActiveRecord4116::Migration
       #    def up
       #      create_table :job_levels do |t|
       #        t.integer :id

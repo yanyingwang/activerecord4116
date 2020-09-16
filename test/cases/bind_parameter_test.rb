@@ -1,8 +1,8 @@
 require 'cases/helper'
 require 'models/topic'
 
-module ActiveRecord
-  class BindParameterTest < ActiveRecord::TestCase
+module ActiveRecord4116
+  class BindParameterTest < ActiveRecord4116::TestCase
     fixtures :topics
 
     class LogListener
@@ -19,7 +19,7 @@ module ActiveRecord
 
     def setup
       super
-      @connection = ActiveRecord::Base.connection
+      @connection = ActiveRecord4116::Base.connection
       @listener   = LogListener.new
       @pk         = Topic.columns.find { |c| c.primary }
       ActiveSupport::Notifications.subscribe('sql.active_record', @listener)
@@ -29,7 +29,7 @@ module ActiveRecord
       ActiveSupport::Notifications.unsubscribe(@listener)
     end
 
-    if ActiveRecord::Base.connection.supports_statement_cache?
+    if ActiveRecord4116::Base.connection.supports_statement_cache?
       def test_binds_are_logged
         sub   = @connection.substitute_at(@pk, 0)
         binds = [[@pk, 1]]
@@ -74,7 +74,7 @@ module ActiveRecord
           123,
           payload)
 
-        logger = Class.new(ActiveRecord::LogSubscriber) {
+        logger = Class.new(ActiveRecord4116::LogSubscriber) {
           attr_reader :debugs
           def initialize
             super

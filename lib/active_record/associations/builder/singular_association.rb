@@ -1,6 +1,6 @@
 # This class is inherited by the has_one and belongs_to association classes
 
-module ActiveRecord::Associations::Builder
+module ActiveRecord4116::Associations::Builder
   class SingularAssociation < Association #:nodoc:
     def valid_options
       super + [:remote, :dependent, :primary_key, :inverse_of]

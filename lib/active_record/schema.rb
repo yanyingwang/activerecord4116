@@ -1,5 +1,5 @@
 
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Schema
   #
   # Allows programmers to programmatically define a schema in a portable
@@ -9,7 +9,7 @@ module ActiveRecord
   #
   # Usage:
   #
-  #   ActiveRecord::Schema.define do
+  #   ActiveRecord4116::Schema.define do
   #     create_table :authors do |t|
   #       t.string :name, null: false
   #     end
@@ -26,16 +26,16 @@ module ActiveRecord
   #     add_index :posts, :author_id
   #   end
   #
-  # ActiveRecord::Schema is only supported by database adapters that also
+  # ActiveRecord4116::Schema is only supported by database adapters that also
   # support migrations, the two features being very similar.
   class Schema < Migration
 
     # Returns the migrations paths.
     #
-    #   ActiveRecord::Schema.new.migrations_paths
+    #   ActiveRecord4116::Schema.new.migrations_paths
     #   # => ["db/migrate"] # Rails migration path by default.
     def migrations_paths
-      ActiveRecord::Migrator.migrations_paths
+      ActiveRecord4116::Migrator.migrations_paths
     end
 
     def define(info, &block) # :nodoc:
@@ -55,7 +55,7 @@ module ActiveRecord
     # The +info+ hash is optional, and if given is used to define metadata
     # about the current schema (currently, only the schema's version):
     #
-    #   ActiveRecord::Schema.define(version: 20380119000001) do
+    #   ActiveRecord4116::Schema.define(version: 20380119000001) do
     #     ...
     #   end
     def self.define(info={}, &block)

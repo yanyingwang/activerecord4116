@@ -25,7 +25,7 @@ require 'models/traffic_light'
 require 'models/treasure'
 require 'tempfile'
 
-class FixturesTest < ActiveRecord::TestCase
+class FixturesTest < ActiveRecord4116::TestCase
   self.use_instantiated_fixtures = true
   self.use_transactional_fixtures = false
 
@@ -41,7 +41,7 @@ class FixturesTest < ActiveRecord::TestCase
     FIXTURES.each do |name|
       fixtures = nil
       assert_nothing_raised { fixtures = create_fixtures(name).first }
-      assert_kind_of(ActiveRecord::FixtureSet, fixtures)
+      assert_kind_of(ActiveRecord4116::FixtureSet, fixtures)
       fixtures.each { |_name, fixture|
         fixture.each { |key, value|
           assert_match(MATCH_ATTRIBUTE_NAME, key)
@@ -57,8 +57,8 @@ class FixturesTest < ActiveRecord::TestCase
 
     dir  = File.dirname badyaml.path
     name = File.basename badyaml.path, '.yml'
-    assert_raises(ActiveRecord::Fixture::FormatError) do
-      ActiveRecord::FixtureSet.create_fixtures(dir, name)
+    assert_raises(ActiveRecord4116::Fixture::FormatError) do
+      ActiveRecord4116::FixtureSet.create_fixtures(dir, name)
     end
   ensure
     badyaml.close
@@ -66,7 +66,7 @@ class FixturesTest < ActiveRecord::TestCase
   end
 
   def test_create_fixtures
-    fixtures = ActiveRecord::FixtureSet.create_fixtures(FIXTURES_ROOT, "parrots")
+    fixtures = ActiveRecord4116::FixtureSet.create_fixtures(FIXTURES_ROOT, "parrots")
     assert Parrot.find_by_name('Curious George'), 'George is not in the database'
     assert fixtures.detect { |f| f.name == 'parrots' }, "no fixtures named 'parrots' in #{fixtures.map(&:name).inspect}"
   end
@@ -75,11 +75,11 @@ class FixturesTest < ActiveRecord::TestCase
     fixtures_array = nil
     assert_nothing_raised { fixtures_array = create_fixtures(*FIXTURES) }
     assert_kind_of(Array, fixtures_array)
-    fixtures_array.each { |fixtures| assert_kind_of(ActiveRecord::FixtureSet, fixtures) }
+    fixtures_array.each { |fixtures| assert_kind_of(ActiveRecord4116::FixtureSet, fixtures) }
   end
 
   def test_create_symbol_fixtures
-    fixtures = ActiveRecord::FixtureSet.create_fixtures(FIXTURES_ROOT, :collections, :collections => Course) { Course.connection }
+    fixtures = ActiveRecord4116::FixtureSet.create_fixtures(FIXTURES_ROOT, :collections, :collections => Course) { Course.connection }
 
     assert Course.find_by_name('Collection'), 'course is not in the database'
     assert fixtures.detect { |f| f.name == 'collections' }, "no fixtures named 'collections' in #{fixtures.map(&:name).inspect}"
@@ -87,7 +87,7 @@ class FixturesTest < ActiveRecord::TestCase
 
   def test_create_symbol_fixtures_is_deprecated
     assert_deprecated do
-      ActiveRecord::FixtureSet.create_fixtures(FIXTURES_ROOT, :collections, :collections => 'Course') { Course.connection }
+      ActiveRecord4116::FixtureSet.create_fixtures(FIXTURES_ROOT, :collections, :collections => 'Course') { Course.connection }
     end
   end
 
@@ -99,19 +99,19 @@ class FixturesTest < ActiveRecord::TestCase
 
   def test_inserts
     create_fixtures("topics")
-    first_row = ActiveRecord::Base.connection.select_one("SELECT * FROM topics WHERE author_name = 'David'")
+    first_row = ActiveRecord4116::Base.connection.select_one("SELECT * FROM topics WHERE author_name = 'David'")
     assert_equal("The First Topic", first_row["title"])
 
-    second_row = ActiveRecord::Base.connection.select_one("SELECT * FROM topics WHERE author_name = 'Mary'")
+    second_row = ActiveRecord4116::Base.connection.select_one("SELECT * FROM topics WHERE author_name = 'Mary'")
     assert_nil(second_row["author_email_address"])
   end
 
-  if ActiveRecord::Base.connection.supports_migrations?
+  if ActiveRecord4116::Base.connection.supports_migrations?
     def test_inserts_with_pre_and_suffix
       # Reset cache to make finds on the new table work
-      ActiveRecord::FixtureSet.reset_cache
+      ActiveRecord4116::FixtureSet.reset_cache
 
-      ActiveRecord::Base.connection.create_table :prefix_other_topics_suffix do |t|
+      ActiveRecord4116::Base.connection.create_table :prefix_other_topics_suffix do |t|
         t.column :title, :string
         t.column :author_name, :string
         t.column :author_email_address, :string
@@ -126,14 +126,14 @@ class FixturesTest < ActiveRecord::TestCase
       end
 
       # Store existing prefix/suffix
-      old_prefix = ActiveRecord::Base.table_name_prefix
-      old_suffix = ActiveRecord::Base.table_name_suffix
+      old_prefix = ActiveRecord4116::Base.table_name_prefix
+      old_suffix = ActiveRecord4116::Base.table_name_suffix
 
       # Set a prefix/suffix we can test against
-      ActiveRecord::Base.table_name_prefix = 'prefix_'
-      ActiveRecord::Base.table_name_suffix = '_suffix'
+      ActiveRecord4116::Base.table_name_prefix = 'prefix_'
+      ActiveRecord4116::Base.table_name_suffix = '_suffix'
 
-      other_topic_klass = Class.new(ActiveRecord::Base) do
+      other_topic_klass = Class.new(ActiveRecord4116::Base) do
         def self.name
           "OtherTopic"
         end
@@ -145,11 +145,11 @@ class FixturesTest < ActiveRecord::TestCase
       # class-level configuration helper.
       assert_not_nil topics, "Fixture data inserted, but fixture objects not returned from create"
 
-      first_row = ActiveRecord::Base.connection.select_one("SELECT * FROM prefix_other_topics_suffix WHERE author_name = 'David'")
+      first_row = ActiveRecord4116::Base.connection.select_one("SELECT * FROM prefix_other_topics_suffix WHERE author_name = 'David'")
       assert_not_nil first_row, "The prefix_other_topics_suffix table appears to be empty despite create_fixtures: the row with author_name = 'David' was not found"
       assert_equal("The First Topic", first_row["title"])
 
-      second_row = ActiveRecord::Base.connection.select_one("SELECT * FROM prefix_other_topics_suffix WHERE author_name = 'Mary'")
+      second_row = ActiveRecord4116::Base.connection.select_one("SELECT * FROM prefix_other_topics_suffix WHERE author_name = 'Mary'")
       assert_nil(second_row["author_email_address"])
 
       assert_equal :prefix_other_topics_suffix, topics.table_name.to_sym
@@ -159,10 +159,10 @@ class FixturesTest < ActiveRecord::TestCase
 
     ensure
       # Restore prefix/suffix to its previous values
-      ActiveRecord::Base.table_name_prefix = old_prefix
-      ActiveRecord::Base.table_name_suffix = old_suffix
+      ActiveRecord4116::Base.table_name_prefix = old_prefix
+      ActiveRecord4116::Base.table_name_suffix = old_suffix
 
-      ActiveRecord::Base.connection.drop_table :prefix_other_topics_suffix rescue nil
+      ActiveRecord4116::Base.connection.drop_table :prefix_other_topics_suffix rescue nil
     end
   end
 
@@ -173,9 +173,9 @@ class FixturesTest < ActiveRecord::TestCase
   end
 
   def test_logger_level_invariant
-    level = ActiveRecord::Base.logger.level
+    level = ActiveRecord4116::Base.logger.level
     create_fixtures('topics')
-    assert_equal level, ActiveRecord::Base.logger.level
+    assert_equal level, ActiveRecord4116::Base.logger.level
   end
 
   def test_instantiation
@@ -197,11 +197,11 @@ class FixturesTest < ActiveRecord::TestCase
   end
 
   def test_empty_yaml_fixture
-    assert_not_nil ActiveRecord::FixtureSet.new( Account.connection, "accounts", Account, FIXTURES_ROOT + "/naked/yml/accounts")
+    assert_not_nil ActiveRecord4116::FixtureSet.new( Account.connection, "accounts", Account, FIXTURES_ROOT + "/naked/yml/accounts")
   end
 
   def test_empty_yaml_fixture_with_a_comment_in_it
-    assert_not_nil ActiveRecord::FixtureSet.new( Account.connection, "companies", Company, FIXTURES_ROOT + "/naked/yml/companies")
+    assert_not_nil ActiveRecord4116::FixtureSet.new( Account.connection, "companies", Company, FIXTURES_ROOT + "/naked/yml/companies")
   end
 
   def test_nonexistent_fixture_file
@@ -211,19 +211,19 @@ class FixturesTest < ActiveRecord::TestCase
     assert Dir[nonexistent_fixture_path+"*"].empty?
 
     assert_raise(Errno::ENOENT) do
-      ActiveRecord::FixtureSet.new( Account.connection, "companies", Company, nonexistent_fixture_path)
+      ActiveRecord4116::FixtureSet.new( Account.connection, "companies", Company, nonexistent_fixture_path)
     end
   end
 
   def test_dirty_dirty_yaml_file
-    assert_raise(ActiveRecord::Fixture::FormatError) do
-      ActiveRecord::FixtureSet.new( Account.connection, "courses", Course, FIXTURES_ROOT + "/naked/yml/courses")
+    assert_raise(ActiveRecord4116::Fixture::FormatError) do
+      ActiveRecord4116::FixtureSet.new( Account.connection, "courses", Course, FIXTURES_ROOT + "/naked/yml/courses")
     end
   end
 
   def test_omap_fixtures
     assert_nothing_raised do
-      fixtures = ActiveRecord::FixtureSet.new(Account.connection, 'categories', Category, FIXTURES_ROOT + "/categories_ordered")
+      fixtures = ActiveRecord4116::FixtureSet.new(Account.connection, 'categories', Category, FIXTURES_ROOT + "/categories_ordered")
 
       fixtures.each.with_index do |(name, fixture), i|
         assert_equal "fixture_no_#{i}", name
@@ -256,8 +256,8 @@ class FixturesTest < ActiveRecord::TestCase
   def test_fixtures_are_set_up_with_database_env_variable
     db_url_tmp = ENV['DATABASE_URL']
     ENV['DATABASE_URL'] = "sqlite3::memory:"
-    ActiveRecord::Base.stubs(:configurations).returns({})
-    test_case = Class.new(ActiveRecord::TestCase) do
+    ActiveRecord4116::Base.stubs(:configurations).returns({})
+    test_case = Class.new(ActiveRecord4116::TestCase) do
       fixtures :accounts
 
       def test_fixtures
@@ -275,7 +275,7 @@ end
 
 class HasManyThroughFixture < ActiveSupport::TestCase
   def make_model(name)
-    Class.new(ActiveRecord::Base) { define_singleton_method(:name) { name } }
+    Class.new(ActiveRecord4116::Base) { define_singleton_method(:name) { name } }
   end
 
   def test_has_many_through_with_default_table_name
@@ -292,7 +292,7 @@ class HasManyThroughFixture < ActiveSupport::TestCase
 
     parrots = File.join FIXTURES_ROOT, 'parrots'
 
-    fs = ActiveRecord::FixtureSet.new parrot.connection, "parrots", parrot, parrots
+    fs = ActiveRecord4116::FixtureSet.new parrot.connection, "parrots", parrot, parrots
     rows = fs.table_rows
     assert_equal load_has_and_belongs_to_many['parrots_treasures'], rows['parrots_treasures']
   end
@@ -310,7 +310,7 @@ class HasManyThroughFixture < ActiveSupport::TestCase
 
     parrots = File.join FIXTURES_ROOT, 'parrots'
 
-    fs = ActiveRecord::FixtureSet.new parrot.connection, "parrots", parrot, parrots
+    fs = ActiveRecord4116::FixtureSet.new parrot.connection, "parrots", parrot, parrots
     rows = fs.table_rows
     assert_equal load_has_and_belongs_to_many['parrots_treasures'], rows['parrot_treasures']
   end
@@ -321,19 +321,19 @@ class HasManyThroughFixture < ActiveSupport::TestCase
 
     parrots = File.join FIXTURES_ROOT, 'parrots'
 
-    fs = ActiveRecord::FixtureSet.new parrot.connection, "parrots", parrot, parrots
+    fs = ActiveRecord4116::FixtureSet.new parrot.connection, "parrots", parrot, parrots
     fs.table_rows
   end
 end
 
 if Account.connection.respond_to?(:reset_pk_sequence!)
-  class FixturesResetPkSequenceTest < ActiveRecord::TestCase
+  class FixturesResetPkSequenceTest < ActiveRecord4116::TestCase
     fixtures :accounts
     fixtures :companies
 
     def setup
       @instances = [Account.new(:credit_limit => 50), Company.new(:name => 'RoR Consulting'), Course.new(name: 'Test')]
-      ActiveRecord::FixtureSet.reset_cache # make sure tables get reinitialized
+      ActiveRecord4116::FixtureSet.reset_cache # make sure tables get reinitialized
     end
 
     def test_resets_to_min_pk_with_specified_pk_and_sequence
@@ -373,7 +373,7 @@ if Account.connection.respond_to?(:reset_pk_sequence!)
   end
 end
 
-class FixturesWithoutInstantiationTest < ActiveRecord::TestCase
+class FixturesWithoutInstantiationTest < ActiveRecord4116::TestCase
   self.use_instantiated_fixtures = false
   fixtures :topics, :developers, :accounts
 
@@ -411,7 +411,7 @@ class FixturesWithoutInstantiationTest < ActiveRecord::TestCase
   end
 end
 
-class FixturesWithoutInstanceInstantiationTest < ActiveRecord::TestCase
+class FixturesWithoutInstanceInstantiationTest < ActiveRecord4116::TestCase
   self.use_instantiated_fixtures = true
   self.use_instantiated_fixtures = :no_instances
 
@@ -422,7 +422,7 @@ class FixturesWithoutInstanceInstantiationTest < ActiveRecord::TestCase
   end
 end
 
-class TransactionalFixturesTest < ActiveRecord::TestCase
+class TransactionalFixturesTest < ActiveRecord4116::TestCase
   self.use_instantiated_fixtures = true
   self.use_transactional_fixtures = true
 
@@ -438,7 +438,7 @@ class TransactionalFixturesTest < ActiveRecord::TestCase
   end
 end
 
-class MultipleFixturesTest < ActiveRecord::TestCase
+class MultipleFixturesTest < ActiveRecord4116::TestCase
   fixtures :topics
   fixtures :developers, :accounts
 
@@ -447,7 +447,7 @@ class MultipleFixturesTest < ActiveRecord::TestCase
   end
 end
 
-class SetupTest < ActiveRecord::TestCase
+class SetupTest < ActiveRecord4116::TestCase
   # fixtures :topics
 
   def setup
@@ -471,7 +471,7 @@ class SetupSubclassTest < SetupTest
 end
 
 
-class OverlappingFixturesTest < ActiveRecord::TestCase
+class OverlappingFixturesTest < ActiveRecord4116::TestCase
   fixtures :topics, :developers
   fixtures :developers, :accounts
 
@@ -480,7 +480,7 @@ class OverlappingFixturesTest < ActiveRecord::TestCase
   end
 end
 
-class ForeignKeyFixturesTest < ActiveRecord::TestCase
+class ForeignKeyFixturesTest < ActiveRecord4116::TestCase
   fixtures :fk_test_has_pk, :fk_test_has_fk
 
   # if foreign keys are implemented and fixtures
@@ -496,7 +496,7 @@ class ForeignKeyFixturesTest < ActiveRecord::TestCase
   end
 end
 
-class OverRideFixtureMethodTest < ActiveRecord::TestCase
+class OverRideFixtureMethodTest < ActiveRecord4116::TestCase
   fixtures :topics
 
   def topics(name)
@@ -511,7 +511,7 @@ class OverRideFixtureMethodTest < ActiveRecord::TestCase
   end
 end
 
-class CheckSetTableNameFixturesTest < ActiveRecord::TestCase
+class CheckSetTableNameFixturesTest < ActiveRecord4116::TestCase
   set_fixture_class :funny_jokes => Joke
   fixtures :funny_jokes
   # Set to false to blow away fixtures cache and ensure our fixtures are loaded
@@ -523,7 +523,7 @@ class CheckSetTableNameFixturesTest < ActiveRecord::TestCase
   end
 end
 
-class FixtureNameIsNotTableNameFixturesTest < ActiveRecord::TestCase
+class FixtureNameIsNotTableNameFixturesTest < ActiveRecord4116::TestCase
   set_fixture_class :items => Book
   fixtures :items
   # Set to false to blow away fixtures cache and ensure our fixtures are loaded
@@ -535,7 +535,7 @@ class FixtureNameIsNotTableNameFixturesTest < ActiveRecord::TestCase
   end
 end
 
-class FixtureNameIsNotTableNameMultipleFixturesTest < ActiveRecord::TestCase
+class FixtureNameIsNotTableNameMultipleFixturesTest < ActiveRecord4116::TestCase
   set_fixture_class :items => Book, :funny_jokes => Joke
   fixtures :items, :funny_jokes
   # Set to false to blow away fixtures cache and ensure our fixtures are loaded
@@ -551,7 +551,7 @@ class FixtureNameIsNotTableNameMultipleFixturesTest < ActiveRecord::TestCase
   end
 end
 
-class CustomConnectionFixturesTest < ActiveRecord::TestCase
+class CustomConnectionFixturesTest < ActiveRecord4116::TestCase
   set_fixture_class :courses => Course
   fixtures :courses
   self.use_transactional_fixtures = false
@@ -566,7 +566,7 @@ class CustomConnectionFixturesTest < ActiveRecord::TestCase
   end
 end
 
-class TransactionalFixturesOnCustomConnectionTest < ActiveRecord::TestCase
+class TransactionalFixturesOnCustomConnectionTest < ActiveRecord4116::TestCase
   set_fixture_class :courses => Course
   fixtures :courses
   self.use_transactional_fixtures = true
@@ -581,20 +581,20 @@ class TransactionalFixturesOnCustomConnectionTest < ActiveRecord::TestCase
   end
 end
 
-class InvalidTableNameFixturesTest < ActiveRecord::TestCase
+class InvalidTableNameFixturesTest < ActiveRecord4116::TestCase
   fixtures :funny_jokes
   # Set to false to blow away fixtures cache and ensure our fixtures are loaded
   # and thus takes into account our lack of set_fixture_class
   self.use_transactional_fixtures = false
 
   def test_raises_error
-    assert_raise ActiveRecord::FixtureClassNotFound do
+    assert_raise ActiveRecord4116::FixtureClassNotFound do
       funny_jokes(:a_joke)
     end
   end
 end
 
-class CheckEscapedYamlFixturesTest < ActiveRecord::TestCase
+class CheckEscapedYamlFixturesTest < ActiveRecord4116::TestCase
   set_fixture_class :funny_jokes => Joke
   fixtures :funny_jokes
   # Set to false to blow away fixtures cache and ensure our fixtures are loaded
@@ -607,7 +607,7 @@ class CheckEscapedYamlFixturesTest < ActiveRecord::TestCase
 end
 
 class DevelopersProject; end
-class ManyToManyFixturesWithClassDefined < ActiveRecord::TestCase
+class ManyToManyFixturesWithClassDefined < ActiveRecord4116::TestCase
   fixtures :developers_projects
 
   def test_this_should_run_cleanly
@@ -615,9 +615,9 @@ class ManyToManyFixturesWithClassDefined < ActiveRecord::TestCase
   end
 end
 
-class FixturesBrokenRollbackTest < ActiveRecord::TestCase
+class FixturesBrokenRollbackTest < ActiveRecord4116::TestCase
   def blank_setup
-    @fixture_connections = [ActiveRecord::Base.connection]
+    @fixture_connections = [ActiveRecord4116::Base.connection]
   end
   alias_method :ar_setup_fixtures, :setup_fixtures
   alias_method :setup_fixtures, :blank_setup
@@ -629,11 +629,11 @@ class FixturesBrokenRollbackTest < ActiveRecord::TestCase
   alias_method :teardown, :blank_teardown
 
   def test_no_rollback_in_teardown_unless_transaction_active
-    assert_equal 0, ActiveRecord::Base.connection.open_transactions
+    assert_equal 0, ActiveRecord4116::Base.connection.open_transactions
     assert_raise(RuntimeError) { ar_setup_fixtures }
-    assert_equal 0, ActiveRecord::Base.connection.open_transactions
+    assert_equal 0, ActiveRecord4116::Base.connection.open_transactions
     assert_nothing_raised { ar_teardown_fixtures }
-    assert_equal 0, ActiveRecord::Base.connection.open_transactions
+    assert_equal 0, ActiveRecord4116::Base.connection.open_transactions
   end
 
   private
@@ -642,7 +642,7 @@ class FixturesBrokenRollbackTest < ActiveRecord::TestCase
     end
 end
 
-class LoadAllFixturesTest < ActiveRecord::TestCase
+class LoadAllFixturesTest < ActiveRecord4116::TestCase
   def test_all_there
     self.class.fixture_path = FIXTURES_ROOT + "/all"
     self.class.fixtures :all
@@ -651,11 +651,11 @@ class LoadAllFixturesTest < ActiveRecord::TestCase
       assert_equal %w(admin/accounts admin/users developers people tasks), fixture_table_names.sort
     end
   ensure
-    ActiveRecord::FixtureSet.reset_cache
+    ActiveRecord4116::FixtureSet.reset_cache
   end
 end
 
-class LoadAllFixturesWithPathnameTest < ActiveRecord::TestCase
+class LoadAllFixturesWithPathnameTest < ActiveRecord4116::TestCase
   def test_all_there
     self.class.fixture_path = Pathname.new(FIXTURES_ROOT).join('all')
     self.class.fixtures :all
@@ -664,22 +664,22 @@ class LoadAllFixturesWithPathnameTest < ActiveRecord::TestCase
       assert_equal %w(admin/accounts admin/users developers people tasks), fixture_table_names.sort
     end
   ensure
-    ActiveRecord::FixtureSet.reset_cache
+    ActiveRecord4116::FixtureSet.reset_cache
   end
 end
 
-class FasterFixturesTest < ActiveRecord::TestCase
+class FasterFixturesTest < ActiveRecord4116::TestCase
   fixtures :categories, :authors
 
   def load_extra_fixture(name)
     fixture = create_fixtures(name).first
-    assert fixture.is_a?(ActiveRecord::FixtureSet)
+    assert fixture.is_a?(ActiveRecord4116::FixtureSet)
     @loaded_fixtures[fixture.table_name] = fixture
   end
 
   def test_cache
-    assert ActiveRecord::FixtureSet.fixture_is_cached?(ActiveRecord::Base.connection, 'categories')
-    assert ActiveRecord::FixtureSet.fixture_is_cached?(ActiveRecord::Base.connection, 'authors')
+    assert ActiveRecord4116::FixtureSet.fixture_is_cached?(ActiveRecord4116::Base.connection, 'categories')
+    assert ActiveRecord4116::FixtureSet.fixture_is_cached?(ActiveRecord4116::Base.connection, 'authors')
 
     assert_no_queries do
       create_fixtures('categories')
@@ -687,27 +687,27 @@ class FasterFixturesTest < ActiveRecord::TestCase
     end
 
     load_extra_fixture('posts')
-    assert ActiveRecord::FixtureSet.fixture_is_cached?(ActiveRecord::Base.connection, 'posts')
+    assert ActiveRecord4116::FixtureSet.fixture_is_cached?(ActiveRecord4116::Base.connection, 'posts')
     self.class.setup_fixture_accessors :posts
     assert_equal 'Welcome to the weblog', posts(:welcome).title
   end
 end
 
-class FoxyFixturesTest < ActiveRecord::TestCase
+class FoxyFixturesTest < ActiveRecord4116::TestCase
   fixtures :parrots, :parrots_pirates, :pirates, :treasures, :mateys, :ships, :computers, :developers, :"admin/accounts", :"admin/users"
 
   def test_identifies_strings
-    assert_equal(ActiveRecord::FixtureSet.identify("foo"), ActiveRecord::FixtureSet.identify("foo"))
-    assert_not_equal(ActiveRecord::FixtureSet.identify("foo"), ActiveRecord::FixtureSet.identify("FOO"))
+    assert_equal(ActiveRecord4116::FixtureSet.identify("foo"), ActiveRecord4116::FixtureSet.identify("foo"))
+    assert_not_equal(ActiveRecord4116::FixtureSet.identify("foo"), ActiveRecord4116::FixtureSet.identify("FOO"))
   end
 
   def test_identifies_symbols
-    assert_equal(ActiveRecord::FixtureSet.identify(:foo), ActiveRecord::FixtureSet.identify(:foo))
+    assert_equal(ActiveRecord4116::FixtureSet.identify(:foo), ActiveRecord4116::FixtureSet.identify(:foo))
   end
 
   def test_identifies_consistently
-    assert_equal 207281424, ActiveRecord::FixtureSet.identify(:ruby)
-    assert_equal 1066363776, ActiveRecord::FixtureSet.identify(:sapphire_2)
+    assert_equal 207281424, ActiveRecord4116::FixtureSet.identify(:ruby)
+    assert_equal 1066363776, ActiveRecord4116::FixtureSet.identify(:sapphire_2)
   end
 
   TIMESTAMP_COLUMNS = %w(created_at created_on updated_at updated_on)
@@ -823,7 +823,7 @@ class FoxyFixturesTest < ActiveRecord::TestCase
   end
 end
 
-class ActiveSupportSubclassWithFixturesTest < ActiveRecord::TestCase
+class ActiveSupportSubclassWithFixturesTest < ActiveRecord4116::TestCase
   fixtures :parrots
 
   # This seemingly useless assertion catches a bug that caused the fixtures
@@ -833,27 +833,27 @@ class ActiveSupportSubclassWithFixturesTest < ActiveRecord::TestCase
   end
 end
 
-class FixtureLoadingTest < ActiveRecord::TestCase
+class FixtureLoadingTest < ActiveRecord4116::TestCase
   def test_logs_message_for_failed_dependency_load
-    ActiveRecord::Base.logger.expects(:warn).twice
-    ActiveRecord::TestCase.try_to_load_dependency('does_not_exist')
+    ActiveRecord4116::Base.logger.expects(:warn).twice
+    ActiveRecord4116::TestCase.try_to_load_dependency('does_not_exist')
   end
 
   def test_does_not_logs_message_for_dependency_that_has_been_defined_with_set_fixture_class
-    ActiveRecord::TestCase.set_fixture_class unknown_dead_parrots: DeadParrot
-    ActiveRecord::Base.logger.expects(:warn).never
-    ActiveRecord::TestCase.try_to_load_dependency('unknown_dead_parrot')
+    ActiveRecord4116::TestCase.set_fixture_class unknown_dead_parrots: DeadParrot
+    ActiveRecord4116::Base.logger.expects(:warn).never
+    ActiveRecord4116::TestCase.try_to_load_dependency('unknown_dead_parrot')
   end
 
   def test_does_not_logs_message_for_successful_dependency_load
-    ActiveRecord::TestCase.expects(:require_dependency).with('works_out_fine')
-    ActiveRecord::Base.logger.expects(:warn).never
-    ActiveRecord::TestCase.try_to_load_dependency('works_out_fine')
+    ActiveRecord4116::TestCase.expects(:require_dependency).with('works_out_fine')
+    ActiveRecord4116::Base.logger.expects(:warn).never
+    ActiveRecord4116::TestCase.try_to_load_dependency('works_out_fine')
   end
 end
 
-class CustomNameForFixtureOrModelTest < ActiveRecord::TestCase
-  ActiveRecord::FixtureSet.reset_cache
+class CustomNameForFixtureOrModelTest < ActiveRecord4116::TestCase
+  ActiveRecord4116::FixtureSet.reset_cache
 
   set_fixture_class :randomly_named_a9         =>
                         ClassNameThatDoesNotFollowCONVENTIONS,
@@ -878,12 +878,12 @@ class CustomNameForFixtureOrModelTest < ActiveRecord::TestCase
   end
 
   def test_table_name_is_defined_in_the_model
-    assert_equal 'randomly_named_table', ActiveRecord::FixtureSet::all_loaded_fixtures["admin/randomly_named_a9"].table_name
+    assert_equal 'randomly_named_table', ActiveRecord4116::FixtureSet::all_loaded_fixtures["admin/randomly_named_a9"].table_name
     assert_equal 'randomly_named_table', Admin::ClassNameThatDoesNotFollowCONVENTIONS.table_name
   end
 end
 
-class FixturesWithDefaultScopeTest < ActiveRecord::TestCase
+class FixturesWithDefaultScopeTest < ActiveRecord4116::TestCase
   fixtures :bulbs
 
   test "inserts fixtures excluded by a default scope" do

@@ -1,8 +1,8 @@
 require 'cases/helper'
 require 'pathname'
 
-module ActiveRecord
-  class SqliteDBCreateTest < ActiveRecord::TestCase
+module ActiveRecord4116
+  class SqliteDBCreateTest < ActiveRecord4116::TestCase
     def setup
       @database      = 'db_create.sqlite3'
       @connection    = stub :connection
@@ -12,14 +12,14 @@ module ActiveRecord
       }
 
       File.stubs(:exist?).returns(false)
-      ActiveRecord::Base.stubs(:connection).returns(@connection)
-      ActiveRecord::Base.stubs(:establish_connection).returns(true)
+      ActiveRecord4116::Base.stubs(:connection).returns(@connection)
+      ActiveRecord4116::Base.stubs(:establish_connection).returns(true)
     end
 
     def test_db_checks_database_exists
       File.expects(:exist?).with(@database).returns(false)
 
-      ActiveRecord::Tasks::DatabaseTasks.create @configuration, '/rails/root'
+      ActiveRecord4116::Tasks::DatabaseTasks.create @configuration, '/rails/root'
     end
 
     def test_db_create_when_file_exists
@@ -27,36 +27,36 @@ module ActiveRecord
 
       $stderr.expects(:puts).with("#{@database} already exists")
 
-      ActiveRecord::Tasks::DatabaseTasks.create @configuration, '/rails/root'
+      ActiveRecord4116::Tasks::DatabaseTasks.create @configuration, '/rails/root'
     end
 
     def test_db_create_with_file_does_nothing
       File.stubs(:exist?).returns(true)
       $stderr.stubs(:puts).returns(nil)
 
-      ActiveRecord::Base.expects(:establish_connection).never
+      ActiveRecord4116::Base.expects(:establish_connection).never
 
-      ActiveRecord::Tasks::DatabaseTasks.create @configuration, '/rails/root'
+      ActiveRecord4116::Tasks::DatabaseTasks.create @configuration, '/rails/root'
     end
 
     def test_db_create_establishes_a_connection
-      ActiveRecord::Base.expects(:establish_connection).with(@configuration)
+      ActiveRecord4116::Base.expects(:establish_connection).with(@configuration)
 
-      ActiveRecord::Tasks::DatabaseTasks.create @configuration, '/rails/root'
+      ActiveRecord4116::Tasks::DatabaseTasks.create @configuration, '/rails/root'
     end
 
     def test_db_create_with_error_prints_message
-      ActiveRecord::Base.stubs(:establish_connection).raises(Exception)
+      ActiveRecord4116::Base.stubs(:establish_connection).raises(Exception)
 
       $stderr.stubs(:puts).returns(true)
       $stderr.expects(:puts).
         with("Couldn't create database for #{@configuration.inspect}")
 
-      ActiveRecord::Tasks::DatabaseTasks.create @configuration, '/rails/root'
+      ActiveRecord4116::Tasks::DatabaseTasks.create @configuration, '/rails/root'
     end
   end
 
-  class SqliteDBDropTest < ActiveRecord::TestCase
+  class SqliteDBDropTest < ActiveRecord4116::TestCase
     def setup
       @database      = "db_create.sqlite3"
       @path          = stub(:to_s => '/absolute/path', :absolute? => true)
@@ -73,7 +73,7 @@ module ActiveRecord
     def test_creates_path_from_database
       Pathname.expects(:new).with(@database).returns(@path)
 
-      ActiveRecord::Tasks::DatabaseTasks.drop @configuration, '/rails/root'
+      ActiveRecord4116::Tasks::DatabaseTasks.drop @configuration, '/rails/root'
     end
 
     def test_removes_file_with_absolute_path
@@ -82,7 +82,7 @@ module ActiveRecord
 
       FileUtils.expects(:rm).with('/absolute/path')
 
-      ActiveRecord::Tasks::DatabaseTasks.drop @configuration, '/rails/root'
+      ActiveRecord4116::Tasks::DatabaseTasks.drop @configuration, '/rails/root'
     end
 
     def test_generates_absolute_path_with_given_root
@@ -91,7 +91,7 @@ module ActiveRecord
       File.expects(:join).with('/rails/root', @path).
         returns('/former/relative/path')
 
-      ActiveRecord::Tasks::DatabaseTasks.drop @configuration, '/rails/root'
+      ActiveRecord4116::Tasks::DatabaseTasks.drop @configuration, '/rails/root'
     end
 
     def test_removes_file_with_relative_path
@@ -100,11 +100,11 @@ module ActiveRecord
 
       FileUtils.expects(:rm).with('/former/relative/path')
 
-      ActiveRecord::Tasks::DatabaseTasks.drop @configuration, '/rails/root'
+      ActiveRecord4116::Tasks::DatabaseTasks.drop @configuration, '/rails/root'
     end
   end
 
-  class SqliteDBCharsetTest < ActiveRecord::TestCase
+  class SqliteDBCharsetTest < ActiveRecord4116::TestCase
     def setup
       @database      = 'db_create.sqlite3'
       @connection    = stub :connection
@@ -114,17 +114,17 @@ module ActiveRecord
       }
 
       File.stubs(:exist?).returns(false)
-      ActiveRecord::Base.stubs(:connection).returns(@connection)
-      ActiveRecord::Base.stubs(:establish_connection).returns(true)
+      ActiveRecord4116::Base.stubs(:connection).returns(@connection)
+      ActiveRecord4116::Base.stubs(:establish_connection).returns(true)
     end
 
     def test_db_retrieves_charset
       @connection.expects(:encoding)
-      ActiveRecord::Tasks::DatabaseTasks.charset @configuration, '/rails/root'
+      ActiveRecord4116::Tasks::DatabaseTasks.charset @configuration, '/rails/root'
     end
   end
 
-  class SqliteDBCollationTest < ActiveRecord::TestCase
+  class SqliteDBCollationTest < ActiveRecord4116::TestCase
     def setup
       @database      = 'db_create.sqlite3'
       @connection    = stub :connection
@@ -134,18 +134,18 @@ module ActiveRecord
       }
 
       File.stubs(:exist?).returns(false)
-      ActiveRecord::Base.stubs(:connection).returns(@connection)
-      ActiveRecord::Base.stubs(:establish_connection).returns(true)
+      ActiveRecord4116::Base.stubs(:connection).returns(@connection)
+      ActiveRecord4116::Base.stubs(:establish_connection).returns(true)
     end
 
     def test_db_retrieves_collation
       assert_raise NoMethodError do
-        ActiveRecord::Tasks::DatabaseTasks.collation @configuration, '/rails/root'
+        ActiveRecord4116::Tasks::DatabaseTasks.collation @configuration, '/rails/root'
       end
     end
   end
 
-  class SqliteStructureDumpTest < ActiveRecord::TestCase
+  class SqliteStructureDumpTest < ActiveRecord4116::TestCase
     def setup
       @database      = "db_create.sqlite3"
       @configuration = {
@@ -158,7 +158,7 @@ module ActiveRecord
       dbfile   = @database
       filename = "awesome-file.sql"
 
-      ActiveRecord::Tasks::DatabaseTasks.structure_dump @configuration, filename, '/rails/root'
+      ActiveRecord4116::Tasks::DatabaseTasks.structure_dump @configuration, filename, '/rails/root'
       assert File.exist?(dbfile)
       assert File.exist?(filename)
     ensure
@@ -167,7 +167,7 @@ module ActiveRecord
     end
   end
 
-  class SqliteStructureLoadTest < ActiveRecord::TestCase
+  class SqliteStructureLoadTest < ActiveRecord4116::TestCase
     def setup
       @database      = "db_create.sqlite3"
       @configuration = {
@@ -181,7 +181,7 @@ module ActiveRecord
       filename = "awesome-file.sql"
 
       open(filename, 'w') { |f| f.puts("select datetime('now', 'localtime');") }
-      ActiveRecord::Tasks::DatabaseTasks.structure_load @configuration, filename, '/rails/root'
+      ActiveRecord4116::Tasks::DatabaseTasks.structure_load @configuration, filename, '/rails/root'
       assert File.exist?(dbfile)
     ensure
       FileUtils.rm_f(filename)

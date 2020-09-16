@@ -2,7 +2,7 @@ require 'active_support/core_ext/hash/indifferent_access'
 require 'active_support/core_ext/object/duplicable'
 require 'thread'
 
-module ActiveRecord
+module ActiveRecord4116
   module Core
     extend ActiveSupport::Concern
 
@@ -30,7 +30,7 @@ module ActiveRecord
       #     adapter: sqlite3
       #     database: db/production.sqlite3
       #
-      # ...would result in ActiveRecord::Base.configurations to look like this:
+      # ...would result in ActiveRecord4116::Base.configurations to look like this:
       #
       #   {
       #      'development' => {
@@ -43,7 +43,7 @@ module ActiveRecord
       #      }
       #   }
       def self.configurations=(config)
-        @@configurations = ActiveRecord::ConnectionHandling::MergeAndResolveDefaultUrlConfig.new(config).resolve
+        @@configurations = ActiveRecord4116::ConnectionHandling::MergeAndResolveDefaultUrlConfig.new(config).resolve
       end
       self.configurations = {}
 
@@ -64,7 +64,7 @@ module ActiveRecord
       # Specifies the format to use when dumping the database schema with Rails'
       # Rakefile. If :sql, the schema is dumped as (potentially database-
       # specific) SQL statements. If :ruby, the schema is dumped as an
-      # ActiveRecord::Schema file which can be loaded into any database that
+      # ActiveRecord4116::Schema file which can be loaded into any database that
       # supports migrations. Use :ruby if you want to have different database
       # adapters for, e.g., your development and test environments.
       mattr_accessor :schema_format, instance_writer: false
@@ -95,11 +95,11 @@ module ActiveRecord
       class_attribute :default_connection_handler, instance_writer: false
 
       def self.connection_handler
-        ActiveRecord::RuntimeRegistry.connection_handler || default_connection_handler
+        ActiveRecord4116::RuntimeRegistry.connection_handler || default_connection_handler
       end
 
       def self.connection_handler=(handler)
-        ActiveRecord::RuntimeRegistry.connection_handler = handler
+        ActiveRecord4116::RuntimeRegistry.connection_handler = handler
       end
 
       self.default_connection_handler = ConnectionAdapters::ConnectionHandler.new
@@ -141,7 +141,7 @@ module ActiveRecord
 
       # Returns an instance of <tt>Arel::Table</tt> loaded with the current table name.
       #
-      #   class Post < ActiveRecord::Base
+      #   class Post < ActiveRecord4116::Base
       #     scope :published_and_commented, -> { published.and(self.arel_table[:comments_count].gt(0)) }
       #   end
       def arel_table # :nodoc:
@@ -202,7 +202,7 @@ module ActiveRecord
     # the attributes necessary for initializing an empty model object. For
     # example:
     #
-    #   class Post < ActiveRecord::Base
+    #   class Post < ActiveRecord4116::Base
     #   end
     #
     #   post = Post.allocate
@@ -278,7 +278,7 @@ module ActiveRecord
     #
     # Example:
     #
-    #   class Post < ActiveRecord::Base
+    #   class Post < ActiveRecord4116::Base
     #   end
     #   coder = {}
     #   Post.new.encode_with(coder)
@@ -378,7 +378,7 @@ module ActiveRecord
 
     private
 
-    # Updates the attributes on this particular ActiveRecord object so that
+    # Updates the attributes on this particular ActiveRecord4116 object so that
     # if it is associated with a transaction, then the state of the AR object
     # will be updated to reflect the current state of the transaction
     #
@@ -388,13 +388,13 @@ module ActiveRecord
     # Each AR object inside of a transaction carries that transaction's
     # TransactionState.
     #
-    # This method checks to see if the ActiveRecord object's state reflects
-    # the TransactionState, and rolls back or commits the ActiveRecord object
+    # This method checks to see if the ActiveRecord4116 object's state reflects
+    # the TransactionState, and rolls back or commits the ActiveRecord4116 object
     # as appropriate.
     #
-    # Since ActiveRecord objects can be inside multiple transactions, this
+    # Since ActiveRecord4116 objects can be inside multiple transactions, this
     # method recursively goes through the parent of the TransactionState and
-    # checks if the ActiveRecord object reflects the state of the object.
+    # checks if the ActiveRecord4116 object reflects the state of the object.
     def sync_with_transaction_state
       update_attributes_from_transaction_state(@transaction_state, 0)
     end
@@ -415,7 +415,7 @@ module ActiveRecord
 
     # Under Ruby 1.9, Array#flatten will call #to_ary (recursively) on each of the elements
     # of the array, and then rescues from the possible NoMethodError. If those elements are
-    # ActiveRecord::Base's, then this triggers the various method_missing's that we have,
+    # ActiveRecord4116::Base's, then this triggers the various method_missing's that we have,
     # which significantly impacts upon performance.
     #
     # So we can avoid the method_missing hit by explicitly defining #to_ary as nil here.

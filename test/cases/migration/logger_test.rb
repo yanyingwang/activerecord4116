@@ -1,8 +1,8 @@
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   class Migration
-    class LoggerTest < ActiveRecord::TestCase
+    class LoggerTest < ActiveRecord4116::TestCase
       # mysql can't roll back ddl changes
       self.use_transactional_fixtures = false
 
@@ -15,22 +15,22 @@ module ActiveRecord
 
       def setup
         super
-        ActiveRecord::SchemaMigration.create_table
-        ActiveRecord::SchemaMigration.delete_all
+        ActiveRecord4116::SchemaMigration.create_table
+        ActiveRecord4116::SchemaMigration.delete_all
       end
 
       def teardown
         super
-        ActiveRecord::SchemaMigration.drop_table
+        ActiveRecord4116::SchemaMigration.drop_table
       end
 
       def test_migration_should_be_run_without_logger
-        previous_logger = ActiveRecord::Base.logger
-        ActiveRecord::Base.logger = nil
+        previous_logger = ActiveRecord4116::Base.logger
+        ActiveRecord4116::Base.logger = nil
         migrations = [Migration.new('a', 1), Migration.new('b', 2), Migration.new('c', 3)]
-        ActiveRecord::Migrator.new(:up, migrations).migrate
+        ActiveRecord4116::Migrator.new(:up, migrations).migrate
       ensure
-        ActiveRecord::Base.logger = previous_logger
+        ActiveRecord4116::Base.logger = previous_logger
       end
     end
   end

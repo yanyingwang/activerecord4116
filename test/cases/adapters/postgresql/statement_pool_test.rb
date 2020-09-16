@@ -1,6 +1,6 @@
 require 'cases/helper'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     class PostgreSQLAdapter < AbstractAdapter
       class InactivePGconn
@@ -13,7 +13,7 @@ module ActiveRecord
         end
       end
 
-      class StatementPoolTest < ActiveRecord::TestCase
+      class StatementPoolTest < ActiveRecord4116::TestCase
         if Process.respond_to?(:fork)
           def test_cache_is_per_pid
             cache = StatementPool.new nil, 10

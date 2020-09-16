@@ -1,4 +1,4 @@
-class Bird < ActiveRecord::Base
+class Bird < ActiveRecord4116::Base
   belongs_to :pirate
   validates_presence_of :name
 

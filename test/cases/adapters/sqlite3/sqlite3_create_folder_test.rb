@@ -2,9 +2,9 @@
 require "cases/helper"
 require 'models/owner'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
-    class SQLite3CreateFolder < ActiveRecord::TestCase
+    class SQLite3CreateFolder < ActiveRecord4116::TestCase
       def test_sqlite_creates_directory
         Dir.mktmpdir do |dir|
           dir = Pathname.new(dir)

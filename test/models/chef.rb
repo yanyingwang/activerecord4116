@@ -1,3 +1,3 @@
-class Chef < ActiveRecord::Base
+class Chef < ActiveRecord4116::Base
   belongs_to :employable, polymorphic: true
 end

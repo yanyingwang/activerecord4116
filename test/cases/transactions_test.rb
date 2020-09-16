@@ -7,7 +7,7 @@ require 'models/author'
 require 'models/post'
 require 'models/movie'
 
-class TransactionTest < ActiveRecord::TestCase
+class TransactionTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
   fixtures :topics, :developers, :authors, :posts
 
@@ -150,7 +150,7 @@ class TransactionTest < ActiveRecord::TestCase
     author = Author.find(1)
     posts_count = author.posts.size
     assert posts_count > 0
-    assert_raise(ActiveRecord::RecordInvalid) do
+    assert_raise(ActiveRecord4116::RecordInvalid) do
       author.update!(name: nil, post_ids: [])
     end
     assert_equal posts_count, author.posts(true).size
@@ -185,7 +185,7 @@ class TransactionTest < ActiveRecord::TestCase
 
       begin
         @first.save!
-      rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
+      rescue ActiveRecord4116::RecordInvalid, ActiveRecord4116::RecordNotSaved
       end
 
       assert_equal original_author_name, @first.reload.author_name
@@ -227,7 +227,7 @@ class TransactionTest < ActiveRecord::TestCase
   def test_callback_rollback_in_create_with_record_invalid_exception
     topic = Class.new(Topic) {
       def after_create_for_transaction
-        raise ActiveRecord::RecordInvalid.new(Author.new)
+        raise ActiveRecord4116::RecordInvalid.new(Author.new)
       end
     }
 
@@ -257,7 +257,7 @@ class TransactionTest < ActiveRecord::TestCase
       @first.save
       @second.save
 
-      raise ActiveRecord::Rollback
+      raise ActiveRecord4116::Rollback
     end
 
     assert @first.approved?, "First should still be changed in the objects"
@@ -405,7 +405,7 @@ class TransactionTest < ActiveRecord::TestCase
       Topic.connection.release_savepoint("another")
 
       # The savepoint is now gone and we can't remove it again.
-      assert_raises(ActiveRecord::StatementInvalid) do
+      assert_raises(ActiveRecord4116::StatementInvalid) do
         Topic.connection.release_savepoint("another")
       end
     end
@@ -436,7 +436,7 @@ class TransactionTest < ActiveRecord::TestCase
   end
 
   def test_restore_active_record_state_for_all_records_in_a_transaction
-    topic_without_callbacks = Class.new(ActiveRecord::Base) do
+    topic_without_callbacks = Class.new(ActiveRecord4116::Base) do
       self.table_name = 'topics'
     end
 
@@ -459,7 +459,7 @@ class TransactionTest < ActiveRecord::TestCase
       assert @first.persisted?, 'persisted'
       assert_not_nil @first.id
       assert @second.destroyed?, 'destroyed'
-      raise ActiveRecord::Rollback
+      raise ActiveRecord4116::Rollback
     end
 
     assert !topic_1.persisted?, 'not persisted'
@@ -498,8 +498,8 @@ class TransactionTest < ActiveRecord::TestCase
       end
     else
       Topic.transaction do
-        assert_raise(ActiveRecord::StatementInvalid) { Topic.connection.add_column('topics', 'stuff', :string) }
-        raise ActiveRecord::Rollback
+        assert_raise(ActiveRecord4116::StatementInvalid) { Topic.connection.add_column('topics', 'stuff', :string) }
+        raise ActiveRecord4116::Rollback
       end
     end
   ensure
@@ -513,7 +513,7 @@ class TransactionTest < ActiveRecord::TestCase
 
   def test_transactions_state_from_rollback
     connection = Topic.connection
-    transaction = ActiveRecord::ConnectionAdapters::ClosedTransaction.new(connection).begin
+    transaction = ActiveRecord4116::ConnectionAdapters::ClosedTransaction.new(connection).begin
 
     assert transaction.open?
     assert !transaction.state.rolledback?
@@ -527,7 +527,7 @@ class TransactionTest < ActiveRecord::TestCase
 
   def test_transactions_state_from_commit
     connection = Topic.connection
-    transaction = ActiveRecord::ConnectionAdapters::ClosedTransaction.new(connection).begin
+    transaction = ActiveRecord4116::ConnectionAdapters::ClosedTransaction.new(connection).begin
 
     assert transaction.open?
     assert !transaction.state.rolledback?
@@ -552,7 +552,7 @@ class TransactionTest < ActiveRecord::TestCase
   end
 end
 
-class TransactionsWithTransactionalFixturesTest < ActiveRecord::TestCase
+class TransactionsWithTransactionalFixturesTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = true
   fixtures :topics
 

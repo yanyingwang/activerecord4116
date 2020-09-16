@@ -2,7 +2,7 @@ require "cases/helper"
 require 'models/default'
 require 'models/entrant'
 
-class DefaultTest < ActiveRecord::TestCase
+class DefaultTest < ActiveRecord4116::TestCase
   def test_nil_defaults_for_not_null_columns
     column_defaults =
       if current_adapter?(:MysqlAdapter) && (Mysql.client_version < 50051 || (50100..50122).include?(Mysql.client_version))
@@ -39,11 +39,11 @@ class DefaultTest < ActiveRecord::TestCase
   end
 end
 
-class DefaultStringsTest < ActiveRecord::TestCase
-  class DefaultString < ActiveRecord::Base; end
+class DefaultStringsTest < ActiveRecord4116::TestCase
+  class DefaultString < ActiveRecord4116::Base; end
 
   setup do
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     @connection.create_table :default_strings do |t|
       t.string :string_col, default: "Smith"
       t.string :string_col_with_quotes, default: "O'Connor"
@@ -65,8 +65,8 @@ class DefaultStringsTest < ActiveRecord::TestCase
 end
 
 if current_adapter?(:MysqlAdapter, :Mysql2Adapter)
-  class DefaultsTestWithoutTransactionalFixtures < ActiveRecord::TestCase
-    # ActiveRecord::Base#create! (and #save and other related methods) will
+  class DefaultsTestWithoutTransactionalFixtures < ActiveRecord4116::TestCase
+    # ActiveRecord4116::Base#create! (and #save and other related methods) will
     # open a new transaction. When in transactional fixtures mode, this will
     # cause Active Record to create a new savepoint. However, since MySQL doesn't
     # support DDL transactions, creating a table will result in any created
@@ -77,12 +77,12 @@ if current_adapter?(:MysqlAdapter, :Mysql2Adapter)
     self.use_transactional_fixtures = false
 
     def using_strict(strict)
-      connection = ActiveRecord::Base.remove_connection
-      ActiveRecord::Base.establish_connection connection.merge(strict: strict)
+      connection = ActiveRecord4116::Base.remove_connection
+      ActiveRecord4116::Base.establish_connection connection.merge(strict: strict)
       yield
     ensure
-      ActiveRecord::Base.remove_connection
-      ActiveRecord::Base.establish_connection connection
+      ActiveRecord4116::Base.remove_connection
+      ActiveRecord4116::Base.establish_connection connection
     end
 
     # MySQL cannot have defaults on text/blob columns. It reports the
@@ -124,13 +124,13 @@ if current_adapter?(:MysqlAdapter, :Mysql2Adapter)
           assert_nil klass.columns_hash['null_blob'].default
           assert_nil klass.columns_hash['null_text'].default
 
-          assert_raises(ActiveRecord::StatementInvalid) { klass.create }
+          assert_raises(ActiveRecord4116::StatementInvalid) { klass.create }
         end
       end
     end
 
     def with_text_blob_not_null_table
-      klass = Class.new(ActiveRecord::Base)
+      klass = Class.new(ActiveRecord4116::Base)
       klass.table_name = 'test_mysql_text_not_null_defaults'
       klass.connection.create_table klass.table_name do |t|
         t.column :non_null_text, :text, :null => false
@@ -147,7 +147,7 @@ if current_adapter?(:MysqlAdapter, :Mysql2Adapter)
     # MySQL uses an implicit default 0 rather than NULL unless in strict mode.
     # We use an implicit NULL so schema.rb is compatible with other databases.
     def test_mysql_integer_not_null_defaults
-      klass = Class.new(ActiveRecord::Base)
+      klass = Class.new(ActiveRecord4116::Base)
       klass.table_name = 'test_integer_not_null_default_zero'
       klass.connection.create_table klass.table_name do |t|
         t.column :zero, :integer, :null => false, :default => 0
@@ -160,7 +160,7 @@ if current_adapter?(:MysqlAdapter, :Mysql2Adapter)
       assert [0, nil].include?(klass.columns_hash['omit'].default)
       assert !klass.columns_hash['omit'].null
 
-      assert_raise(ActiveRecord::StatementInvalid) { klass.create! }
+      assert_raise(ActiveRecord4116::StatementInvalid) { klass.create! }
 
       assert_nothing_raised do
         instance = klass.create!(:omit => 1)
@@ -176,7 +176,7 @@ end
 if current_adapter?(:PostgreSQLAdapter)
   class DefaultsUsingMultipleSchemasAndDomainTest < ActiveSupport::TestCase
     def setup
-      @connection = ActiveRecord::Base.connection
+      @connection = ActiveRecord4116::Base.connection
 
       @old_search_path = @connection.schema_search_path
       @connection.schema_search_path = "schema_1, pg_catalog"

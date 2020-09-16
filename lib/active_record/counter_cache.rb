@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Counter Cache
   module CounterCache
     extend ActiveSupport::Concern
@@ -23,7 +23,7 @@ module ActiveRecord
           has_many_association = _reflect_on_association(association.to_sym)
           raise ArgumentError, "'#{self.name}' has no association called '#{association}'" unless has_many_association
 
-          if has_many_association.is_a? ActiveRecord::Reflection::ThroughReflection
+          if has_many_association.is_a? ActiveRecord4116::Reflection::ThroughReflection
             has_many_association = has_many_association.through_reflection
           end
 

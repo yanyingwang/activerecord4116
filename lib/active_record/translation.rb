@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module Translation
     include ActiveModel::Translation
 
@@ -6,7 +6,7 @@ module ActiveRecord
     def lookup_ancestors #:nodoc:
       klass = self
       classes = [klass]
-      return classes if klass == ActiveRecord::Base
+      return classes if klass == ActiveRecord4116::Base
 
       while klass != klass.base_class
         classes << klass = klass.superclass

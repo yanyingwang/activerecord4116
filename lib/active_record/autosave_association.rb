@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Autosave Association
   #
   # +AutosaveAssociation+ is a module that takes care of automatically saving
@@ -35,7 +35,7 @@ module ActiveRecord
   #
   # === One-to-one Example
   #
-  #   class Post < ActiveRecord::Base
+  #   class Post < ActiveRecord4116::Base
   #     has_one :author, autosave: true
   #   end
   #
@@ -76,7 +76,7 @@ module ActiveRecord
   #
   # When <tt>:autosave</tt> is not declared new children are saved when their parent is saved:
   #
-  #   class Post < ActiveRecord::Base
+  #   class Post < ActiveRecord4116::Base
   #     has_many :comments # :autosave option is not declared
   #   end
   #
@@ -95,7 +95,7 @@ module ActiveRecord
   # When <tt>:autosave</tt> is true all children are saved, no matter whether they
   # are new records or not:
   #
-  #   class Post < ActiveRecord::Base
+  #   class Post < ActiveRecord4116::Base
   #     has_many :comments, autosave: true
   #   end
   #
@@ -344,7 +344,7 @@ module ActiveRecord
       # with mark_for_destruction.
       #
       # This all happens inside a transaction, _if_ the Transactions module is included into
-      # ActiveRecord::Base after the AutosaveAssociation module, which it does by default.
+      # ActiveRecord4116::Base after the AutosaveAssociation module, which it does by default.
       def save_collection_association(reflection)
         if association = association_instance_get(reflection.name)
           autosave = reflection.options[:autosave]
@@ -371,7 +371,7 @@ module ActiveRecord
                 saved = record.save(:validate => false)
               end
 
-              raise ActiveRecord::Rollback unless saved
+              raise ActiveRecord4116::Rollback unless saved
             end
           end
 
@@ -387,7 +387,7 @@ module ActiveRecord
       # destruction with mark_for_destruction.
       #
       # This all happens inside a transaction, _if_ the Transactions module is included into
-      # ActiveRecord::Base after the AutosaveAssociation module, which it does by default.
+      # ActiveRecord4116::Base after the AutosaveAssociation module, which it does by default.
       def save_has_one_association(reflection)
         association = association_instance_get(reflection.name)
         record      = association && association.load_target
@@ -406,7 +406,7 @@ module ActiveRecord
               end
 
               saved = record.save(:validate => !autosave)
-              raise ActiveRecord::Rollback if !saved && autosave
+              raise ActiveRecord4116::Rollback if !saved && autosave
               saved
             end
           end

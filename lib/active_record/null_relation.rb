@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-module ActiveRecord
+module ActiveRecord4116
   module NullRelation # :nodoc:
     def exec_queries
       @records = []

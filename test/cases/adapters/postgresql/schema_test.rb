@@ -1,6 +1,6 @@
 require "cases/helper"
 
-class SchemaTest < ActiveRecord::TestCase
+class SchemaTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
 
   SCHEMA_NAME = 'test_schema'
@@ -30,38 +30,38 @@ class SchemaTest < ActiveRecord::TestCase
   UNMATCHED_SEQUENCE_NAME = 'unmatched_primary_key_default_value_seq'
   UNMATCHED_PK_TABLE_NAME = 'table_with_unmatched_sequence_for_pk'
 
-  class Thing1 < ActiveRecord::Base
+  class Thing1 < ActiveRecord4116::Base
     self.table_name = "test_schema.things"
   end
 
-  class Thing2 < ActiveRecord::Base
+  class Thing2 < ActiveRecord4116::Base
     self.table_name = "test_schema2.things"
   end
 
-  class Thing3 < ActiveRecord::Base
+  class Thing3 < ActiveRecord4116::Base
     self.table_name = 'test_schema."things.table"'
   end
 
-  class Thing4 < ActiveRecord::Base
+  class Thing4 < ActiveRecord4116::Base
     self.table_name = 'test_schema."Things"'
   end
 
-  class Thing5 < ActiveRecord::Base
+  class Thing5 < ActiveRecord4116::Base
     self.table_name = 'things'
   end
 
-  class Song < ActiveRecord::Base
+  class Song < ActiveRecord4116::Base
     self.table_name = "music.songs"
     has_and_belongs_to_many :albums
   end
 
-  class Album < ActiveRecord::Base
+  class Album < ActiveRecord4116::Base
     self.table_name = "music.albums"
     has_and_belongs_to_many :songs
   end
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     @connection.execute "CREATE SCHEMA #{SCHEMA_NAME} CREATE TABLE #{TABLE_NAME} (#{COLUMNS.join(',')})"
     @connection.execute "CREATE TABLE #{SCHEMA_NAME}.\"#{TABLE_NAME}.table\" (#{COLUMNS.join(',')})"
     @connection.execute "CREATE TABLE #{SCHEMA_NAME}.\"#{CAPITALIZED_TABLE_NAME}\" (#{COLUMNS.join(',')})"
@@ -102,7 +102,7 @@ class SchemaTest < ActiveRecord::TestCase
   def test_raise_create_schema_with_existing_schema
     begin
       @connection.create_schema "test_schema3"
-      assert_raises(ActiveRecord::StatementInvalid) do
+      assert_raises(ActiveRecord4116::StatementInvalid) do
         @connection.create_schema "test_schema3"
       end
     ensure
@@ -120,7 +120,7 @@ class SchemaTest < ActiveRecord::TestCase
   end
 
   def test_habtm_table_name_with_schema
-    ActiveRecord::Base.connection.execute <<-SQL
+    ActiveRecord4116::Base.connection.execute <<-SQL
       DROP SCHEMA IF EXISTS music CASCADE;
       CREATE SCHEMA music;
       CREATE TABLE music.albums (id serial primary key);
@@ -132,17 +132,17 @@ class SchemaTest < ActiveRecord::TestCase
     Album.create
     assert_equal song, Song.includes(:albums).references(:albums).first
   ensure
-    ActiveRecord::Base.connection.execute "DROP SCHEMA music CASCADE;"
+    ActiveRecord4116::Base.connection.execute "DROP SCHEMA music CASCADE;"
   end
 
   def test_raise_drop_schema_with_nonexisting_schema
-    assert_raises(ActiveRecord::StatementInvalid) do
+    assert_raises(ActiveRecord4116::StatementInvalid) do
       @connection.drop_schema "test_schema3"
     end
   end
 
   def test_raise_wraped_exception_on_bad_prepare
-    assert_raises(ActiveRecord::StatementInvalid) do
+    assert_raises(ActiveRecord4116::StatementInvalid) do
       @connection.exec_query "select * from developers where id = ?", 'sql', [[nil, 1]]
     end
   end
@@ -259,13 +259,13 @@ class SchemaTest < ActiveRecord::TestCase
   end
 
   def test_raise_on_unquoted_schema_name
-    assert_raises(ActiveRecord::StatementInvalid) do
+    assert_raises(ActiveRecord4116::StatementInvalid) do
       with_schema_search_path '$user,public'
     end
   end
 
   def test_without_schema_search_path
-    assert_raises(ActiveRecord::StatementInvalid) { columns(TABLE_NAME) }
+    assert_raises(ActiveRecord4116::StatementInvalid) { columns(TABLE_NAME) }
   end
 
   def test_ignore_nil_schema_search_path
@@ -297,13 +297,13 @@ class SchemaTest < ActiveRecord::TestCase
   end
 
   def test_with_uppercase_index_name
-    ActiveRecord::Base.connection.execute "CREATE INDEX \"things_Index\" ON #{SCHEMA_NAME}.things (name)"
-    assert_nothing_raised { ActiveRecord::Base.connection.remove_index! "things", "#{SCHEMA_NAME}.things_Index"}
+    ActiveRecord4116::Base.connection.execute "CREATE INDEX \"things_Index\" ON #{SCHEMA_NAME}.things (name)"
+    assert_nothing_raised { ActiveRecord4116::Base.connection.remove_index! "things", "#{SCHEMA_NAME}.things_Index"}
 
-    ActiveRecord::Base.connection.execute "CREATE INDEX \"things_Index\" ON #{SCHEMA_NAME}.things (name)"
-    ActiveRecord::Base.connection.schema_search_path = SCHEMA_NAME
-    assert_nothing_raised { ActiveRecord::Base.connection.remove_index! "things", "things_Index"}
-    ActiveRecord::Base.connection.schema_search_path = "public"
+    ActiveRecord4116::Base.connection.execute "CREATE INDEX \"things_Index\" ON #{SCHEMA_NAME}.things (name)"
+    ActiveRecord4116::Base.connection.schema_search_path = SCHEMA_NAME
+    assert_nothing_raised { ActiveRecord4116::Base.connection.remove_index! "things", "things_Index"}
+    ActiveRecord4116::Base.connection.schema_search_path = "public"
   end
 
   def test_primary_key_with_schema_specified
@@ -324,7 +324,7 @@ class SchemaTest < ActiveRecord::TestCase
 
   def test_primary_key_raises_error_if_table_not_found_on_schema_search_path
     with_schema_search_path(SCHEMA2_NAME) do
-      assert_raises(ActiveRecord::StatementInvalid) do
+      assert_raises(ActiveRecord4116::StatementInvalid) do
         @connection.primary_key(PK_TABLE_NAME)
       end
     end

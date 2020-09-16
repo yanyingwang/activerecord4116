@@ -2,7 +2,7 @@ require "cases/helper"
 require "models/pirate"
 require "models/bird"
 
-class NestedAttributesWithCallbacksTest < ActiveRecord::TestCase
+class NestedAttributesWithCallbacksTest < ActiveRecord4116::TestCase
   Pirate.has_many(:birds_with_add_load,
                   :class_name => "Bird",
                   :before_add => proc { |p,b|

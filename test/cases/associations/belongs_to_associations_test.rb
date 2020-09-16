@@ -19,7 +19,7 @@ require 'models/line_item'
 require 'models/column'
 require 'models/record'
 
-class BelongsToAssociationsTest < ActiveRecord::TestCase
+class BelongsToAssociationsTest < ActiveRecord4116::TestCase
   fixtures :accounts, :companies, :developers, :projects, :topics,
            :developers_projects, :computers, :authors, :author_addresses,
            :posts, :tags, :taggings, :comments, :sponsors, :members
@@ -31,10 +31,10 @@ class BelongsToAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_belongs_to_does_not_use_order_by
-    ActiveRecord::SQLCounter.clear_log
+    ActiveRecord4116::SQLCounter.clear_log
     Client.find(3).firm
   ensure
-    assert ActiveRecord::SQLCounter.log_all.all? { |sql| /order by/i !~ sql }, 'ORDER BY was used in the query'
+    assert ActiveRecord4116::SQLCounter.log_all.all? { |sql| /order by/i !~ sql }, 'ORDER BY was used in the query'
   end
 
   def test_belongs_to_with_primary_key
@@ -63,8 +63,8 @@ class BelongsToAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_type_mismatch
-    assert_raise(ActiveRecord::AssociationTypeMismatch) { Account.find(1).firm = 1 }
-    assert_raise(ActiveRecord::AssociationTypeMismatch) { Account.find(1).firm = Project.find(1) }
+    assert_raise(ActiveRecord4116::AssociationTypeMismatch) { Account.find(1).firm = 1 }
+    assert_raise(ActiveRecord4116::AssociationTypeMismatch) { Account.find(1).firm = Project.find(1) }
   end
 
   def test_natural_assignment
@@ -147,12 +147,12 @@ class BelongsToAssociationsTest < ActiveRecord::TestCase
 
   def test_building_the_belonging_object_with_an_invalid_type
     account = Account.new
-    assert_raise(ActiveRecord::SubclassNotFound) { account.build_firm(:type => "InvalidType") }
+    assert_raise(ActiveRecord4116::SubclassNotFound) { account.build_firm(:type => "InvalidType") }
   end
 
   def test_building_the_belonging_object_with_an_unrelated_type
     account = Account.new
-    assert_raise(ActiveRecord::SubclassNotFound) { account.build_firm(:type => "Account") }
+    assert_raise(ActiveRecord4116::SubclassNotFound) { account.build_firm(:type => "Account") }
   end
 
   def test_building_the_belonging_object_with_primary_key
@@ -174,7 +174,7 @@ class BelongsToAssociationsTest < ActiveRecord::TestCase
 
   def test_failing_create!
     client  = Client.create!(:name => "Jimmy")
-    assert_raise(ActiveRecord::RecordInvalid) { client.create_account! }
+    assert_raise(ActiveRecord4116::RecordInvalid) { client.create_account! }
     assert_not_nil client.account
     assert client.account.new_record?
   end
@@ -538,7 +538,7 @@ class BelongsToAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_cant_save_readonly_association
-    assert_raise(ActiveRecord::ReadOnlyRecord) { companies(:first_client).readonly_firm.save! }
+    assert_raise(ActiveRecord4116::ReadOnlyRecord) { companies(:first_client).readonly_firm.save! }
     assert companies(:first_client).readonly_firm.readonly?
   end
 
@@ -894,7 +894,7 @@ class BelongsToAssociationsTest < ActiveRecord::TestCase
   test 'dangerous association name raises ArgumentError' do
     [:errors, 'errors', :save, 'save'].each do |name|
       assert_raises(ArgumentError, "Association #{name} should not be allowed") do
-        Class.new(ActiveRecord::Base) do
+        Class.new(ActiveRecord4116::Base) do
           belongs_to name
         end
       end

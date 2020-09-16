@@ -2,7 +2,7 @@ require 'active_support/core_ext/enumerable'
 require 'mutex_m'
 require 'thread_safe'
 
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Attribute Methods
   module AttributeMethods
     extend ActiveSupport::Concern
@@ -41,7 +41,7 @@ module ActiveRecord
         @method_cache.compute_if_absent(name) do
           safe_name = name.unpack('h*').first
           temp_method = "__temp__#{safe_name}"
-          ActiveRecord::AttributeMethods::AttrNames.set_name_cache safe_name, name
+          ActiveRecord4116::AttributeMethods::AttrNames.set_name_cache safe_name, name
           @module.module_eval method_body(temp_method, safe_name), __FILE__, __LINE__
           @module.instance_method temp_method
         end
@@ -89,17 +89,17 @@ module ActiveRecord
         end
       end
 
-      # Raises a <tt>ActiveRecord::DangerousAttributeError</tt> exception when an
+      # Raises a <tt>ActiveRecord4116::DangerousAttributeError</tt> exception when an
       # \Active \Record method is defined in the model, otherwise +false+.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     def save
       #       'already defined by Active Record'
       #     end
       #   end
       #
       #   Person.instance_method_already_implemented?(:save)
-      #   # => ActiveRecord::DangerousAttributeError: save is defined by ActiveRecord
+      #   # => ActiveRecord4116::DangerousAttributeError: save is defined by ActiveRecord4116
       #
       #   Person.instance_method_already_implemented?(:name)
       #   # => false
@@ -168,7 +168,7 @@ module ActiveRecord
       # Returns +true+ if +attribute+ is an attribute method and table exists,
       # +false+ otherwise.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #   end
       #
       #   Person.attribute_method?('name')   # => true
@@ -181,7 +181,7 @@ module ActiveRecord
       # Returns an array of column names as strings if it's not an abstract class and
       # table exists. Otherwise it returns an empty array.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #   end
       #
       #   Person.attribute_names
@@ -219,7 +219,7 @@ module ActiveRecord
     # which will all return +true+. It also define the attribute methods if they have
     # not been generated.
     #
-    #   class Person < ActiveRecord::Base
+    #   class Person < ActiveRecord4116::Base
     #   end
     #
     #   person = Person.new
@@ -251,7 +251,7 @@ module ActiveRecord
 
     # Returns +true+ if the given attribute is in the attributes hash, otherwise +false+.
     #
-    #   class Person < ActiveRecord::Base
+    #   class Person < ActiveRecord4116::Base
     #   end
     #
     #   person = Person.new
@@ -264,7 +264,7 @@ module ActiveRecord
 
     # Returns an array of names for the attributes available on this object.
     #
-    #   class Person < ActiveRecord::Base
+    #   class Person < ActiveRecord4116::Base
     #   end
     #
     #   person = Person.new
@@ -276,7 +276,7 @@ module ActiveRecord
 
     # Returns a hash of all the attributes with their names as keys and the values of the attributes as values.
     #
-    #   class Person < ActiveRecord::Base
+    #   class Person < ActiveRecord4116::Base
     #   end
     #
     #   person = Person.create(name: 'Francesco', age: 22)
@@ -330,7 +330,7 @@ module ActiveRecord
     # to objects that respond to <tt>empty?</tt>, most notably Strings). Otherwise, +false+.
     # Note that it always returns +true+ with boolean attributes.
     #
-    #   class Task < ActiveRecord::Base
+    #   class Task < ActiveRecord4116::Base
     #   end
     #
     #   person = Task.new(title: '', is_done: false)
@@ -348,12 +348,12 @@ module ActiveRecord
     # Returns the column object for the named attribute. Returns +nil+ if the
     # named attribute not exists.
     #
-    #   class Person < ActiveRecord::Base
+    #   class Person < ActiveRecord4116::Base
     #   end
     #
     #   person = Person.new
     #   person.column_for_attribute(:name) # the result depends on the ConnectionAdapter
-    #   # => #<ActiveRecord::ConnectionAdapters::SQLite3Column:0x007ff4ab083980 @name="name", @sql_type="varchar(255)", @null=true, ...>
+    #   # => #<ActiveRecord4116::ConnectionAdapters::SQLite3Column:0x007ff4ab083980 @name="name", @sql_type="varchar(255)", @null=true, ...>
     #
     #   person.column_for_attribute(:nothing)
     #   # => nil
@@ -368,7 +368,7 @@ module ActiveRecord
     #
     # Alias for the <tt>read_attribute</tt> method.
     #
-    #   class Person < ActiveRecord::Base
+    #   class Person < ActiveRecord4116::Base
     #     belongs_to :organization
     #   end
     #
@@ -386,7 +386,7 @@ module ActiveRecord
     # Updates the attribute identified by <tt>attr_name</tt> with the specified +value+.
     # (Alias for the protected <tt>write_attribute</tt> method).
     #
-    #   class Person < ActiveRecord::Base
+    #   class Person < ActiveRecord4116::Base
     #   end
     #
     #   person = Person.new

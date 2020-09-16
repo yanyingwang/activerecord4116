@@ -25,7 +25,7 @@ module AssertRaiseWithMessage
   end
 end
 
-class TestNestedAttributesInGeneral < ActiveRecord::TestCase
+class TestNestedAttributesInGeneral < ActiveRecord4116::TestCase
   include AssertRaiseWithMessage
 
   def teardown
@@ -33,11 +33,11 @@ class TestNestedAttributesInGeneral < ActiveRecord::TestCase
   end
 
   def test_base_should_have_an_empty_nested_attributes_options
-    assert_equal Hash.new, ActiveRecord::Base.nested_attributes_options
+    assert_equal Hash.new, ActiveRecord4116::Base.nested_attributes_options
   end
 
   def test_should_add_a_proc_to_nested_attributes_options
-    assert_equal ActiveRecord::NestedAttributes::ClassMethods::REJECT_ALL_BLANK_PROC,
+    assert_equal ActiveRecord4116::NestedAttributes::ClassMethods::REJECT_ALL_BLANK_PROC,
                  Pirate.nested_attributes_options[:birds_with_reject_all_blank][:reject_if]
 
     [:parrots, :birds].each do |name|
@@ -84,7 +84,7 @@ class TestNestedAttributesInGeneral < ActiveRecord::TestCase
 
     pirate.update(ship_attributes: { '_destroy' => true, :id => ship.id })
 
-    assert_nothing_raised(ActiveRecord::RecordNotFound) { pirate.ship.reload }
+    assert_nothing_raised(ActiveRecord4116::RecordNotFound) { pirate.ship.reload }
   end
 
   def test_a_model_should_respond_to_underscore_destroy_and_return_if_it_is_marked_for_destruction
@@ -188,7 +188,7 @@ class TestNestedAttributesInGeneral < ActiveRecord::TestCase
 
     pirate = Pirate.new(:catchphrase => "Stop wastin' me time")
     pirate.ship_attributes = { :id => "" }
-    assert_nothing_raised(ActiveRecord::RecordNotFound) { pirate.save! }
+    assert_nothing_raised(ActiveRecord4116::RecordNotFound) { pirate.save! }
   end
 
   def test_first_and_array_index_zero_methods_return_the_same_value_when_nested_attributes_are_set_to_update_existing_record
@@ -225,7 +225,7 @@ class TestNestedAttributesInGeneral < ActiveRecord::TestCase
   end
 end
 
-class TestNestedAttributesOnAHasOneAssociation < ActiveRecord::TestCase
+class TestNestedAttributesOnAHasOneAssociation < ActiveRecord4116::TestCase
   include AssertRaiseWithMessage
 
   def setup
@@ -288,7 +288,7 @@ class TestNestedAttributesOnAHasOneAssociation < ActiveRecord::TestCase
   end
 
   def test_should_raise_RecordNotFound_if_an_id_is_given_but_doesnt_return_a_record
-    assert_raise_with_message ActiveRecord::RecordNotFound, "Couldn't find Ship with ID=1234567890 for Pirate with ID=#{@pirate.id}" do
+    assert_raise_with_message ActiveRecord4116::RecordNotFound, "Couldn't find Ship with ID=1234567890 for Pirate with ID=#{@pirate.id}" do
       @pirate.ship_attributes = { :id => 1234567890 }
     end
   end
@@ -315,7 +315,7 @@ class TestNestedAttributesOnAHasOneAssociation < ActiveRecord::TestCase
       @pirate.update(ship_attributes: { id: ship.id, _destroy: truth })
 
       assert_nil @pirate.reload.ship
-      assert_raise(ActiveRecord::RecordNotFound) { Ship.find(ship.id) }
+      assert_raise(ActiveRecord4116::RecordNotFound) { Ship.find(ship.id) }
     end
   end
 
@@ -408,14 +408,14 @@ class TestNestedAttributesOnAHasOneAssociation < ActiveRecord::TestCase
     @pirate.update(update_only_ship_attributes: { name: 'Mayflower', id: @ship.id, _destroy: true })
 
     assert_nil @pirate.reload.ship
-    assert_raise(ActiveRecord::RecordNotFound) { Ship.find(@ship.id) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Ship.find(@ship.id) }
 
     Pirate.accepts_nested_attributes_for :update_only_ship, :update_only => true, :allow_destroy => false
   end
 
 end
 
-class TestNestedAttributesOnABelongsToAssociation < ActiveRecord::TestCase
+class TestNestedAttributesOnABelongsToAssociation < ActiveRecord4116::TestCase
   include AssertRaiseWithMessage
 
   def setup
@@ -473,7 +473,7 @@ class TestNestedAttributesOnABelongsToAssociation < ActiveRecord::TestCase
   end
 
   def test_should_raise_RecordNotFound_if_an_id_is_given_but_doesnt_return_a_record
-    assert_raise_with_message ActiveRecord::RecordNotFound, "Couldn't find Pirate with ID=1234567890 for Ship with ID=#{@ship.id}" do
+    assert_raise_with_message ActiveRecord4116::RecordNotFound, "Couldn't find Pirate with ID=1234567890 for Ship with ID=#{@ship.id}" do
       @ship.pirate_attributes = { :id => 1234567890 }
     end
   end
@@ -497,7 +497,7 @@ class TestNestedAttributesOnABelongsToAssociation < ActiveRecord::TestCase
     [1, '1', true, 'true'].each do |truth|
       pirate = @ship.reload.create_pirate(catchphrase: 'Arr')
       @ship.update(pirate_attributes: { id: pirate.id, _destroy: truth })
-      assert_raise(ActiveRecord::RecordNotFound) { pirate.reload }
+      assert_raise(ActiveRecord4116::RecordNotFound) { pirate.reload }
     end
   end
 
@@ -518,7 +518,7 @@ class TestNestedAttributesOnABelongsToAssociation < ActiveRecord::TestCase
   def test_should_not_destroy_an_existing_record_if_destroy_is_not_truthy
     [nil, '0', 0, 'false', false].each do |not_truth|
       @ship.update(pirate_attributes: { id: @ship.pirate.id, _destroy: not_truth })
-      assert_nothing_raised(ActiveRecord::RecordNotFound) { @ship.pirate.reload }
+      assert_nothing_raised(ActiveRecord4116::RecordNotFound) { @ship.pirate.reload }
     end
   end
 
@@ -526,7 +526,7 @@ class TestNestedAttributesOnABelongsToAssociation < ActiveRecord::TestCase
     Ship.accepts_nested_attributes_for :pirate, :allow_destroy => false, :reject_if => proc { |attributes| attributes.empty? }
 
     @ship.update(pirate_attributes: { id: @ship.pirate.id, _destroy: '1' })
-    assert_nothing_raised(ActiveRecord::RecordNotFound) { @ship.pirate.reload }
+    assert_nothing_raised(ActiveRecord4116::RecordNotFound) { @ship.pirate.reload }
   ensure
     Ship.accepts_nested_attributes_for :pirate, :allow_destroy => true, :reject_if => proc { |attributes| attributes.empty? }
   end
@@ -543,9 +543,9 @@ class TestNestedAttributesOnABelongsToAssociation < ActiveRecord::TestCase
     pirate = @ship.pirate
 
     @ship.attributes = { :pirate_attributes => { :id => pirate.id, '_destroy' => true } }
-    assert_nothing_raised(ActiveRecord::RecordNotFound) { Pirate.find(pirate.id) }
+    assert_nothing_raised(ActiveRecord4116::RecordNotFound) { Pirate.find(pirate.id) }
     @ship.save
-    assert_raise(ActiveRecord::RecordNotFound) { Pirate.find(pirate.id) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Pirate.find(pirate.id) }
   end
 
   def test_should_automatically_enable_autosave_on_the_association
@@ -585,7 +585,7 @@ class TestNestedAttributesOnABelongsToAssociation < ActiveRecord::TestCase
 
     @ship.update(update_only_pirate_attributes: { catchphrase: 'Arr', id: @pirate.id, _destroy: true })
 
-    assert_raise(ActiveRecord::RecordNotFound) { @pirate.reload }
+    assert_raise(ActiveRecord4116::RecordNotFound) { @pirate.reload }
 
     Ship.accepts_nested_attributes_for :update_only_pirate, :update_only => true, :allow_destroy => false
   end
@@ -683,7 +683,7 @@ module NestedAttributesOnACollectionAssociationTests
   end
 
   def test_should_raise_RecordNotFound_if_an_id_is_given_but_doesnt_return_a_record
-    assert_raise_with_message ActiveRecord::RecordNotFound, "Couldn't find #{@child_1.class.name} with ID=1234567890 for Pirate with ID=#{@pirate.id}" do
+    assert_raise_with_message ActiveRecord4116::RecordNotFound, "Couldn't find #{@child_1.class.name} with ID=1234567890 for Pirate with ID=#{@pirate.id}" do
       @pirate.attributes = { association_getter => [{ :id => 1234567890 }] }
     end
   end
@@ -702,7 +702,7 @@ module NestedAttributesOnACollectionAssociationTests
   end
 
   def test_should_not_assign_destroy_key_to_a_record
-    assert_nothing_raised ActiveRecord::UnknownAttributeError do
+    assert_nothing_raised ActiveRecord4116::UnknownAttributeError do
       @pirate.send(association_setter, { 'foo' => { '_destroy' => '0' }})
     end
   end
@@ -838,7 +838,7 @@ module NestedAttributesOnACollectionAssociationTests
   end
 end
 
-class TestNestedAttributesOnAHasManyAssociation < ActiveRecord::TestCase
+class TestNestedAttributesOnAHasManyAssociation < ActiveRecord4116::TestCase
   def setup
     @association_type = :has_many
     @association_name = :birds
@@ -860,7 +860,7 @@ class TestNestedAttributesOnAHasManyAssociation < ActiveRecord::TestCase
   include NestedAttributesOnACollectionAssociationTests
 end
 
-class TestNestedAttributesOnAHasAndBelongsToManyAssociation < ActiveRecord::TestCase
+class TestNestedAttributesOnAHasAndBelongsToManyAssociation < ActiveRecord4116::TestCase
   def setup
     @association_type = :has_and_belongs_to_many
     @association_name = :parrots
@@ -898,7 +898,7 @@ module NestedAttributesLimitTests
   end
 
   def test_limit_with_exceeding_records
-    assert_raises(ActiveRecord::NestedAttributes::TooManyRecords) do
+    assert_raises(ActiveRecord4116::NestedAttributes::TooManyRecords) do
       @pirate.attributes = { :parrots_attributes => { 'foo' => { :name => 'Lovely Day' },
                                                       'bar' => { :name => 'Blown Away' },
                                                       'car' => { :name => 'The Happening' }} }
@@ -906,7 +906,7 @@ module NestedAttributesLimitTests
   end
 end
 
-class TestNestedAttributesLimitNumeric < ActiveRecord::TestCase
+class TestNestedAttributesLimitNumeric < ActiveRecord4116::TestCase
   def setup
     Pirate.accepts_nested_attributes_for :parrots, :limit => 2
 
@@ -916,7 +916,7 @@ class TestNestedAttributesLimitNumeric < ActiveRecord::TestCase
   include NestedAttributesLimitTests
 end
 
-class TestNestedAttributesLimitSymbol < ActiveRecord::TestCase
+class TestNestedAttributesLimitSymbol < ActiveRecord4116::TestCase
   def setup
     Pirate.accepts_nested_attributes_for :parrots, :limit => :parrots_limit
 
@@ -926,7 +926,7 @@ class TestNestedAttributesLimitSymbol < ActiveRecord::TestCase
   include NestedAttributesLimitTests
 end
 
-class TestNestedAttributesLimitProc < ActiveRecord::TestCase
+class TestNestedAttributesLimitProc < ActiveRecord4116::TestCase
   def setup
     Pirate.accepts_nested_attributes_for :parrots, :limit => proc { 2 }
 
@@ -936,7 +936,7 @@ class TestNestedAttributesLimitProc < ActiveRecord::TestCase
   include NestedAttributesLimitTests
 end
 
-class TestNestedAttributesWithNonStandardPrimaryKeys < ActiveRecord::TestCase
+class TestNestedAttributesWithNonStandardPrimaryKeys < ActiveRecord4116::TestCase
   fixtures :owners, :pets
 
   def setup
@@ -971,7 +971,7 @@ class TestNestedAttributesWithNonStandardPrimaryKeys < ActiveRecord::TestCase
 
 end
 
-class TestHasOneAutosaveAssociationWhichItselfHasAutosaveAssociations < ActiveRecord::TestCase
+class TestHasOneAutosaveAssociationWhichItselfHasAutosaveAssociations < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false unless supports_savepoints?
 
   def setup
@@ -1011,7 +1011,7 @@ class TestHasOneAutosaveAssociationWhichItselfHasAutosaveAssociations < ActiveRe
   end
 end
 
-class TestHasManyAutosaveAssociationWhichItselfHasAutosaveAssociations < ActiveRecord::TestCase
+class TestHasManyAutosaveAssociationWhichItselfHasAutosaveAssociations < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false unless supports_savepoints?
 
   def setup

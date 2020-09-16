@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module Validations
     class PresenceValidator < ActiveModel::Validations::PresenceValidator # :nodoc:
       def validate(record)
@@ -21,7 +21,7 @@ module ActiveRecord
       # associated object is not marked for destruction. Happens by default
       # on save.
       #
-      #   class Person < ActiveRecord::Base
+      #   class Person < ActiveRecord4116::Base
       #     has_one :face
       #     validates_presence_of :face
       #   end

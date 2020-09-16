@@ -1,6 +1,6 @@
 require 'active_support/core_ext/hash/indifferent_access'
 
-module ActiveRecord
+module ActiveRecord4116
   # Store gives you a thin wrapper around serialize for the purpose of storing hashes in a single column.
   # It's like a simple key/value store baked into your record when you don't care about being able to
   # query that store outside the context of a single record.
@@ -22,7 +22,7 @@ module ActiveRecord
   #
   # Examples:
   #
-  #   class User < ActiveRecord::Base
+  #   class User < ActiveRecord4116::Base
   #     store :settings, accessors: [ :color, :homepage ], coder: JSON
   #   end
   #
@@ -50,7 +50,7 @@ module ActiveRecord
   # the default accessors (using the same name as the attribute) and calling <tt>super</tt>
   # to actually change things.
   #
-  #   class Song < ActiveRecord::Base
+  #   class Song < ActiveRecord4116::Base
   #     # Uses a stored integer to hold the volume adjustment of the song
   #     store :settings, accessors: [:volume_adjustment]
   #
@@ -161,7 +161,7 @@ module ActiveRecord
         end
       end
 
-      class IndifferentHashAccessor < ActiveRecord::Store::HashAccessor
+      class IndifferentHashAccessor < ActiveRecord4116::Store::HashAccessor
         def self.prepare(object, store_attribute)
           attribute = object.send(store_attribute)
           unless attribute.is_a?(ActiveSupport::HashWithIndifferentAccess)
@@ -178,7 +178,7 @@ module ActiveRecord
           if coder_or_class_name.respond_to?(:load) && coder_or_class_name.respond_to?(:dump)
             coder_or_class_name
           else
-            ActiveRecord::Coders::YAMLColumn.new(coder_or_class_name || Object)
+            ActiveRecord4116::Coders::YAMLColumn.new(coder_or_class_name || Object)
           end
       end
 

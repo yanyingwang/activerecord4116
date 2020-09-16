@@ -7,7 +7,7 @@ require 'models/project'
 require 'models/reader'
 require 'models/person'
 
-class ReadOnlyTest < ActiveRecord::TestCase
+class ReadOnlyTest < ActiveRecord4116::TestCase
   fixtures :authors, :posts, :comments, :developers, :projects, :developers_projects, :people, :readers
 
   def test_cant_save_readonly_record
@@ -22,9 +22,9 @@ class ReadOnlyTest < ActiveRecord::TestCase
       assert !dev.save
       dev.name = 'Forbidden.'
     end
-    assert_raise(ActiveRecord::ReadOnlyRecord) { dev.save  }
-    assert_raise(ActiveRecord::ReadOnlyRecord) { dev.save! }
-    assert_raise(ActiveRecord::ReadOnlyRecord) { dev.destroy }
+    assert_raise(ActiveRecord4116::ReadOnlyRecord) { dev.save  }
+    assert_raise(ActiveRecord4116::ReadOnlyRecord) { dev.save! }
+    assert_raise(ActiveRecord4116::ReadOnlyRecord) { dev.destroy }
   end
 
 

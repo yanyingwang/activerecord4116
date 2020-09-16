@@ -1,43 +1,43 @@
 require "cases/helper"
 
-class PostgresqlArray < ActiveRecord::Base
+class PostgresqlArray < ActiveRecord4116::Base
 end
 
-class PostgresqlTsvector < ActiveRecord::Base
+class PostgresqlTsvector < ActiveRecord4116::Base
 end
 
-class PostgresqlMoney < ActiveRecord::Base
+class PostgresqlMoney < ActiveRecord4116::Base
 end
 
-class PostgresqlNumber < ActiveRecord::Base
+class PostgresqlNumber < ActiveRecord4116::Base
 end
 
-class PostgresqlTime < ActiveRecord::Base
+class PostgresqlTime < ActiveRecord4116::Base
 end
 
-class PostgresqlNetworkAddress < ActiveRecord::Base
+class PostgresqlNetworkAddress < ActiveRecord4116::Base
 end
 
-class PostgresqlBitString < ActiveRecord::Base
+class PostgresqlBitString < ActiveRecord4116::Base
 end
 
-class PostgresqlOid < ActiveRecord::Base
+class PostgresqlOid < ActiveRecord4116::Base
 end
 
-class PostgresqlTimestampWithZone < ActiveRecord::Base
+class PostgresqlTimestampWithZone < ActiveRecord4116::Base
 end
 
-class PostgresqlUUID < ActiveRecord::Base
+class PostgresqlUUID < ActiveRecord4116::Base
 end
 
-class PostgresqlLtree < ActiveRecord::Base
+class PostgresqlLtree < ActiveRecord4116::Base
 end
 
-class PostgresqlDataTypeTest < ActiveRecord::TestCase
+class PostgresqlDataTypeTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     @connection.execute("set lc_monetary = 'C'")
 
     @connection.execute("INSERT INTO postgresql_arrays (id, commission_by_quarter, nicknames) VALUES (1, '{35000,21000,18000,17000}', '{foo,bar,baz}')")
@@ -279,7 +279,7 @@ class PostgresqlDataTypeTest < ActiveRecord::TestCase
   def test_invalid_hex_string
     new_bit_string = 'FF'
     @first_bit_string.bit_string = new_bit_string
-    assert_raise(ActiveRecord::StatementInvalid) { assert @first_bit_string.save }
+    assert_raise(ActiveRecord4116::StatementInvalid) { assert @first_bit_string.save }
   end
 
   def test_invalid_network_address

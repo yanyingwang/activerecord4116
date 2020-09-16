@@ -1,9 +1,9 @@
 require "cases/helper"
 require 'models/company'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
-    class ColumnTest < ActiveRecord::TestCase
+    class ColumnTest < ActiveRecord4116::TestCase
       def test_type_cast_boolean
         column = Column.new("field", nil, "boolean")
         assert column.type_cast('').nil?

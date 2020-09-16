@@ -1,9 +1,9 @@
 require 'active_support/core_ext/string/conversions'
 
-module ActiveRecord
+module ActiveRecord4116
   module Associations
-    # Keeps track of table aliases for ActiveRecord::Associations::ClassMethods::JoinDependency and
-    # ActiveRecord::Associations::ThroughAssociationScope
+    # Keeps track of table aliases for ActiveRecord4116::Associations::ClassMethods::JoinDependency and
+    # ActiveRecord4116::Associations::ThroughAssociationScope
     class AliasTracker # :nodoc:
       attr_reader :aliases, :connection
 

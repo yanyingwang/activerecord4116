@@ -1,21 +1,21 @@
 require "cases/helper"
 
-class Mysql2BooleanTest < ActiveRecord::TestCase
+class Mysql2BooleanTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
 
-  class BooleanType < ActiveRecord::Base
+  class BooleanType < ActiveRecord4116::Base
     self.table_name = "mysql_booleans"
   end
 
   setup do
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     @connection.create_table("mysql_booleans") do |t|
       t.boolean "archived"
       t.string "published", limit: 1
     end
     BooleanType.reset_column_information
 
-    @emulate_booleans = ActiveRecord::ConnectionAdapters::Mysql2Adapter.emulate_booleans
+    @emulate_booleans = ActiveRecord4116::ConnectionAdapters::Mysql2Adapter.emulate_booleans
   end
 
   teardown do
@@ -85,7 +85,7 @@ class Mysql2BooleanTest < ActiveRecord::TestCase
   end
 
   def emulate_booleans(value)
-    ActiveRecord::ConnectionAdapters::Mysql2Adapter.emulate_booleans = value
+    ActiveRecord4116::ConnectionAdapters::Mysql2Adapter.emulate_booleans = value
     BooleanType.reset_column_information
   end
 end

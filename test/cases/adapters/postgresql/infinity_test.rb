@@ -1,13 +1,13 @@
 require "cases/helper"
 
-class PostgresqlInfinityTest < ActiveRecord::TestCase
+class PostgresqlInfinityTest < ActiveRecord4116::TestCase
   include InTimeZone
 
-  class PostgresqlInfinity < ActiveRecord::Base
+  class PostgresqlInfinity < ActiveRecord4116::Base
   end
 
   setup do
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     @connection.create_table(:postgresql_infinities, force: true) do |t|
       t.float :float
       t.datetime :datetime

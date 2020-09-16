@@ -1,7 +1,7 @@
 require "cases/helper"
 
-module ActiveRecord
-  class ResultTest < ActiveRecord::TestCase
+module ActiveRecord4116
+  class ResultTest < ActiveRecord4116::TestCase
     def result
       Result.new(['col_1', 'col_2'], [
         ['row 1 col 1', 'row 1 col 2'],

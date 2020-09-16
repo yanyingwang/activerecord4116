@@ -1,13 +1,13 @@
 require 'cases/helper'
 
-module ActiveRecord
+module ActiveRecord4116
   class Migration
-    class IndexTest < ActiveRecord::TestCase
+    class IndexTest < ActiveRecord4116::TestCase
       attr_reader :connection, :table_name
 
       def setup
         super
-        @connection = ActiveRecord::Base.connection
+        @connection = ActiveRecord4116::Base.connection
         @table_name = :testings
 
         connection.create_table table_name do |t|
@@ -24,7 +24,7 @@ module ActiveRecord
       def teardown
         super
         connection.drop_table :testings rescue nil
-        ActiveRecord::Base.primary_key_prefix_type = nil
+        ActiveRecord4116::Base.primary_key_prefix_type = nil
       end
 
       unless current_adapter?(:OpenBaseAdapter)

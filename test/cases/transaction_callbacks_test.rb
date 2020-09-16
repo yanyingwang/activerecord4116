@@ -3,11 +3,11 @@ require 'models/owner'
 require 'models/pet'
 require 'models/topic'
 
-class TransactionCallbacksTest < ActiveRecord::TestCase
+class TransactionCallbacksTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
   fixtures :topics, :owners, :pets
 
-  class ReplyWithCallbacks < ActiveRecord::Base
+  class ReplyWithCallbacks < ActiveRecord4116::Base
     self.table_name = :topics
 
     belongs_to :topic, foreign_key: "parent_id"
@@ -30,7 +30,7 @@ class TransactionCallbacksTest < ActiveRecord::TestCase
     end
   end
 
-  class TopicWithCallbacks < ActiveRecord::Base
+  class TopicWithCallbacks < ActiveRecord4116::Base
     self.table_name = :topics
 
     has_many :replies, class_name: "ReplyWithCallbacks", foreign_key: "parent_id"
@@ -148,7 +148,7 @@ class TransactionCallbacksTest < ActiveRecord::TestCase
 
     Topic.transaction do
       @first.save!
-      raise ActiveRecord::Rollback
+      raise ActiveRecord4116::Rollback
     end
 
     assert_equal [:after_rollback], @first.history
@@ -159,7 +159,7 @@ class TransactionCallbacksTest < ActiveRecord::TestCase
 
     Topic.transaction do
       @first.save!
-      raise ActiveRecord::Rollback
+      raise ActiveRecord4116::Rollback
     end
 
     assert_equal [:rollback_on_update], @first.history
@@ -170,7 +170,7 @@ class TransactionCallbacksTest < ActiveRecord::TestCase
 
     Topic.transaction do
       @first.touch
-      raise ActiveRecord::Rollback
+      raise ActiveRecord4116::Rollback
     end
 
     assert_equal [:rollback_on_update], @first.history
@@ -181,7 +181,7 @@ class TransactionCallbacksTest < ActiveRecord::TestCase
 
     Topic.transaction do
       @first.destroy
-      raise ActiveRecord::Rollback
+      raise ActiveRecord4116::Rollback
     end
 
     assert_equal [:rollback_on_destroy], @first.history
@@ -193,7 +193,7 @@ class TransactionCallbacksTest < ActiveRecord::TestCase
 
     Topic.transaction do
       new_record.save!
-      raise ActiveRecord::Rollback
+      raise ActiveRecord4116::Rollback
     end
 
     assert_equal [:rollback_on_create], new_record.history
@@ -233,7 +233,7 @@ class TransactionCallbacksTest < ActiveRecord::TestCase
       @first.save!
       Topic.transaction(:requires_new => true) do
         second.save!
-        raise ActiveRecord::Rollback
+        raise ActiveRecord4116::Rollback
       end
     end
 
@@ -254,11 +254,11 @@ class TransactionCallbacksTest < ActiveRecord::TestCase
       @first.save
       Topic.transaction(:requires_new => true) do
         @first.save!
-        raise ActiveRecord::Rollback
+        raise ActiveRecord4116::Rollback
       end
       Topic.transaction(:requires_new => true) do
         @first.save!
-        raise ActiveRecord::Rollback
+        raise ActiveRecord4116::Rollback
       end
     end
 
@@ -287,7 +287,7 @@ class TransactionCallbacksTest < ActiveRecord::TestCase
     Topic.transaction do
       @first.save!
       second.save!
-      raise ActiveRecord::Rollback
+      raise ActiveRecord4116::Rollback
     end
     assert_equal :rollback, @first.last_after_transaction_error
     assert_equal [:after_rollback], second.history
@@ -332,10 +332,10 @@ class TransactionCallbacksTest < ActiveRecord::TestCase
     end
 end
 
-class CallbacksOnMultipleActionsTest < ActiveRecord::TestCase
+class CallbacksOnMultipleActionsTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
 
-  class TopicWithCallbacksOnMultipleActions < ActiveRecord::Base
+  class TopicWithCallbacksOnMultipleActions < ActiveRecord4116::Base
     self.table_name = :topics
 
     after_commit(on: [:create, :destroy]) { |record| record.history << :create_and_destroy }

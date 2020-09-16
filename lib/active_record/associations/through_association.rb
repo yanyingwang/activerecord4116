@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Through Association
   module Associations
     module ThroughAssociation #:nodoc:

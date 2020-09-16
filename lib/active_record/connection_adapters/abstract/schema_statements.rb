@@ -1,9 +1,9 @@
 require 'active_record/migration/join_table'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters # :nodoc:
     module SchemaStatements
-      include ActiveRecord::Migration::JoinTable
+      include ActiveRecord4116::Migration::JoinTable
 
       # Returns a hash of mappings from the abstract data types to the native
       # database types. See TableDefinition#column for details on the recognized
@@ -342,7 +342,7 @@ module ActiveRecord
       # See also Table for details on all of the various column transformation.
       def change_table(table_name, options = {})
         if supports_bulk_alter? && options[:bulk]
-          recorder = ActiveRecord::Migration::CommandRecorder.new(self)
+          recorder = ActiveRecord4116::Migration::CommandRecorder.new(self)
           yield update_table_definition(table_name, recorder)
           bulk_change_table(table_name, recorder.commands)
         else
@@ -643,9 +643,9 @@ module ActiveRecord
       alias :remove_belongs_to :remove_reference
 
       def dump_schema_information #:nodoc:
-        sm_table = ActiveRecord::Migrator.schema_migrations_table_name
+        sm_table = ActiveRecord4116::Migrator.schema_migrations_table_name
 
-        ActiveRecord::SchemaMigration.order('version').map { |sm|
+        ActiveRecord4116::SchemaMigration.order('version').map { |sm|
           "INSERT INTO #{sm_table} (version) VALUES ('#{sm.version}');"
         }.join "\n\n"
       end
@@ -653,13 +653,13 @@ module ActiveRecord
       # Should not be called normally, but this operation is non-destructive.
       # The migrations module handles this automatically.
       def initialize_schema_migrations_table
-        ActiveRecord::SchemaMigration.create_table
+        ActiveRecord4116::SchemaMigration.create_table
       end
 
-      def assume_migrated_upto_version(version, migrations_paths = ActiveRecord::Migrator.migrations_paths)
+      def assume_migrated_upto_version(version, migrations_paths = ActiveRecord4116::Migrator.migrations_paths)
         migrations_paths = Array(migrations_paths)
         version = version.to_i
-        sm_table = quote_table_name(ActiveRecord::Migrator.schema_migrations_table_name)
+        sm_table = quote_table_name(ActiveRecord4116::Migrator.schema_migrations_table_name)
 
         migrated = select_values("SELECT version FROM #{sm_table}").map { |v| v.to_i }
         paths = migrations_paths.map {|p| "#{p}/[0-9]*_*.rb" }

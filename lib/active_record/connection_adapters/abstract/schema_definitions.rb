@@ -3,11 +3,11 @@ require 'set'
 require 'bigdecimal'
 require 'bigdecimal/util'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters #:nodoc:
     # Abstract representation of an index definition on a table. Instances of
     # this type are typically created and returned by methods in database
-    # adapters. e.g. ActiveRecord::ConnectionAdapters::AbstractMysqlAdapter#indexes
+    # adapters. e.g. ActiveRecord4116::ConnectionAdapters::AbstractMysqlAdapter#indexes
     class IndexDefinition < Struct.new(:table, :name, :unique, :columns, :lengths, :orders, :where, :type, :using) #:nodoc:
     end
 
@@ -31,10 +31,10 @@ module ActiveRecord
     # Inside migration files, the +t+ object in +create_table+
     # is actually of this type:
     #
-    #   class SomeMigration < ActiveRecord::Migration
+    #   class SomeMigration < ActiveRecord4116::Migration
     #     def up
     #       create_table :foo do |t|
-    #         puts t.class  # => "ActiveRecord::ConnectionAdapters::TableDefinition"
+    #         puts t.class  # => "ActiveRecord4116::ConnectionAdapters::TableDefinition"
     #       end
     #     end
     #

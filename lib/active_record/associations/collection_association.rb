@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module Associations
     # = Active Record Association Collection
     #
@@ -134,7 +134,7 @@ module ActiveRecord
           n ? target.take(n) : target.first
         else
           scope.take(n).tap do |record|
-            set_inverse_instance record if record.is_a? ActiveRecord::Base
+            set_inverse_instance record if record.is_a? ActiveRecord4116::Base
           end
         end
       end
@@ -172,7 +172,7 @@ module ActiveRecord
 
       # Starts a transaction in the association class's database connection.
       #
-      #   class Author < ActiveRecord::Base
+      #   class Author < ActiveRecord4116::Base
       #     has_many :books
       #   end
       #
@@ -466,7 +466,7 @@ module ActiveRecord
 
         def _create_record(attributes, raise = false, &block)
           unless owner.persisted?
-            raise ActiveRecord::RecordNotSaved, "You cannot call create unless the parent is saved"
+            raise ActiveRecord4116::RecordNotSaved, "You cannot call create unless the parent is saved"
           end
 
           if attributes.is_a?(Array)
@@ -573,7 +573,7 @@ module ActiveRecord
         end
 
         def include_in_memory?(record)
-          if reflection.is_a?(ActiveRecord::Reflection::ThroughReflection)
+          if reflection.is_a?(ActiveRecord4116::Reflection::ThroughReflection)
             assoc = owner.association(reflection.through_reflection.name)
             assoc.reader.any? { |source|
               target_association = source.send(reflection.source_reflection.name)
@@ -610,7 +610,7 @@ module ActiveRecord
 
           collection = fetch_first_nth_or_last_using_find?(args) ? scope : load_target
           collection.send(type, *args).tap do |record|
-            set_inverse_instance record if record.is_a? ActiveRecord::Base
+            set_inverse_instance record if record.is_a? ActiveRecord4116::Base
           end
         end
     end

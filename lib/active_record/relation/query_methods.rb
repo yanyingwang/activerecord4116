@@ -1,7 +1,7 @@
 require 'active_support/core_ext/array/wrap'
 require 'active_model/forbidden_attributes_protection'
 
-module ActiveRecord
+module ActiveRecord4116
   module QueryMethods
     extend ActiveSupport::Concern
 
@@ -211,7 +211,7 @@ module ActiveRecord
     #
     # Although in the above example it looks as though this method returns an
     # array, it actually returns a relation object and can have other query
-    # methods appended to it, such as the other methods in ActiveRecord::QueryMethods.
+    # methods appended to it, such as the other methods in ActiveRecord4116::QueryMethods.
     #
     # The argument to the method can also be an array of fields.
     #
@@ -507,7 +507,7 @@ module ActiveRecord
     #    # SELECT * FROM users WHERE (created_at BETWEEN '2012-06-09 07:00:00.000000' AND '2012-06-10 07:00:00.000000')
     #
     # In the case of a belongs_to relationship, an association key can be used
-    # to specify the model if an ActiveRecord object is used as the value.
+    # to specify the model if an ActiveRecord4116 object is used as the value.
     #
     #    author = Author.find(1)
     #
@@ -632,7 +632,7 @@ module ActiveRecord
     end
 
     # Specifies locking settings (default to +true+). For more information
-    # on locking, please see +ActiveRecord::Locking+.
+    # on locking, please see +ActiveRecord4116::Locking+.
     def lock(locks = true)
       spawn.lock!(locks)
     end
@@ -689,7 +689,7 @@ module ActiveRecord
     #
     #   users = User.readonly
     #   users.first.save
-    #   => ActiveRecord::ReadOnlyRecord: ActiveRecord::ReadOnlyRecord
+    #   => ActiveRecord4116::ReadOnlyRecord: ActiveRecord4116::ReadOnlyRecord
     def readonly(value = true)
       spawn.readonly!(value)
     end
@@ -942,7 +942,7 @@ module ActiveRecord
         #TODO: Remove duplication with: /activerecord/lib/active_record/sanitization.rb:113
         values = Hash === other.first ? other.first.values : other
 
-        values.grep(ActiveRecord::Relation) do |rel|
+        values.grep(ActiveRecord4116::Relation) do |rel|
           self.bind_values += rel.bind_values
         end
 
@@ -978,7 +978,7 @@ module ActiveRecord
           :string_join
         when Hash, Symbol, Array
           :association_join
-        when ActiveRecord::Associations::JoinDependency
+        when ActiveRecord4116::Associations::JoinDependency
           :stashed_join
         when Arel::Nodes::Join
           :join_node
@@ -994,7 +994,7 @@ module ActiveRecord
 
       join_list = join_nodes + custom_join_ast(manager, string_joins)
 
-      join_dependency = ActiveRecord::Associations::JoinDependency.new(
+      join_dependency = ActiveRecord4116::Associations::JoinDependency.new(
         @klass,
         association_joins,
         join_list
@@ -1117,7 +1117,7 @@ module ActiveRecord
     def add_relations_to_bind_values(attributes)
       if attributes.is_a?(Hash)
         attributes.each_value do |value|
-          if value.is_a?(ActiveRecord::Relation)
+          if value.is_a?(ActiveRecord4116::Relation)
             self.bind_values += value.bind_values
           else
             add_relations_to_bind_values(value)

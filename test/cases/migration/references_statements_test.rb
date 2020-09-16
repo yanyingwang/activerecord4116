@@ -1,9 +1,9 @@
 require "cases/migration/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   class Migration
-    class ReferencesStatementsTest < ActiveRecord::TestCase
-      include ActiveRecord::Migration::TestHelper
+    class ReferencesStatementsTest < ActiveRecord4116::TestCase
+      include ActiveRecord4116::Migration::TestHelper
 
       self.use_transactional_fixtures = false
 

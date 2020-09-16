@@ -1,8 +1,8 @@
 require "cases/helper"
 
-class DatabaseStatementsTest < ActiveRecord::TestCase
+class DatabaseStatementsTest < ActiveRecord4116::TestCase
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
   end
 
   def test_insert_should_return_the_inserted_id

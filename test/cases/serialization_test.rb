@@ -3,7 +3,7 @@ require 'models/contact'
 require 'models/topic'
 require 'models/book'
 
-class SerializationTest < ActiveRecord::TestCase
+class SerializationTest < ActiveRecord4116::TestCase
   fixtures :books
 
   FORMATS = [ :xml, :json ]
@@ -22,7 +22,7 @@ class SerializationTest < ActiveRecord::TestCase
   end
 
   def test_include_root_in_json_is_false_by_default
-    assert_equal false, ActiveRecord::Base.include_root_in_json, "include_root_in_json should be false by default but was not"
+    assert_equal false, ActiveRecord4116::Base.include_root_in_json, "include_root_in_json should be false by default but was not"
   end
 
   def test_serialize_should_be_reversible
@@ -54,23 +54,23 @@ class SerializationTest < ActiveRecord::TestCase
   end
 
   def test_include_root_in_json_allows_inheritance
-    original_root_in_json = ActiveRecord::Base.include_root_in_json
-    ActiveRecord::Base.include_root_in_json = true
+    original_root_in_json = ActiveRecord4116::Base.include_root_in_json
+    ActiveRecord4116::Base.include_root_in_json = true
 
-    klazz = Class.new(ActiveRecord::Base)
+    klazz = Class.new(ActiveRecord4116::Base)
     klazz.table_name = 'topics'
     assert klazz.include_root_in_json
 
     klazz.include_root_in_json = false
-    assert ActiveRecord::Base.include_root_in_json
+    assert ActiveRecord4116::Base.include_root_in_json
     assert !klazz.include_root_in_json
     assert !klazz.new.include_root_in_json
   ensure
-    ActiveRecord::Base.include_root_in_json = original_root_in_json
+    ActiveRecord4116::Base.include_root_in_json = original_root_in_json
   end
 
   def test_read_attribute_for_serialization_with_format_after_init
-    klazz = Class.new(ActiveRecord::Base)
+    klazz = Class.new(ActiveRecord4116::Base)
     klazz.table_name = 'books'
 
     book = klazz.new(format: 'paperback')
@@ -78,7 +78,7 @@ class SerializationTest < ActiveRecord::TestCase
   end
 
   def test_read_attribute_for_serialization_with_format_after_find
-    klazz = Class.new(ActiveRecord::Base)
+    klazz = Class.new(ActiveRecord4116::Base)
     klazz.table_name = 'books'
 
     book = klazz.find(books(:awdr).id)

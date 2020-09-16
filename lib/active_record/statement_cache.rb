@@ -1,9 +1,9 @@
-module ActiveRecord
+module ActiveRecord4116
 
   # Statement cache is used to cache a single statement in order to avoid creating the AST again.
   # Initializing the cache is done by passing the statement in the initialization block:
   #
-  #   cache = ActiveRecord::StatementCache.new do
+  #   cache = ActiveRecord4116::StatementCache.new do
   #     Book.where(name: "my book").limit(100)
   #   end
   #

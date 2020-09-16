@@ -1,10 +1,10 @@
 require "cases/helper"
 require 'models/topic'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     class Mysql2Adapter
-      class BindParameterTest < ActiveRecord::TestCase
+      class BindParameterTest < ActiveRecord4116::TestCase
         fixtures :topics
 
         def test_update_question_marks

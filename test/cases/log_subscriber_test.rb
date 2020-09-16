@@ -4,11 +4,11 @@ require "models/developer"
 require "models/post"
 require "active_support/log_subscriber/test_helper"
 
-class LogSubscriberTest < ActiveRecord::TestCase
+class LogSubscriberTest < ActiveRecord4116::TestCase
   include ActiveSupport::LogSubscriber::TestHelper
   include ActiveSupport::Logger::Severity
 
-  class TestDebugLogSubscriber < ActiveRecord::LogSubscriber
+  class TestDebugLogSubscriber < ActiveRecord4116::LogSubscriber
     attr_reader :debugs
 
     def initialize
@@ -24,20 +24,20 @@ class LogSubscriberTest < ActiveRecord::TestCase
   fixtures :posts
 
   def setup
-    @old_logger = ActiveRecord::Base.logger
+    @old_logger = ActiveRecord4116::Base.logger
     Developer.primary_key
     super
-    ActiveRecord::LogSubscriber.attach_to(:active_record)
+    ActiveRecord4116::LogSubscriber.attach_to(:active_record)
   end
 
   def teardown
     super
-    ActiveRecord::LogSubscriber.log_subscribers.pop
-    ActiveRecord::Base.logger = @old_logger
+    ActiveRecord4116::LogSubscriber.log_subscribers.pop
+    ActiveRecord4116::Base.logger = @old_logger
   end
 
   def set_logger(logger)
-    ActiveRecord::Base.logger = logger
+    ActiveRecord4116::Base.logger = logger
   end
 
   def test_schema_statements_are_ignored
@@ -88,7 +88,7 @@ class LogSubscriberTest < ActiveRecord::TestCase
   end
 
   def test_cached_queries
-    ActiveRecord::Base.cache do
+    ActiveRecord4116::Base.cache do
       Developer.all.load
       Developer.all.load
     end
@@ -107,7 +107,7 @@ class LogSubscriberTest < ActiveRecord::TestCase
 
   def test_cached_queries_doesnt_log_when_level_is_not_debug
     @logger.level = INFO
-    ActiveRecord::Base.cache do
+    ActiveRecord4116::Base.cache do
       Developer.all.load
       Developer.all.load
     end
@@ -116,7 +116,7 @@ class LogSubscriberTest < ActiveRecord::TestCase
   end
 
   def test_initializes_runtime
-    Thread.new { assert_equal 0, ActiveRecord::LogSubscriber.runtime }.join
+    Thread.new { assert_equal 0, ActiveRecord4116::LogSubscriber.runtime }.join
   end
 
   unless current_adapter?(:Mysql2Adapter)

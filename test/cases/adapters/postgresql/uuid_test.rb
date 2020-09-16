@@ -4,13 +4,13 @@ require "cases/helper"
 require 'active_record/base'
 require 'active_record/connection_adapters/postgresql_adapter'
 
-class PostgresqlUUIDTest < ActiveRecord::TestCase
-  class UUID < ActiveRecord::Base
+class PostgresqlUUIDTest < ActiveRecord4116::TestCase
+  class UUID < ActiveRecord4116::Base
     self.table_name = 'pg_uuids'
   end
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
 
     unless @connection.extension_enabled?('uuid-ossp')
       @connection.enable_extension 'uuid-ossp'
@@ -47,7 +47,7 @@ class PostgresqlUUIDTest < ActiveRecord::TestCase
     @connection.execute 'DROP FUNCTION IF EXISTS my_uuid_generator();'
   end
 
-  if ActiveRecord::Base.connection.supports_extensions?
+  if ActiveRecord4116::Base.connection.supports_extensions?
     def test_id_is_uuid
       assert_equal :uuid, UUID.columns_hash['id'].type
       assert UUID.primary_key
@@ -72,14 +72,14 @@ class PostgresqlUUIDTest < ActiveRecord::TestCase
 
     def test_schema_dumper_for_uuid_primary_key
       schema = StringIO.new
-      ActiveRecord::SchemaDumper.dump(@connection, schema)
+      ActiveRecord4116::SchemaDumper.dump(@connection, schema)
       assert_match(/\bcreate_table "pg_uuids", id: :uuid, default: "uuid_generate_v1\(\)"/, schema.string)
       assert_match(/t\.uuid   "other_uuid", default: "uuid_generate_v4\(\)"/, schema.string)
     end
 
     def test_schema_dumper_for_uuid_primary_key_with_custom_default
       schema = StringIO.new
-      ActiveRecord::SchemaDumper.dump(@connection, schema)
+      ActiveRecord4116::SchemaDumper.dump(@connection, schema)
       assert_match(/\bcreate_table "pg_uuids_2", id: :uuid, default: "my_uuid_generator\(\)"/, schema.string)
       assert_match(/t\.uuid   "other_uuid_2", default: "my_uuid_generator\(\)"/, schema.string)
     end
@@ -99,13 +99,13 @@ class PostgresqlUUIDTest < ActiveRecord::TestCase
   end
 end
 
-class PostgresqlUUIDTestNilDefault < ActiveRecord::TestCase
-  class UUID < ActiveRecord::Base
+class PostgresqlUUIDTestNilDefault < ActiveRecord4116::TestCase
+  class UUID < ActiveRecord4116::Base
     self.table_name = 'pg_uuids'
   end
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     @connection.reconnect!
 
     unless @connection.extension_enabled?('uuid-ossp')
@@ -125,7 +125,7 @@ class PostgresqlUUIDTestNilDefault < ActiveRecord::TestCase
     @connection.execute 'drop table if exists pg_uuids'
   end
 
-  if ActiveRecord::Base.connection.supports_extensions?
+  if ActiveRecord4116::Base.connection.supports_extensions?
     def test_id_allows_default_override_via_nil
       col_desc = @connection.execute("SELECT pg_get_expr(d.adbin, d.adrelid) as default
                                     FROM pg_attribute a
@@ -136,19 +136,19 @@ class PostgresqlUUIDTestNilDefault < ActiveRecord::TestCase
   end
 end
 
-class PostgresqlUUIDTestInverseOf < ActiveRecord::TestCase
-  class UuidPost < ActiveRecord::Base
+class PostgresqlUUIDTestInverseOf < ActiveRecord4116::TestCase
+  class UuidPost < ActiveRecord4116::Base
     self.table_name = 'pg_uuid_posts'
     has_many :uuid_comments, inverse_of: :uuid_post
   end
 
-  class UuidComment < ActiveRecord::Base
+  class UuidComment < ActiveRecord4116::Base
     self.table_name = 'pg_uuid_comments'
     belongs_to :uuid_post
   end
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     @connection.reconnect!
 
     unless @connection.extension_enabled?('uuid-ossp')
@@ -174,7 +174,7 @@ class PostgresqlUUIDTestInverseOf < ActiveRecord::TestCase
     end
   end
 
-  if ActiveRecord::Base.connection.supports_extensions?
+  if ActiveRecord4116::Base.connection.supports_extensions?
     def test_collection_association_with_uuid
       post    = UuidPost.create!
       comment = post.uuid_comments.create!

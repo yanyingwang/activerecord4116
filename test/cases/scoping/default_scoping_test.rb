@@ -2,7 +2,7 @@ require 'cases/helper'
 require 'models/post'
 require 'models/developer'
 
-class DefaultScopingTest < ActiveRecord::TestCase
+class DefaultScopingTest < ActiveRecord4116::TestCase
   fixtures :developers, :posts
 
   def test_default_scope

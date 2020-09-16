@@ -24,7 +24,7 @@ class ProtectedParams < ActiveSupport::HashWithIndifferentAccess
   end
 end
 
-class ForbiddenAttributesProtectionTest < ActiveRecord::TestCase
+class ForbiddenAttributesProtectionTest < ActiveRecord4116::TestCase
   def test_forbidden_attributes_cannot_be_used_for_mass_assignment
     params = ProtectedParams.new(first_name: 'Guille', gender: 'm')
     assert_raises(ActiveModel::ForbiddenAttributesError) do

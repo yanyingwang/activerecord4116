@@ -1,6 +1,6 @@
 require 'yaml'
 
-module ActiveRecord
+module ActiveRecord4116
   module Coders # :nodoc:
     class YAMLColumn # :nodoc:
 

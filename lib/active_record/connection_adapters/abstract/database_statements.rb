@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters # :nodoc:
     module DatabaseStatements
       def initialize
@@ -18,7 +18,7 @@ module ActiveRecord
         end
       end
 
-      # Returns an ActiveRecord::Result instance.
+      # Returns an ActiveRecord4116::Result instance.
       def select_all(arel, name = nil, binds = [])
         arel, binds = binds_from_relation arel, binds
         select(to_sql(arel, binds), name, binds)
@@ -178,7 +178,7 @@ module ActiveRecord
       # * http://www.postgresql.org/docs/9.1/static/transaction-iso.html
       # * https://dev.mysql.com/doc/refman/5.0/en/set-transaction.html
       #
-      # An <tt>ActiveRecord::TransactionIsolationError</tt> will be raised if:
+      # An <tt>ActiveRecord4116::TransactionIsolationError</tt> will be raised if:
       #
       # * The adapter does not support setting the isolation level
       # * You are joining an existing open transaction
@@ -193,14 +193,14 @@ module ActiveRecord
 
         if !options[:requires_new] && current_transaction.joinable?
           if options[:isolation]
-            raise ActiveRecord::TransactionIsolationError, "cannot set isolation when joining a transaction"
+            raise ActiveRecord4116::TransactionIsolationError, "cannot set isolation when joining a transaction"
           end
 
           yield
         else
           within_new_transaction(options) { yield }
         end
-      rescue ActiveRecord::Rollback
+      rescue ActiveRecord4116::Rollback
         # rollbacks are silently swallowed
       end
 
@@ -265,7 +265,7 @@ module ActiveRecord
       # default; adapters that support setting the isolation level should implement
       # this method.
       def begin_isolated_db_transaction(isolation)
-        raise ActiveRecord::TransactionIsolationError, "adapter does not support setting transaction isolation"
+        raise ActiveRecord4116::TransactionIsolationError, "adapter does not support setting transaction isolation"
       end
 
       # Commits the transaction (and turns on auto-committing).
@@ -350,7 +350,7 @@ module ActiveRecord
           subselect
         end
 
-        # Returns an ActiveRecord::Result instance.
+        # Returns an ActiveRecord4116::Result instance.
         def select(sql, name = nil, binds = [])
         end
         undef_method :select

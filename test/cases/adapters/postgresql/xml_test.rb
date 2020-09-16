@@ -4,20 +4,20 @@ require 'cases/helper'
 require 'active_record/base'
 require 'active_record/connection_adapters/postgresql_adapter'
 
-class PostgresqlXMLTest < ActiveRecord::TestCase
-  class XmlDataType < ActiveRecord::Base
+class PostgresqlXMLTest < ActiveRecord4116::TestCase
+  class XmlDataType < ActiveRecord4116::Base
     self.table_name = 'xml_data_type'
   end
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     begin
       @connection.transaction do
         @connection.create_table('xml_data_type') do |t|
           t.xml 'payload', default: {}
         end
       end
-    rescue ActiveRecord::StatementInvalid
+    rescue ActiveRecord4116::StatementInvalid
       skip "do not test on PG without xml"
     end
     @column = XmlDataType.columns.find { |c| c.name == 'payload' }

@@ -1,21 +1,21 @@
 require "cases/helper"
 
-class Group < ActiveRecord::Base
+class Group < ActiveRecord4116::Base
   Group.table_name = 'group'
   belongs_to :select
   has_one :values
 end
 
-class Select < ActiveRecord::Base
+class Select < ActiveRecord4116::Base
   Select.table_name = 'select'
   has_many :groups
 end
 
-class Values < ActiveRecord::Base
+class Values < ActiveRecord4116::Base
   Values.table_name = 'values'
 end
 
-class Distinct < ActiveRecord::Base
+class Distinct < ActiveRecord4116::Base
   Distinct.table_name = 'distinct'
   has_and_belongs_to_many :selects
   has_many :values, :through => :groups
@@ -23,11 +23,11 @@ end
 
 # a suite of tests to ensure the ConnectionAdapters#MysqlAdapter can handle tables with
 # reserved word names (ie: group, order, values, etc...)
-class MysqlReservedWordTest < ActiveRecord::TestCase
+class MysqlReservedWordTest < ActiveRecord4116::TestCase
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
 
-    # we call execute directly here (and do similar below) because ActiveRecord::Base#create_table()
+    # we call execute directly here (and do similar below) because ActiveRecord4116::Base#create_table()
     # will fail with these table names if these test cases fail
 
     create_tables_directly 'group'=>'id int auto_increment primary key, `order` varchar(255), select_id int',
@@ -132,7 +132,7 @@ class MysqlReservedWordTest < ActiveRecord::TestCase
   private
   # custom fixture loader, uses FixtureSet#create_fixtures and appends base_path to the current file's path
   def create_test_fixtures(*fixture_names)
-    ActiveRecord::FixtureSet.create_fixtures(FIXTURES_ROOT + "/reserved_words", fixture_names)
+    ActiveRecord4116::FixtureSet.create_fixtures(FIXTURES_ROOT + "/reserved_words", fixture_names)
   end
 
   # custom drop table, uses execute on connection to drop a table if it exists. note: escapes table_name

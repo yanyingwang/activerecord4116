@@ -1,4 +1,4 @@
-module ActiveRecord #:nodoc:
+module ActiveRecord4116 #:nodoc:
   # = Active Record Serialization
   module Serialization
     extend ActiveSupport::Concern

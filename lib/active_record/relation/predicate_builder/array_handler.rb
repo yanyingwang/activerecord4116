@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   class PredicateBuilder
     class ArrayHandler # :nodoc:
       def call(attribute, value)

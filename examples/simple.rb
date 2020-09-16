@@ -1,7 +1,7 @@
 require File.expand_path('../../../load_paths', __FILE__)
 require 'active_record'
 
-class Person < ActiveRecord::Base
+class Person < ActiveRecord4116::Base
   establish_connection adapter: 'sqlite3', database: 'foobar.db'
   connection.create_table table_name, force: true do |t|
     t.string :name

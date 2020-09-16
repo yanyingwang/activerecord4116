@@ -11,20 +11,20 @@ require 'models/reply'
 require 'models/contact'
 require 'models/keyboard'
 
-class AttributeMethodsTest < ActiveRecord::TestCase
+class AttributeMethodsTest < ActiveRecord4116::TestCase
   include InTimeZone
 
   fixtures :topics, :developers, :companies, :computers
 
   def setup
-    @old_matchers = ActiveRecord::Base.send(:attribute_method_matchers).dup
-    @target = Class.new(ActiveRecord::Base)
+    @old_matchers = ActiveRecord4116::Base.send(:attribute_method_matchers).dup
+    @target = Class.new(ActiveRecord4116::Base)
     @target.table_name = 'topics'
   end
 
   def teardown
-    ActiveRecord::Base.send(:attribute_method_matchers).clear
-    ActiveRecord::Base.send(:attribute_method_matchers).concat(@old_matchers)
+    ActiveRecord4116::Base.send(:attribute_method_matchers).clear
+    ActiveRecord4116::Base.send(:attribute_method_matchers).concat(@old_matchers)
   end
 
   def test_attribute_for_inspect
@@ -507,9 +507,9 @@ class AttributeMethodsTest < ActiveRecord::TestCase
 
   def test_raises_dangerous_attribute_error_when_defining_activerecord_method_in_model
     %w(save create_or_update).each do |method|
-      klass = Class.new ActiveRecord::Base
+      klass = Class.new ActiveRecord4116::Base
       klass.class_eval "def #{method}() 'defined #{method}' end"
-      assert_raise ActiveRecord::DangerousAttributeError do
+      assert_raise ActiveRecord4116::DangerousAttributeError do
         klass.instance_method_already_implemented?(method)
       end
     end
@@ -517,7 +517,7 @@ class AttributeMethodsTest < ActiveRecord::TestCase
 
   def test_only_time_related_columns_are_meant_to_be_cached_by_default
     expected = %w(datetime timestamp time date).sort
-    assert_equal expected, ActiveRecord::Base.attribute_types_cached_by_default.map(&:to_s).sort
+    assert_equal expected, ActiveRecord4116::Base.attribute_types_cached_by_default.map(&:to_s).sort
   end
 
   def test_declaring_attributes_as_cached_adds_them_to_the_attributes_cached_by_default
@@ -715,12 +715,12 @@ class AttributeMethodsTest < ActiveRecord::TestCase
   def test_bulk_update_respects_access_control
     privatize("title=(value)")
 
-    assert_raise(ActiveRecord::UnknownAttributeError) { @target.new(:title => "Rants about pants") }
-    assert_raise(ActiveRecord::UnknownAttributeError) { @target.new.attributes = { :title => "Ants in pants" } }
+    assert_raise(ActiveRecord4116::UnknownAttributeError) { @target.new(:title => "Rants about pants") }
+    assert_raise(ActiveRecord4116::UnknownAttributeError) { @target.new.attributes = { :title => "Ants in pants" } }
   end
 
   def test_bulk_update_raise_unknown_attribute_errro
-    error = assert_raises(ActiveRecord::UnknownAttributeError) {
+    error = assert_raises(ActiveRecord4116::UnknownAttributeError) {
       @target.new(:hello => "world")
     }
     assert @target, error.record
@@ -734,7 +734,7 @@ class AttributeMethodsTest < ActiveRecord::TestCase
   # xref: https://bugs.ruby-lang.org/issues/10969
   def test_bulk_does_not_raise_name_error
     nope rescue nil # necessary to trigger the bug
-    assert_raises(ActiveRecord::UnknownAttributeError) {
+    assert_raises(ActiveRecord4116::UnknownAttributeError) {
       Topic.new(hello: "world")
     }
   end
@@ -753,7 +753,7 @@ class AttributeMethodsTest < ActiveRecord::TestCase
   end
 
   def test_global_methods_are_overwritten
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       self.table_name = 'computers'
     end
 
@@ -763,7 +763,7 @@ class AttributeMethodsTest < ActiveRecord::TestCase
   end
 
   def test_global_methods_are_overwritte_when_subclassing
-    klass = Class.new(ActiveRecord::Base) { self.abstract_class = true }
+    klass = Class.new(ActiveRecord4116::Base) { self.abstract_class = true }
 
     subklass = Class.new(klass) do
       self.table_name = 'computers'
@@ -815,7 +815,7 @@ class AttributeMethodsTest < ActiveRecord::TestCase
   end
 
   def test_inherited_custom_accessors_with_reserved_names
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       self.table_name = 'computers'
       self.abstract_class = true
       def system; "omg"; end
@@ -869,7 +869,7 @@ class AttributeMethodsTest < ActiveRecord::TestCase
   private
 
   def new_topic_like_ar_class(&block)
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       self.table_name = 'topics'
       class_eval(&block)
     end

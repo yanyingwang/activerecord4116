@@ -6,7 +6,7 @@ require 'models/toy'
 require 'models/car'
 require 'models/task'
 
-class TimestampTest < ActiveRecord::TestCase
+class TimestampTest < ActiveRecord4116::TestCase
   fixtures :developers, :owners, :pets, :toys, :cars, :tasks
 
   def setup
@@ -117,7 +117,7 @@ class TimestampTest < ActiveRecord::TestCase
   end
 
   def test_global_no_touching
-    ActiveRecord::Base.no_touching do
+    ActiveRecord4116::Base.no_touching do
       assert @developer.no_touching?
       assert @owner.no_touching?
       @developer.touch
@@ -141,7 +141,7 @@ class TimestampTest < ActiveRecord::TestCase
   end
 
   def test_no_touching_with_callbacks
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       self.table_name = "developers"
 
       attr_accessor :after_touch_called
@@ -193,7 +193,7 @@ class TimestampTest < ActiveRecord::TestCase
   end
 
   def test_saving_a_record_with_a_belongs_to_that_specifies_touching_a_specific_attribute_the_parent_should_update_that_attribute
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Pet'; end
       belongs_to :owner, :touch => :happy_at
     end
@@ -209,7 +209,7 @@ class TimestampTest < ActiveRecord::TestCase
   end
 
   def test_touching_a_record_with_a_belongs_to_that_uses_a_counter_cache_should_update_the_parent
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Pet'; end
       belongs_to :owner, :counter_cache => :use_count, :touch => true
     end
@@ -226,7 +226,7 @@ class TimestampTest < ActiveRecord::TestCase
   end
 
   def test_touching_a_record_touches_parent_record_and_grandparent_record
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Toy'; end
       belongs_to :pet, :touch => true
     end
@@ -244,11 +244,11 @@ class TimestampTest < ActiveRecord::TestCase
   end
 
   def test_touching_a_record_touches_polymorphic_record
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Toy'; end
     end
 
-    wheel_klass = Class.new(ActiveRecord::Base) do
+    wheel_klass = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Wheel'; end
       belongs_to :wheelable, :polymorphic => true, :touch => true
     end
@@ -266,7 +266,7 @@ class TimestampTest < ActiveRecord::TestCase
   end
 
   def test_changing_parent_of_a_record_touches_both_new_and_old_parent_record
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Toy'; end
       belongs_to :pet, touch: true
     end
@@ -292,11 +292,11 @@ class TimestampTest < ActiveRecord::TestCase
   end
 
   def test_changing_parent_of_a_record_touches_both_new_and_old_polymorphic_parent_record_changes_within_same_class
-    car_class = Class.new(ActiveRecord::Base) do
+    car_class = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Car'; end
     end
 
-    wheel_class = Class.new(ActiveRecord::Base) do
+    wheel_class = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Wheel'; end
       belongs_to :wheelable, :polymorphic => true, :touch => true
     end
@@ -319,15 +319,15 @@ class TimestampTest < ActiveRecord::TestCase
   end
 
   def test_changing_parent_of_a_record_touches_both_new_and_old_polymorphic_parent_record_changes_with_other_class
-    car_class = Class.new(ActiveRecord::Base) do
+    car_class = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Car'; end
     end
 
-    toy_class = Class.new(ActiveRecord::Base) do
+    toy_class = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Toy'; end
     end
 
-    wheel_class = Class.new(ActiveRecord::Base) do
+    wheel_class = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Wheel'; end
       belongs_to :wheelable, :polymorphic => true, :touch => true
     end
@@ -350,7 +350,7 @@ class TimestampTest < ActiveRecord::TestCase
   end
 
   def test_clearing_association_touches_the_old_record
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Toy'; end
       belongs_to :pet, touch: true
     end
@@ -370,7 +370,7 @@ class TimestampTest < ActiveRecord::TestCase
   end
 
   def test_timestamp_column_values_are_present_in_the_callbacks
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       self.table_name = 'people'
 
       before_create do

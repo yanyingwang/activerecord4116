@@ -1,6 +1,6 @@
 require 'active_support/core_ext/hash/indifferent_access'
 
-module ActiveRecord
+module ActiveRecord4116
   module Inheritance
     extend ActiveSupport::Concern
 
@@ -49,16 +49,16 @@ module ActiveRecord
       end
 
       def symbolized_base_class
-        ActiveSupport::Deprecation.warn("ActiveRecord::Base.symbolized_base_class is deprecated and will be removed without replacement.")
+        ActiveSupport::Deprecation.warn("ActiveRecord4116::Base.symbolized_base_class is deprecated and will be removed without replacement.")
         @symbolized_base_class ||= base_class.to_s.to_sym
       end
 
       def symbolized_sti_name
-        ActiveSupport::Deprecation.warn("ActiveRecord::Base.symbolized_sti_name is deprecated and will be removed without replacement.")
+        ActiveSupport::Deprecation.warn("ActiveRecord4116::Base.symbolized_sti_name is deprecated and will be removed without replacement.")
         @symbolized_sti_name ||= sti_name.present? ? sti_name.to_sym : symbolized_base_class
       end
 
-      # Returns the class descending directly from ActiveRecord::Base, or
+      # Returns the class descending directly from ActiveRecord4116::Base, or
       # an abstract class, if any, in the inheritance hierarchy.
       #
       # If A extends AR::Base, A.base_class will return A. If B descends from A
@@ -68,7 +68,7 @@ module ActiveRecord
       # and C.base_class would return B as the answer since A is an abstract_class.
       def base_class
         unless self < Base
-          raise ActiveRecordError, "#{name} doesn't belong in a hierarchy descending from ActiveRecord"
+          raise ActiveRecord4116Error, "#{name} doesn't belong in a hierarchy descending from ActiveRecord4116"
         end
 
         if superclass == Base || superclass.abstract_class?
@@ -79,11 +79,11 @@ module ActiveRecord
       end
 
       # Set this to true if this is an abstract class (see <tt>abstract_class?</tt>).
-      # If you are using inheritance with ActiveRecord and don't want child classes
+      # If you are using inheritance with ActiveRecord4116 and don't want child classes
       # to utilize the implied STI table name of the parent class, this will need to be true.
       # For example, given the following:
       #
-      #   class SuperClass < ActiveRecord::Base
+      #   class SuperClass < ActiveRecord4116::Base
       #     self.abstract_class = true
       #   end
       #   class Child < SuperClass
@@ -173,7 +173,7 @@ module ActiveRecord
       end
 
       # Detect the subclass from the inheritance column of attrs. If the inheritance column value
-      # is not self or a valid subclass, raises ActiveRecord::SubclassNotFound
+      # is not self or a valid subclass, raises ActiveRecord4116::SubclassNotFound
       # If this is a StrongParameters hash, and access to inheritance_column is not permitted,
       # this will ignore the inheritance column and return nil
       def subclass_from_attributes?(attrs)
@@ -187,7 +187,7 @@ module ActiveRecord
           subclass = subclass_name.safe_constantize
 
           unless descendants.include?(subclass)
-            raise ActiveRecord::SubclassNotFound.new("Invalid single-table inheritance type: #{subclass_name} is not a subclass of #{name}")
+            raise ActiveRecord4116::SubclassNotFound.new("Invalid single-table inheritance type: #{subclass_name} is not a subclass of #{name}")
           end
 
           subclass
@@ -208,8 +208,8 @@ module ActiveRecord
     end
 
     # Sets the attribute used for single table inheritance to this class name if this is not the
-    # ActiveRecord::Base descendant.
-    # Considering the hierarchy Reply < Message < ActiveRecord::Base, this makes it possible to
+    # ActiveRecord4116::Base descendant.
+    # Considering the hierarchy Reply < Message < ActiveRecord4116::Base, this makes it possible to
     # do Reply.new without having to set <tt>Reply[Reply.inheritance_column] = "Reply"</tt> yourself.
     # No such attribute would be set for objects of the Message class in that example.
     def ensure_proper_type

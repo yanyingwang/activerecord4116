@@ -16,7 +16,7 @@ require 'models/owner'
 require 'models/post'
 require 'models/comment'
 
-class HasOneThroughAssociationsTest < ActiveRecord::TestCase
+class HasOneThroughAssociationsTest < ActiveRecord4116::TestCase
   fixtures :member_types, :members, :clubs, :memberships, :sponsors, :organizations, :minivans,
            :dashboards, :speedometers, :authors, :posts, :comments, :categories, :essays, :owners
 
@@ -284,7 +284,7 @@ class HasOneThroughAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_has_one_through_many_raises_exception
-    assert_raise(ActiveRecord::HasOneThroughCantAssociateThroughCollection) do
+    assert_raise(ActiveRecord4116::HasOneThroughCantAssociateThroughCollection) do
       members(:groucho).club_through_many
     end
   end
@@ -332,7 +332,7 @@ class HasOneThroughAssociationsTest < ActiveRecord::TestCase
 
   def test_has_one_through_relationship_cannot_have_a_counter_cache
     assert_raise(ArgumentError) do
-      Class.new(ActiveRecord::Base) do
+      Class.new(ActiveRecord4116::Base) do
         has_one :thing, through: :other_thing, counter_cache: true
       end
     end

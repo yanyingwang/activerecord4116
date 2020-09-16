@@ -1,4 +1,4 @@
-class Country < ActiveRecord::Base
+class Country < ActiveRecord4116::Base
 
   self.primary_key = :country_id
 

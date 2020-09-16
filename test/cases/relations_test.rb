@@ -18,7 +18,7 @@ require 'models/aircraft'
 require "models/possession"
 
 
-class RelationTest < ActiveRecord::TestCase
+class RelationTest < ActiveRecord4116::TestCase
   fixtures :authors, :topics, :entrants, :developers, :companies, :developers_projects, :accounts, :categories, :categorizations, :posts, :comments,
     :tags, :taggings, :cars, :minivans
 
@@ -66,7 +66,7 @@ class RelationTest < ActiveRecord::TestCase
 
   def test_scoped
     topics = Topic.all
-    assert_kind_of ActiveRecord::Relation, topics
+    assert_kind_of ActiveRecord4116::Relation, topics
     assert_equal 5, topics.size
   end
 
@@ -155,7 +155,7 @@ class RelationTest < ActiveRecord::TestCase
 
   def test_finding_with_subquery_without_select_does_not_change_the_select
     relation = Topic.where(approved: true)
-    assert_raises(ActiveRecord::StatementInvalid) do
+    assert_raises(ActiveRecord4116::StatementInvalid) do
       Topic.from(relation).to_a
     end
   end
@@ -641,7 +641,7 @@ class RelationTest < ActiveRecord::TestCase
     author = Author.all.find_by_id!(authors(:david).id)
     assert_equal "David", author.name
 
-    assert_raises(ActiveRecord::RecordNotFound) { Author.all.find_by_id_and_name!(20, 'invalid') }
+    assert_raises(ActiveRecord4116::RecordNotFound) { Author.all.find_by_id_and_name!(20, 'invalid') }
   end
 
   def test_find_id
@@ -650,7 +650,7 @@ class RelationTest < ActiveRecord::TestCase
     david = authors.find(authors(:david).id)
     assert_equal 'David', david.name
 
-    assert_raises(ActiveRecord::RecordNotFound) { authors.where(:name => 'lifo').find('42') }
+    assert_raises(ActiveRecord4116::RecordNotFound) { authors.where(:name => 'lifo').find('42') }
   end
 
   def test_find_ids
@@ -663,8 +663,8 @@ class RelationTest < ActiveRecord::TestCase
     assert_equal 'Mary', results[1].name
     assert_equal results, authors.find([authors(:david).id, authors(:mary).id])
 
-    assert_raises(ActiveRecord::RecordNotFound) { authors.where(:name => 'lifo').find(authors(:david).id, '42') }
-    assert_raises(ActiveRecord::RecordNotFound) { authors.find(['42', 43]) }
+    assert_raises(ActiveRecord4116::RecordNotFound) { authors.where(:name => 'lifo').find(authors(:david).id, '42') }
+    assert_raises(ActiveRecord4116::RecordNotFound) { authors.find(['42', 43]) }
   end
 
   def test_find_in_empty_array
@@ -858,7 +858,7 @@ class RelationTest < ActiveRecord::TestCase
   end
 
   def test_delete_all_limit_error
-    assert_raises(ActiveRecord::ActiveRecordError) { Author.limit(10).delete_all }
+    assert_raises(ActiveRecord4116::ActiveRecord4116Error) { Author.limit(10).delete_all }
   end
 
   def test_select_with_aggregates
@@ -1084,7 +1084,7 @@ class RelationTest < ActiveRecord::TestCase
   def test_create_bang
     birds = Bird.all
 
-    assert_raises(ActiveRecord::RecordInvalid) { birds.create! }
+    assert_raises(ActiveRecord4116::RecordInvalid) { birds.create! }
 
     hen = birds.where(:name => 'hen').create!
     assert_kind_of Bird, hen
@@ -1147,11 +1147,11 @@ class RelationTest < ActiveRecord::TestCase
   end
 
   def test_first_or_create_bang_with_invalid_options
-    assert_raises(ActiveRecord::RecordInvalid) { Bird.where(:color => 'green').first_or_create!(:pirate_id => 1) }
+    assert_raises(ActiveRecord4116::RecordInvalid) { Bird.where(:color => 'green').first_or_create!(:pirate_id => 1) }
   end
 
   def test_first_or_create_bang_with_no_parameters
-    assert_raises(ActiveRecord::RecordInvalid) { Bird.where(:color => 'green').first_or_create! }
+    assert_raises(ActiveRecord4116::RecordInvalid) { Bird.where(:color => 'green').first_or_create! }
   end
 
   def test_first_or_create_bang_with_valid_block
@@ -1166,7 +1166,7 @@ class RelationTest < ActiveRecord::TestCase
   end
 
   def test_first_or_create_bang_with_invalid_block
-    assert_raise(ActiveRecord::RecordInvalid) do
+    assert_raise(ActiveRecord4116::RecordInvalid) do
       Bird.where(:color => 'green').first_or_create! { |bird| bird.pirate_id = 1 }
     end
   end
@@ -1182,7 +1182,7 @@ class RelationTest < ActiveRecord::TestCase
   end
 
   def test_first_or_create_with_invalid_array
-    assert_raises(ActiveRecord::RecordInvalid) { Bird.where(:color => 'green').first_or_create!([ {:name => 'parrot'}, {:pirate_id => 1} ]) }
+    assert_raises(ActiveRecord4116::RecordInvalid) { Bird.where(:color => 'green').first_or_create!([ {:name => 'parrot'}, {:pirate_id => 1} ]) }
   end
 
   def test_first_or_initialize
@@ -1234,7 +1234,7 @@ class RelationTest < ActiveRecord::TestCase
   end
 
   def test_find_or_create_by!
-    assert_raises(ActiveRecord::RecordInvalid) { Bird.find_or_create_by!(color: 'green') }
+    assert_raises(ActiveRecord4116::RecordInvalid) { Bird.find_or_create_by!(color: 'green') }
   end
 
   def test_find_or_initialize_by
@@ -1334,7 +1334,7 @@ class RelationTest < ActiveRecord::TestCase
 
   def test_disable_implicit_join_references_is_deprecated
     assert_deprecated do
-      ActiveRecord::Base.disable_implicit_join_references = true
+      ActiveRecord4116::Base.disable_implicit_join_references = true
     end
   end
 
@@ -1545,7 +1545,7 @@ class RelationTest < ActiveRecord::TestCase
   end
 
   test "find_by! raises RecordNotFound if the record is missing" do
-    assert_raises(ActiveRecord::RecordNotFound) do
+    assert_raises(ActiveRecord4116::RecordNotFound) do
       Post.all.find_by!("1 = 0")
     end
   end
@@ -1554,7 +1554,7 @@ class RelationTest < ActiveRecord::TestCase
     relation = Post.all
     relation.to_a
 
-    assert_raises(ActiveRecord::ImmutableRelation) do
+    assert_raises(ActiveRecord4116::ImmutableRelation) do
       relation.where! 'foo'
     end
   end
@@ -1563,7 +1563,7 @@ class RelationTest < ActiveRecord::TestCase
     relation = Post.all
     relation.to_a
 
-    assert_raises(ActiveRecord::ImmutableRelation) do
+    assert_raises(ActiveRecord4116::ImmutableRelation) do
       relation.limit! 5
     end
   end
@@ -1572,7 +1572,7 @@ class RelationTest < ActiveRecord::TestCase
     relation = Post.all
     relation.to_a
 
-    assert_raises(ActiveRecord::ImmutableRelation) do
+    assert_raises(ActiveRecord4116::ImmutableRelation) do
       relation.merge! where: 'foo'
     end
   end
@@ -1581,26 +1581,26 @@ class RelationTest < ActiveRecord::TestCase
     relation = Post.all
     relation.to_a
 
-    assert_raises(ActiveRecord::ImmutableRelation) do
+    assert_raises(ActiveRecord4116::ImmutableRelation) do
       relation.extending! Module.new
     end
   end
 
   test "relations show the records in #inspect" do
     relation = Post.limit(2)
-    assert_equal "#<ActiveRecord::Relation [#{Post.limit(2).map(&:inspect).join(', ')}]>", relation.inspect
+    assert_equal "#<ActiveRecord4116::Relation [#{Post.limit(2).map(&:inspect).join(', ')}]>", relation.inspect
   end
 
   test "relations limit the records in #inspect at 10" do
     relation = Post.limit(11)
-    assert_equal "#<ActiveRecord::Relation [#{Post.limit(10).map(&:inspect).join(', ')}, ...]>", relation.inspect
+    assert_equal "#<ActiveRecord4116::Relation [#{Post.limit(10).map(&:inspect).join(', ')}, ...]>", relation.inspect
   end
 
   test "already-loaded relations don't perform a new query in #inspect" do
     relation = Post.limit(2)
     relation.to_a
 
-    expected = "#<ActiveRecord::Relation [#{Post.limit(2).map(&:inspect).join(', ')}]>"
+    expected = "#<ActiveRecord4116::Relation [#{Post.limit(2).map(&:inspect).join(', ')}]>"
 
     assert_no_queries do
       assert_equal expected, relation.inspect
@@ -1610,7 +1610,7 @@ class RelationTest < ActiveRecord::TestCase
   test 'using a custom table affects the wheres' do
     table_alias = Post.arel_table.alias('omg_posts')
 
-    relation = ActiveRecord::Relation.new Post, table_alias
+    relation = ActiveRecord4116::Relation.new Post, table_alias
     relation.where!(:foo => "bar")
 
     node = relation.arel.constraints.first.grep(Arel::Attributes::Attribute).first

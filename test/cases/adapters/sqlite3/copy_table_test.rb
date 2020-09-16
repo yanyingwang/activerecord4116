@@ -1,10 +1,10 @@
 require "cases/helper"
 
-class CopyTableTest < ActiveRecord::TestCase
+class CopyTableTest < ActiveRecord4116::TestCase
   fixtures :customers
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     class << @connection
       public :copy_table, :table_structure, :indexes
     end

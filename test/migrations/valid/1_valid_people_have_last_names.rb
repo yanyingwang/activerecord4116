@@ -1,4 +1,4 @@
-class ValidPeopleHaveLastNames < ActiveRecord::Migration
+class ValidPeopleHaveLastNames < ActiveRecord4116::Migration
   def self.up
     add_column "people", "last_name", :string
   end

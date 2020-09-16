@@ -10,15 +10,15 @@ module JsonSerializationHelpers
   private
 
   def set_include_root_in_json(value)
-    original_root_in_json = ActiveRecord::Base.include_root_in_json
-    ActiveRecord::Base.include_root_in_json = value
+    original_root_in_json = ActiveRecord4116::Base.include_root_in_json
+    ActiveRecord4116::Base.include_root_in_json = value
     yield
   ensure
-    ActiveRecord::Base.include_root_in_json = original_root_in_json
+    ActiveRecord4116::Base.include_root_in_json = original_root_in_json
   end
 end
 
-class JsonSerializationTest < ActiveRecord::TestCase
+class JsonSerializationTest < ActiveRecord4116::TestCase
   include JsonSerializationHelpers
 
   class NamespacedContact < Contact
@@ -156,7 +156,7 @@ class JsonSerializationTest < ActiveRecord::TestCase
   end
 end
 
-class DatabaseConnectedJsonEncodingTest < ActiveRecord::TestCase
+class DatabaseConnectedJsonEncodingTest < ActiveRecord4116::TestCase
   fixtures :authors, :posts, :comments, :tags, :taggings
 
   include JsonSerializationHelpers

@@ -1,4 +1,4 @@
-class Subscriber < ActiveRecord::Base
+class Subscriber < ActiveRecord4116::Base
   self.primary_key = 'nick'
   has_many :subscriptions
   has_many :books, :through => :subscriptions

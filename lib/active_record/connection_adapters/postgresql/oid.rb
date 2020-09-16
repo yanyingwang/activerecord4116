@@ -1,6 +1,6 @@
 require 'active_record/connection_adapters/abstract_adapter'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     class PostgreSQLAdapter < AbstractAdapter
       module OID
@@ -247,7 +247,7 @@ module ActiveRecord
           end
 
           def accessor
-            ActiveRecord::Store::StringKeyedHashAccessor
+            ActiveRecord4116::Store::StringKeyedHashAccessor
           end
         end
 
@@ -274,7 +274,7 @@ module ActiveRecord
           end
 
           def accessor
-            ActiveRecord::Store::StringKeyedHashAccessor
+            ActiveRecord4116::Store::StringKeyedHashAccessor
           end
         end
 

@@ -2,18 +2,18 @@ require "cases/helper"
 require 'models/post'
 require 'models/comment'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
-    class Mysql2SchemaTest < ActiveRecord::TestCase
+    class Mysql2SchemaTest < ActiveRecord4116::TestCase
       fixtures :posts
 
       def setup
-        @connection = ActiveRecord::Base.connection
+        @connection = ActiveRecord4116::Base.connection
         db          = Post.connection_pool.spec.config[:database]
         table       = Post.table_name
         @db_name    = db
 
-        @omgpost = Class.new(ActiveRecord::Base) do
+        @omgpost = Class.new(ActiveRecord4116::Base) do
           self.table_name = "#{db}.#{table}"
           def self.name; 'Post'; end
         end

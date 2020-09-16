@@ -18,7 +18,7 @@ require 'models/pet'
 require 'models/toy'
 require 'rexml/document'
 
-class PersistenceTest < ActiveRecord::TestCase
+class PersistenceTest < ActiveRecord4116::TestCase
   fixtures :topics, :companies, :developers, :projects, :computers, :accounts, :minimalistics, 'warehouse-things', :authors, :categorizations, :categories, :posts, :minivans, :pets, :toys
 
   # Oracle UPDATE does not support ORDER BY
@@ -35,7 +35,7 @@ class PersistenceTest < ActiveRecord::TestCase
       test_update_with_order_succeeds = lambda do |order|
         begin
           Author.order(order).update_all('id = id + 1')
-        rescue ActiveRecord::ActiveRecordError
+        rescue ActiveRecord4116::ActiveRecord4116Error
           false
         end
       end
@@ -204,7 +204,7 @@ class PersistenceTest < ActiveRecord::TestCase
     assert topic.save!
 
     reply = WrongReply.new
-    assert_raise(ActiveRecord::RecordInvalid) { reply.save! }
+    assert_raise(ActiveRecord4116::RecordInvalid) { reply.save! }
   end
 
   def test_save_null_string_attributes
@@ -368,7 +368,7 @@ class PersistenceTest < ActiveRecord::TestCase
     topic = Topic.find(1)
     assert_equal topic, topic.delete, 'topic.delete did not return self'
     assert topic.frozen?, 'topic not frozen after delete'
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.find(topic.id) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.find(topic.id) }
   end
 
   def test_delete_doesnt_run_callbacks
@@ -380,18 +380,18 @@ class PersistenceTest < ActiveRecord::TestCase
     topic = Topic.find(1)
     assert_equal topic, topic.destroy, 'topic.destroy did not return self'
     assert topic.frozen?, 'topic not frozen after destroy'
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.find(topic.id) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.find(topic.id) }
   end
 
   def test_destroy!
     topic = Topic.find(1)
     assert_equal topic, topic.destroy!, 'topic.destroy! did not return self'
     assert topic.frozen?, 'topic not frozen after destroy!'
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.find(topic.id) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.find(topic.id) }
   end
 
   def test_record_not_found_exception
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.find(99999) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.find(99999) }
   end
 
   def test_update_all
@@ -460,7 +460,7 @@ class PersistenceTest < ActiveRecord::TestCase
 
   def test_update_attribute_for_readonly_attribute
     minivan = Minivan.find('m1')
-    assert_raises(ActiveRecord::ActiveRecordError) { minivan.update_attribute(:color, 'black') }
+    assert_raises(ActiveRecord4116::ActiveRecord4116Error) { minivan.update_attribute(:color, 'black') }
   end
 
   def test_update_attribute_with_one_updated
@@ -515,7 +515,7 @@ class PersistenceTest < ActiveRecord::TestCase
 
   def test_update_column_should_raise_exception_if_new_record
     topic = Topic.new
-    assert_raises(ActiveRecord::ActiveRecordError) { topic.update_column("approved", false) }
+    assert_raises(ActiveRecord4116::ActiveRecord4116Error) { topic.update_column("approved", false) }
   end
 
   def test_update_column_should_not_leave_the_object_dirty
@@ -542,7 +542,7 @@ class PersistenceTest < ActiveRecord::TestCase
   def test_update_column_for_readonly_attribute
     minivan = Minivan.find('m1')
     prev_color = minivan.color
-    assert_raises(ActiveRecord::ActiveRecordError) { minivan.update_column(:color, 'black') }
+    assert_raises(ActiveRecord4116::ActiveRecord4116Error) { minivan.update_column(:color, 'black') }
     assert_equal prev_color, minivan.color
   end
 
@@ -606,7 +606,7 @@ class PersistenceTest < ActiveRecord::TestCase
 
   def test_update_columns_should_raise_exception_if_new_record
     topic = Topic.new
-    assert_raises(ActiveRecord::ActiveRecordError) { topic.update_columns({ approved: false }) }
+    assert_raises(ActiveRecord4116::ActiveRecord4116Error) { topic.update_columns({ approved: false }) }
   end
 
   def test_update_columns_should_not_leave_the_object_dirty
@@ -634,7 +634,7 @@ class PersistenceTest < ActiveRecord::TestCase
     minivan = Minivan.find('m1')
     prev_color = minivan.color
     prev_name = minivan.name
-    assert_raises(ActiveRecord::ActiveRecordError) { minivan.update_columns({ name: "My old minivan", color: 'black' }) }
+    assert_raises(ActiveRecord4116::ActiveRecord4116Error) { minivan.update_columns({ name: "My old minivan", color: 'black' }) }
     assert_equal prev_color, minivan.color
     assert_equal prev_name, minivan.name
 
@@ -726,7 +726,7 @@ class PersistenceTest < ActiveRecord::TestCase
     assert !topic.approved?
     assert_equal "The First Topic", topic.title
 
-    assert_raise(ActiveRecord::RecordNotUnique, ActiveRecord::StatementInvalid) do
+    assert_raise(ActiveRecord4116::RecordNotUnique, ActiveRecord4116::StatementInvalid) do
       topic.update_attributes(id: 3, title: "Hm is it possible?")
     end
     assert_not_equal "Hm is it possible?", Topic.find(3).title
@@ -763,7 +763,7 @@ class PersistenceTest < ActiveRecord::TestCase
     assert_equal "The Second Topic of the day", reply.title
     assert_equal "Have a nice day", reply.content
 
-    assert_raise(ActiveRecord::RecordInvalid) { reply.update!(title: nil, content: "Have a nice evening") }
+    assert_raise(ActiveRecord4116::RecordInvalid) { reply.update!(title: nil, content: "Have a nice evening") }
   ensure
     Reply.clear_validators!
   end
@@ -784,7 +784,7 @@ class PersistenceTest < ActiveRecord::TestCase
     assert_equal "The Second Topic of the day", reply.title
     assert_equal "Have a nice day", reply.content
 
-    assert_raise(ActiveRecord::RecordInvalid) { reply.update_attributes!(title: nil, content: "Have a nice evening") }
+    assert_raise(ActiveRecord4116::RecordInvalid) { reply.update_attributes!(title: nil, content: "Have a nice evening") }
   ensure
     Reply.clear_validators!
   end
@@ -823,8 +823,8 @@ class PersistenceTest < ActiveRecord::TestCase
     Topic.find(1).replies << should_be_destroyed_reply
 
     Topic.destroy(1)
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.find(1) }
-    assert_raise(ActiveRecord::RecordNotFound) { Reply.find(should_be_destroyed_reply.id) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.find(1) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Reply.find(should_be_destroyed_reply.id) }
   end
 
   def test_class_level_delete
@@ -832,7 +832,7 @@ class PersistenceTest < ActiveRecord::TestCase
     Topic.find(1).replies << should_be_destroyed_reply
 
     Topic.delete(1)
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.find(1) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.find(1) }
     assert_nothing_raised { Reply.find(should_be_destroyed_reply.id) }
   end
 

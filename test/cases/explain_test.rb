@@ -2,12 +2,12 @@ require 'cases/helper'
 require 'models/car'
 require 'active_support/core_ext/string/strip'
 
-if ActiveRecord::Base.connection.supports_explain?
-  class ExplainTest < ActiveRecord::TestCase
+if ActiveRecord4116::Base.connection.supports_explain?
+  class ExplainTest < ActiveRecord4116::TestCase
     fixtures :cars
 
     def base
-      ActiveRecord::Base
+      ActiveRecord4116::Base
     end
 
     def connection
@@ -20,7 +20,7 @@ if ActiveRecord::Base.connection.supports_explain?
     end
 
     def test_collecting_queries_for_explain
-      queries = ActiveRecord::Base.collecting_queries_for_explain do
+      queries = ActiveRecord4116::Base.collecting_queries_for_explain do
         Car.where(:name => 'honda').to_a
       end
 

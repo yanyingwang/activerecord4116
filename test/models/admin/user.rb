@@ -1,4 +1,4 @@
-class Admin::User < ActiveRecord::Base
+class Admin::User < ActiveRecord4116::Base
   class Coder
     def initialize(default = {})
       @default = default

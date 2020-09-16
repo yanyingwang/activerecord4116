@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Belongs To Polymorphic Association
   module Associations
     class BelongsToPolymorphicAssociation < BelongsToAssociation #:nodoc:

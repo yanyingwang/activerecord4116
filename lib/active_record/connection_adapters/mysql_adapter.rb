@@ -15,7 +15,7 @@ class Mysql
   class Result; include Enumerable end
 end
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionHandling # :nodoc:
     # Establishes a connection to the database that's used by all Active Record objects.
     def mysql_connection(config)
@@ -36,7 +36,7 @@ module ActiveRecord
       ConnectionAdapters::MysqlAdapter.new(mysql, logger, options, config)
     rescue Mysql::Error => error
       if error.message.include?("Unknown database")
-        raise ActiveRecord::NoDatabaseError.new(error.message)
+        raise ActiveRecord4116::NoDatabaseError.new(error.message)
       else
         raise error
       end
@@ -437,10 +437,10 @@ module ActiveRecord
               end
             }
 
-            result_set = ActiveRecord::Result.new(fields, result.to_a, types)
+            result_set = ActiveRecord4116::Result.new(fields, result.to_a, types)
             result.free
           else
-            result_set = ActiveRecord::Result.new([], [])
+            result_set = ActiveRecord4116::Result.new([], [])
           end
 
           [result_set, affected_rows]
@@ -513,7 +513,7 @@ module ActiveRecord
             metadata.free
           end
 
-          result_set = ActiveRecord::Result.new(cols, stmt.to_a) if cols
+          result_set = ActiveRecord4116::Result.new(cols, stmt.to_a) if cols
           affected_rows = stmt.affected_rows
 
           stmt.free_result

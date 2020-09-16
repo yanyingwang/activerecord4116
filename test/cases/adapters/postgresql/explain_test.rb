@@ -1,10 +1,10 @@
 require "cases/helper"
 require 'models/developer'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     class PostgreSQLAdapter
-      class ExplainTest < ActiveRecord::TestCase
+      class ExplainTest < ActiveRecord4116::TestCase
         fixtures :developers
 
         def test_explain_for_one_query

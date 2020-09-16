@@ -1,4 +1,4 @@
-class AbstractCompany < ActiveRecord::Base
+class AbstractCompany < ActiveRecord4116::Base
   self.abstract_class = true
 end
 
@@ -185,7 +185,7 @@ end
 class VerySpecialClient < SpecialClient
 end
 
-class Account < ActiveRecord::Base
+class Account < ActiveRecord4116::Base
   belongs_to :firm, :class_name => 'Company'
   belongs_to :unautosaved_firm, :foreign_key => "firm_id", :class_name => "Firm", :autosave => false
 

@@ -1,6 +1,6 @@
 require "cases/helper"
 
-class ViewTest < ActiveRecord::TestCase
+class ViewTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
 
   SCHEMA_NAME = 'test_schema'
@@ -13,12 +13,12 @@ class ViewTest < ActiveRecord::TestCase
     'moment timestamp without time zone'
   ]
 
-  class ThingView < ActiveRecord::Base
+  class ThingView < ActiveRecord4116::Base
     self.table_name = 'test_schema.view_things'
   end
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     @connection.execute "CREATE SCHEMA #{SCHEMA_NAME} CREATE TABLE #{TABLE_NAME} (#{COLUMNS.join(',')})"
     @connection.execute "CREATE TABLE #{SCHEMA_NAME}.\"#{TABLE_NAME}.table\" (#{COLUMNS.join(',')})"
     @connection.execute "CREATE VIEW #{SCHEMA_NAME}.#{VIEW_NAME} AS SELECT id,name,email,moment FROM #{SCHEMA_NAME}.#{TABLE_NAME}"

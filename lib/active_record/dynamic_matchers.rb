@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module DynamicMatchers #:nodoc:
     # This code in this file seems to have a lot of indirection, but the indirection
     # is there to provide extension points for the activerecord-deprecated_finders

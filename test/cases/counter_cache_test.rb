@@ -14,7 +14,7 @@ require 'models/subscriber'
 require 'models/subscription'
 require 'models/book'
 
-class CounterCacheTest < ActiveRecord::TestCase
+class CounterCacheTest < ActiveRecord4116::TestCase
   fixtures :topics, :categories, :categorizations, :cars, :dogs, :dog_lovers, :people, :friendships, :subscribers, :subscriptions, :books
 
   class ::SpecialTopic < ::Topic
@@ -140,7 +140,7 @@ class CounterCacheTest < ActiveRecord::TestCase
 
   test "reset the right counter if two have the same foreign key" do
     michael = people(:michael)
-    assert_nothing_raised(ActiveRecord::StatementInvalid) do
+    assert_nothing_raised(ActiveRecord4116::StatementInvalid) do
       Person.reset_counters(michael.id, :friends_too)
     end
   end

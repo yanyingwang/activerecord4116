@@ -2,7 +2,7 @@ require "cases/helper"
 require 'models/topic'
 require 'models/reply'
 
-class ActiveRecordI18nTests < ActiveRecord::TestCase
+class ActiveRecord4116I18nTests < ActiveRecord4116::TestCase
 
   def setup
     I18n.backend = I18n::Backend::Simple.new

@@ -1,6 +1,6 @@
 require 'active_support/core_ext/module/attribute_accessors'
 
-module ActiveRecord
+module ActiveRecord4116
   module AttributeMethods
     module Dirty # :nodoc:
       extend ActiveSupport::Concern
@@ -8,7 +8,7 @@ module ActiveRecord
       include ActiveModel::Dirty
 
       included do
-        if self < ::ActiveRecord::Timestamp
+        if self < ::ActiveRecord4116::Timestamp
           raise "You cannot include Dirty after Timestamp"
         end
 

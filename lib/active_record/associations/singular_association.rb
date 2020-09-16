@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module Associations
     class SingularAssociation < Association #:nodoc:
       # Implements the reader method, e.g. foo.bar for Foo.has_one :bar

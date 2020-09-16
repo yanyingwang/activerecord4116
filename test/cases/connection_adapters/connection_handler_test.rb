@@ -1,12 +1,12 @@
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
 
-    class MergeAndResolveDefaultUrlConfigTest < ActiveRecord::TestCase
+    class MergeAndResolveDefaultUrlConfigTest < ActiveRecord4116::TestCase
 
       def klass
-        ActiveRecord::ConnectionHandling::MergeAndResolveDefaultUrlConfig
+        ActiveRecord4116::ConnectionHandling::MergeAndResolveDefaultUrlConfig
       end
 
       def setup
@@ -296,7 +296,7 @@ module ActiveRecord
       end
     end
 
-    class ConnectionHandlerTest < ActiveRecord::TestCase
+    class ConnectionHandlerTest < ActiveRecord4116::TestCase
       def setup
         @klass    = Class.new(Base)   { def self.name; 'klass';    end }
         @subklass = Class.new(@klass) { def self.name; 'subklass'; end }
@@ -318,7 +318,7 @@ module ActiveRecord
       end
 
       def test_retrieve_connection_pool_with_ar_base
-        assert_nil @handler.retrieve_connection_pool(ActiveRecord::Base)
+        assert_nil @handler.retrieve_connection_pool(ActiveRecord4116::Base)
       end
 
       def test_retrieve_connection_pool

@@ -1,18 +1,18 @@
 require "cases/helper"
 
-class MysqlConnectionTest < ActiveRecord::TestCase
-  class Klass < ActiveRecord::Base
+class MysqlConnectionTest < ActiveRecord4116::TestCase
+  class Klass < ActiveRecord4116::Base
   end
 
   def setup
     super
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
   end
 
   def test_mysql_reconnect_attribute_after_connection_with_reconnect_true
     run_without_connection do |orig_connection|
-      ActiveRecord::Base.establish_connection(orig_connection.merge({:reconnect => true}))
-      assert ActiveRecord::Base.connection.raw_connection.reconnect
+      ActiveRecord4116::Base.establish_connection(orig_connection.merge({:reconnect => true}))
+      assert ActiveRecord4116::Base.connection.raw_connection.reconnect
     end
   end
 
@@ -30,8 +30,8 @@ class MysqlConnectionTest < ActiveRecord::TestCase
 
   def test_mysql_reconnect_attribute_after_connection_with_reconnect_false
     run_without_connection do |orig_connection|
-      ActiveRecord::Base.establish_connection(orig_connection.merge({:reconnect => false}))
-      assert !ActiveRecord::Base.connection.raw_connection.reconnect
+      ActiveRecord4116::Base.establish_connection(orig_connection.merge({:reconnect => false}))
+      assert !ActiveRecord4116::Base.connection.raw_connection.reconnect
     end
   end
 
@@ -127,7 +127,7 @@ class MysqlConnectionTest < ActiveRecord::TestCase
   # Test that MySQL allows multiple results for stored procedures
   if defined?(Mysql) && Mysql.const_defined?(:CLIENT_MULTI_RESULTS)
     def test_multi_results
-      rows = ActiveRecord::Base.connection.select_rows('CALL ten();')
+      rows = ActiveRecord4116::Base.connection.select_rows('CALL ten();')
       assert_equal 10, rows[0][0].to_i, "ten() did not return 10 as expected: #{rows.inspect}"
       assert @connection.active?, "Bad connection use by 'MysqlAdapter.select_rows'"
     end
@@ -140,33 +140,33 @@ class MysqlConnectionTest < ActiveRecord::TestCase
 
   def test_mysql_strict_mode_disabled
     run_without_connection do |orig_connection|
-      ActiveRecord::Base.establish_connection(orig_connection.merge({:strict => false}))
-      result = ActiveRecord::Base.connection.exec_query "SELECT @@SESSION.sql_mode"
+      ActiveRecord4116::Base.establish_connection(orig_connection.merge({:strict => false}))
+      result = ActiveRecord4116::Base.connection.exec_query "SELECT @@SESSION.sql_mode"
       assert_equal [['']], result.rows
     end
   end
 
   def test_mysql_set_session_variable
     run_without_connection do |orig_connection|
-      ActiveRecord::Base.establish_connection(orig_connection.deep_merge({:variables => {:default_week_format => 3}}))
-      session_mode = ActiveRecord::Base.connection.exec_query "SELECT @@SESSION.DEFAULT_WEEK_FORMAT"
+      ActiveRecord4116::Base.establish_connection(orig_connection.deep_merge({:variables => {:default_week_format => 3}}))
+      session_mode = ActiveRecord4116::Base.connection.exec_query "SELECT @@SESSION.DEFAULT_WEEK_FORMAT"
       assert_equal 3, session_mode.rows.first.first.to_i
     end
   end
 
   def test_mysql_sql_mode_variable_overides_strict_mode
     run_without_connection do |orig_connection|
-      ActiveRecord::Base.establish_connection(orig_connection.deep_merge(variables: { 'sql_mode' => 'ansi' }))
-      result = ActiveRecord::Base.connection.exec_query 'SELECT @@SESSION.sql_mode'
+      ActiveRecord4116::Base.establish_connection(orig_connection.deep_merge(variables: { 'sql_mode' => 'ansi' }))
+      result = ActiveRecord4116::Base.connection.exec_query 'SELECT @@SESSION.sql_mode'
       assert_not_equal [['STRICT_ALL_TABLES']], result.rows
     end
   end
 
   def test_mysql_set_session_variable_to_default
     run_without_connection do |orig_connection|
-      ActiveRecord::Base.establish_connection(orig_connection.deep_merge({:variables => {:default_week_format => :default}}))
-      global_mode = ActiveRecord::Base.connection.exec_query "SELECT @@GLOBAL.DEFAULT_WEEK_FORMAT"
-      session_mode = ActiveRecord::Base.connection.exec_query "SELECT @@SESSION.DEFAULT_WEEK_FORMAT"
+      ActiveRecord4116::Base.establish_connection(orig_connection.deep_merge({:variables => {:default_week_format => :default}}))
+      global_mode = ActiveRecord4116::Base.connection.exec_query "SELECT @@GLOBAL.DEFAULT_WEEK_FORMAT"
+      session_mode = ActiveRecord4116::Base.connection.exec_query "SELECT @@SESSION.DEFAULT_WEEK_FORMAT"
       assert_equal global_mode.rows, session_mode.rows
     end
   end
@@ -174,11 +174,11 @@ class MysqlConnectionTest < ActiveRecord::TestCase
   private
 
   def run_without_connection
-    original_connection = ActiveRecord::Base.remove_connection
+    original_connection = ActiveRecord4116::Base.remove_connection
     begin
       yield original_connection
     ensure
-      ActiveRecord::Base.establish_connection(original_connection)
+      ActiveRecord4116::Base.establish_connection(original_connection)
     end
   end
 end

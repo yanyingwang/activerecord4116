@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module Associations
     class Preloader
       class HasOneThrough < SingularAssociation #:nodoc:

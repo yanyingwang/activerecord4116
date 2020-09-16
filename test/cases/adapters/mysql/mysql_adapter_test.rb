@@ -2,11 +2,11 @@
 
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
-    class MysqlAdapterTest < ActiveRecord::TestCase
+    class MysqlAdapterTest < ActiveRecord4116::TestCase
       def setup
-        @conn = ActiveRecord::Base.connection
+        @conn = ActiveRecord4116::Base.connection
         @conn.exec_query('drop table if exists ex')
         @conn.exec_query(<<-eosql)
           CREATE TABLE `ex` (
@@ -17,9 +17,9 @@ module ActiveRecord
       end
 
       def test_bad_connection_mysql
-        assert_raise ActiveRecord::NoDatabaseError do
-          configuration = ActiveRecord::Base.configurations['arunit'].merge(database: 'inexistent_activerecord_unittest')
-          connection = ActiveRecord::Base.mysql_connection(configuration)
+        assert_raise ActiveRecord4116::NoDatabaseError do
+          configuration = ActiveRecord4116::Base.configurations['arunit'].merge(database: 'inexistent_activerecord_unittest')
+          connection = ActiveRecord4116::Base.mysql_connection(configuration)
           connection.exec_query('drop table if exists ex')
         end
       end

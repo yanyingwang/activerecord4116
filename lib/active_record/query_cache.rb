@@ -1,12 +1,12 @@
 
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Query Cache
   class QueryCache
     module ClassMethods
       # Enable the query cache within the block if Active Record is configured.
       # If it's not, it will execute the given block.
       def cache(&block)
-        if ActiveRecord::Base.connected?
+        if ActiveRecord4116::Base.connected?
           connection.cache(&block)
         else
           yield
@@ -16,7 +16,7 @@ module ActiveRecord
       # Disable the query cache within the block if Active Record is configured.
       # If it's not, it will execute the given block.
       def uncached(&block)
-        if ActiveRecord::Base.connected?
+        if ActiveRecord4116::Base.connected?
           connection.uncached(&block)
         else
           yield
@@ -29,9 +29,9 @@ module ActiveRecord
     end
 
     def call(env)
-      enabled       = ActiveRecord::Base.connection.query_cache_enabled
-      connection_id = ActiveRecord::Base.connection_id
-      ActiveRecord::Base.connection.enable_query_cache!
+      enabled       = ActiveRecord4116::Base.connection.query_cache_enabled
+      connection_id = ActiveRecord4116::Base.connection_id
+      ActiveRecord4116::Base.connection.enable_query_cache!
 
       response = @app.call(env)
       response[2] = Rack::BodyProxy.new(response[2]) do
@@ -47,9 +47,9 @@ module ActiveRecord
     private
 
     def restore_query_cache_settings(connection_id, enabled)
-      ActiveRecord::Base.connection_id = connection_id
-      ActiveRecord::Base.connection.clear_query_cache
-      ActiveRecord::Base.connection.disable_query_cache! unless enabled
+      ActiveRecord4116::Base.connection_id = connection_id
+      ActiveRecord4116::Base.connection.clear_query_cache
+      ActiveRecord4116::Base.connection.disable_query_cache! unless enabled
     end
 
   end

@@ -9,7 +9,7 @@ require 'models/topic'
 require 'models/reply'
 require 'models/company'
 
-class XmlSerializationTest < ActiveRecord::TestCase
+class XmlSerializationTest < ActiveRecord4116::TestCase
   def test_should_serialize_default_root
     @xml = Contact.new.to_xml
     assert_match %r{^<contact>},  @xml
@@ -72,7 +72,7 @@ class XmlSerializationTest < ActiveRecord::TestCase
   end
 end
 
-class DefaultXmlSerializationTest < ActiveRecord::TestCase
+class DefaultXmlSerializationTest < ActiveRecord4116::TestCase
   def setup
     @contact = Contact.new(
       :name        => 'aaron stack',
@@ -159,7 +159,7 @@ class DefaultXmlSerializationTest < ActiveRecord::TestCase
   end
 end
 
-class DefaultXmlSerializationTimezoneTest < ActiveRecord::TestCase
+class DefaultXmlSerializationTimezoneTest < ActiveRecord4116::TestCase
   def test_should_serialize_datetime_with_timezone
     with_timezone_config zone: "Pacific Time (US & Canada)" do
       toy = Toy.create(:name => 'Mickey', :updated_at => Time.utc(2006, 8, 1))
@@ -175,7 +175,7 @@ class DefaultXmlSerializationTimezoneTest < ActiveRecord::TestCase
   end
 end
 
-class NilXmlSerializationTest < ActiveRecord::TestCase
+class NilXmlSerializationTest < ActiveRecord4116::TestCase
   def setup
     @xml = Contact.new.to_xml(:root => 'xml_contact')
   end
@@ -218,7 +218,7 @@ class NilXmlSerializationTest < ActiveRecord::TestCase
   end
 end
 
-class DatabaseConnectedXmlSerializationTest < ActiveRecord::TestCase
+class DatabaseConnectedXmlSerializationTest < ActiveRecord4116::TestCase
   fixtures :topics, :companies, :accounts, :authors, :posts, :projects
 
   def test_to_xml

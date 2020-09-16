@@ -23,7 +23,7 @@ require 'models/categorization'
 require 'models/membership'
 require 'models/essay'
 
-class NestedThroughAssociationsTest < ActiveRecord::TestCase
+class NestedThroughAssociationsTest < ActiveRecord4116::TestCase
   fixtures :authors, :books, :posts, :subscriptions, :subscribers, :tags, :taggings,
            :people, :readers, :references, :jobs, :ratings, :comments, :members, :member_details,
            :member_types, :sponsors, :clubs, :organizations, :categories, :categories_posts,
@@ -461,31 +461,31 @@ class NestedThroughAssociationsTest < ActiveRecord::TestCase
     david = authors(:david)
     subscriber = subscribers(:first)
 
-    assert_raises(ActiveRecord::HasManyThroughNestedAssociationsAreReadonly) do
+    assert_raises(ActiveRecord4116::HasManyThroughNestedAssociationsAreReadonly) do
       david.subscribers = [subscriber]
     end
 
-    assert_raises(ActiveRecord::HasManyThroughNestedAssociationsAreReadonly) do
+    assert_raises(ActiveRecord4116::HasManyThroughNestedAssociationsAreReadonly) do
       david.subscriber_ids = [subscriber.id]
     end
 
-    assert_raises(ActiveRecord::HasManyThroughNestedAssociationsAreReadonly) do
+    assert_raises(ActiveRecord4116::HasManyThroughNestedAssociationsAreReadonly) do
       david.subscribers << subscriber
     end
 
-    assert_raises(ActiveRecord::HasManyThroughNestedAssociationsAreReadonly) do
+    assert_raises(ActiveRecord4116::HasManyThroughNestedAssociationsAreReadonly) do
       david.subscribers.delete(subscriber)
     end
 
-    assert_raises(ActiveRecord::HasManyThroughNestedAssociationsAreReadonly) do
+    assert_raises(ActiveRecord4116::HasManyThroughNestedAssociationsAreReadonly) do
       david.subscribers.clear
     end
 
-    assert_raises(ActiveRecord::HasManyThroughNestedAssociationsAreReadonly) do
+    assert_raises(ActiveRecord4116::HasManyThroughNestedAssociationsAreReadonly) do
       david.subscribers.build
     end
 
-    assert_raises(ActiveRecord::HasManyThroughNestedAssociationsAreReadonly) do
+    assert_raises(ActiveRecord4116::HasManyThroughNestedAssociationsAreReadonly) do
       david.subscribers.create
     end
   end
@@ -494,7 +494,7 @@ class NestedThroughAssociationsTest < ActiveRecord::TestCase
     groucho = members(:groucho)
     founding = member_types(:founding)
 
-    assert_raises(ActiveRecord::HasManyThroughNestedAssociationsAreReadonly) do
+    assert_raises(ActiveRecord4116::HasManyThroughNestedAssociationsAreReadonly) do
       groucho.nested_member_type = founding
     end
   end

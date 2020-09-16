@@ -15,7 +15,7 @@ require 'pg'
 
 require 'ipaddr'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionHandling # :nodoc:
     VALID_CONN_PARAMS = [:host, :hostaddr, :port, :dbname, :user, :password, :connect_timeout,
                          :client_encoding, :options, :application_name, :fallback_application_name,
@@ -29,7 +29,7 @@ module ActiveRecord
 
       conn_params.delete_if { |_, v| v.nil? }
 
-      # Map ActiveRecords param names to PGs.
+      # Map ActiveRecord4116s param names to PGs.
       conn_params[:user] = conn_params.delete(:username) if conn_params[:username]
       conn_params[:dbname] = conn_params.delete(:database) if conn_params[:database]
 
@@ -287,7 +287,7 @@ module ActiveRecord
     # In addition, default connection parameters of libpq can be set per environment variables.
     # See http://www.postgresql.org/docs/9.1/static/libpq-envars.html .
     class PostgreSQLAdapter < AbstractAdapter
-      class ColumnDefinition < ActiveRecord::ConnectionAdapters::ColumnDefinition
+      class ColumnDefinition < ActiveRecord4116::ConnectionAdapters::ColumnDefinition
         attr_accessor :array
       end
 
@@ -355,7 +355,7 @@ module ActiveRecord
         end
       end
 
-      class TableDefinition < ActiveRecord::ConnectionAdapters::TableDefinition
+      class TableDefinition < ActiveRecord4116::ConnectionAdapters::TableDefinition
         include ColumnMethods
 
         # Defines the primary key field.
@@ -408,7 +408,7 @@ module ActiveRecord
           end
       end
 
-      class Table < ActiveRecord::ConnectionAdapters::Table
+      class Table < ActiveRecord4116::ConnectionAdapters::Table
         include ColumnMethods
       end
 
@@ -833,7 +833,7 @@ module ActiveRecord
             @connection.block
             @connection.get_last_result
           end
-        rescue ActiveRecord::StatementInvalid => e
+        rescue ActiveRecord4116::StatementInvalid => e
           pgerror = e.original_exception
 
           # Get the PG code for the failure.  Annoyingly, the code for
@@ -895,7 +895,7 @@ module ActiveRecord
           configure_connection
         rescue ::PG::Error => error
           if error.message.include?("does not exist")
-            raise ActiveRecord::NoDatabaseError.new(error.message)
+            raise ActiveRecord4116::NoDatabaseError.new(error.message)
           else
             raise error
           end
@@ -916,7 +916,7 @@ module ActiveRecord
           # If using Active Record's time zone support configure the connection to return
           # TIMESTAMP WITH ZONE types in UTC.
           # (SET TIME ZONE does not use an equals sign like other SET variables)
-          if ActiveRecord::Base.default_timezone == :utc
+          if ActiveRecord4116::Base.default_timezone == :utc
             execute("SET time zone 'UTC'", 'SCHEMA')
           elsif @local_tz
             execute("SET time zone '#{@local_tz}'", 'SCHEMA')

@@ -29,57 +29,57 @@ require 'models/car'
 require 'models/bulb'
 require 'rexml/document'
 
-class FirstAbstractClass < ActiveRecord::Base
+class FirstAbstractClass < ActiveRecord4116::Base
   self.abstract_class = true
 end
 class SecondAbstractClass < FirstAbstractClass
   self.abstract_class = true
 end
 class Photo < SecondAbstractClass; end
-class Category < ActiveRecord::Base; end
-class Categorization < ActiveRecord::Base; end
-class Smarts < ActiveRecord::Base; end
-class CreditCard < ActiveRecord::Base
-  class PinNumber < ActiveRecord::Base
-    class CvvCode < ActiveRecord::Base; end
+class Category < ActiveRecord4116::Base; end
+class Categorization < ActiveRecord4116::Base; end
+class Smarts < ActiveRecord4116::Base; end
+class CreditCard < ActiveRecord4116::Base
+  class PinNumber < ActiveRecord4116::Base
+    class CvvCode < ActiveRecord4116::Base; end
     class SubCvvCode < CvvCode; end
   end
   class SubPinNumber < PinNumber; end
   class Brand < Category; end
 end
-class MasterCreditCard < ActiveRecord::Base; end
-class Post < ActiveRecord::Base; end
-class Computer < ActiveRecord::Base; end
-class NonExistentTable < ActiveRecord::Base; end
-class TestOracleDefault < ActiveRecord::Base; end
+class MasterCreditCard < ActiveRecord4116::Base; end
+class Post < ActiveRecord4116::Base; end
+class Computer < ActiveRecord4116::Base; end
+class NonExistentTable < ActiveRecord4116::Base; end
+class TestOracleDefault < ActiveRecord4116::Base; end
 
 class ReadonlyTitlePost < Post
   attr_readonly :title
 end
 
-class Weird < ActiveRecord::Base; end
+class Weird < ActiveRecord4116::Base; end
 
-class Boolean < ActiveRecord::Base
+class Boolean < ActiveRecord4116::Base
   def has_fun
     super
   end
 end
 
-class LintTest < ActiveRecord::TestCase
+class LintTest < ActiveRecord4116::TestCase
   include ActiveModel::Lint::Tests
 
-  class LintModel < ActiveRecord::Base; end
+  class LintModel < ActiveRecord4116::Base; end
 
   def setup
     @model = LintModel.new
   end
 end
 
-class BasicsTest < ActiveRecord::TestCase
+class BasicsTest < ActiveRecord4116::TestCase
   fixtures :topics, :companies, :developers, :projects, :computers, :accounts, :minimalistics, 'warehouse-things', :authors, :categorizations, :categories, :posts
 
   def test_column_names_are_escaped
-    conn      = ActiveRecord::Base.connection
+    conn      = ActiveRecord4116::Base.connection
     classname = conn.class.name[/[^:]*$/]
     badchar   = {
       'SQLite3Adapter'    => '"',
@@ -294,7 +294,7 @@ class BasicsTest < ActiveRecord::TestCase
   def test_initialize_with_invalid_attribute
     Topic.new({ "title" => "test",
       "last_read(1i)" => "2005", "last_read(2i)" => "2", "last_read(3i)" => "31"})
-  rescue ActiveRecord::MultiparameterAssignmentErrors => ex
+  rescue ActiveRecord4116::MultiparameterAssignmentErrors => ex
     assert_equal(1, ex.errors.size)
     assert_equal("last_read", ex.errors[0].attribute)
   end
@@ -350,7 +350,7 @@ class BasicsTest < ActiveRecord::TestCase
   end
 
   def test_singular_table_name_guesses
-    ActiveRecord::Base.pluralize_table_names = false
+    ActiveRecord4116::Base.pluralize_table_names = false
     GUESSED_CLASSES.each(&:reset_table_name)
 
     assert_equal "category", Category.table_name
@@ -362,48 +362,48 @@ class BasicsTest < ActiveRecord::TestCase
     assert_equal "category", CreditCard::Brand.table_name
     assert_equal "master_credit_card", MasterCreditCard.table_name
   ensure
-    ActiveRecord::Base.pluralize_table_names = true
+    ActiveRecord4116::Base.pluralize_table_names = true
     GUESSED_CLASSES.each(&:reset_table_name)
   end
 
   def test_table_name_guesses_with_prefixes_and_suffixes
-    ActiveRecord::Base.table_name_prefix = "test_"
+    ActiveRecord4116::Base.table_name_prefix = "test_"
     Category.reset_table_name
     assert_equal "test_categories", Category.table_name
-    ActiveRecord::Base.table_name_suffix = "_test"
+    ActiveRecord4116::Base.table_name_suffix = "_test"
     Category.reset_table_name
     assert_equal "test_categories_test", Category.table_name
-    ActiveRecord::Base.table_name_prefix = ""
+    ActiveRecord4116::Base.table_name_prefix = ""
     Category.reset_table_name
     assert_equal "categories_test", Category.table_name
-    ActiveRecord::Base.table_name_suffix = ""
+    ActiveRecord4116::Base.table_name_suffix = ""
     Category.reset_table_name
     assert_equal "categories", Category.table_name
   ensure
-    ActiveRecord::Base.table_name_prefix = ""
-    ActiveRecord::Base.table_name_suffix = ""
+    ActiveRecord4116::Base.table_name_prefix = ""
+    ActiveRecord4116::Base.table_name_suffix = ""
     GUESSED_CLASSES.each(&:reset_table_name)
   end
 
   def test_singular_table_name_guesses_with_prefixes_and_suffixes
-    ActiveRecord::Base.pluralize_table_names = false
+    ActiveRecord4116::Base.pluralize_table_names = false
 
-    ActiveRecord::Base.table_name_prefix = "test_"
+    ActiveRecord4116::Base.table_name_prefix = "test_"
     Category.reset_table_name
     assert_equal "test_category", Category.table_name
-    ActiveRecord::Base.table_name_suffix = "_test"
+    ActiveRecord4116::Base.table_name_suffix = "_test"
     Category.reset_table_name
     assert_equal "test_category_test", Category.table_name
-    ActiveRecord::Base.table_name_prefix = ""
+    ActiveRecord4116::Base.table_name_prefix = ""
     Category.reset_table_name
     assert_equal "category_test", Category.table_name
-    ActiveRecord::Base.table_name_suffix = ""
+    ActiveRecord4116::Base.table_name_suffix = ""
     Category.reset_table_name
     assert_equal "category", Category.table_name
   ensure
-    ActiveRecord::Base.pluralize_table_names = true
-    ActiveRecord::Base.table_name_prefix = ""
-    ActiveRecord::Base.table_name_suffix = ""
+    ActiveRecord4116::Base.pluralize_table_names = true
+    ActiveRecord4116::Base.table_name_prefix = ""
+    ActiveRecord4116::Base.table_name_suffix = ""
     GUESSED_CLASSES.each(&:reset_table_name)
   end
 
@@ -897,7 +897,7 @@ class BasicsTest < ActiveRecord::TestCase
       end
     end
 
-    class Geometric < ActiveRecord::Base; end
+    class Geometric < ActiveRecord4116::Base; end
     def test_geometric_content
 
       # accepted format notes:
@@ -985,7 +985,7 @@ class BasicsTest < ActiveRecord::TestCase
     end
   end
 
-  class NumericData < ActiveRecord::Base
+  class NumericData < ActiveRecord4116::Base
     self.table_name = 'numeric_data'
   end
 
@@ -1035,7 +1035,7 @@ class BasicsTest < ActiveRecord::TestCase
   end
 
   def test_sql_injection_via_find
-    assert_raise(ActiveRecord::RecordNotFound, ActiveRecord::StatementInvalid) do
+    assert_raise(ActiveRecord4116::RecordNotFound, ActiveRecord4116::StatementInvalid) do
       Topic.find("123456 OR id > 0")
     end
   end
@@ -1142,7 +1142,7 @@ class BasicsTest < ActiveRecord::TestCase
   end
 
   def test_quoted_table_name_after_set_table_name
-    klass = Class.new(ActiveRecord::Base)
+    klass = Class.new(ActiveRecord4116::Base)
 
     klass.table_name = "foo"
     assert_equal "foo", klass.table_name
@@ -1154,14 +1154,14 @@ class BasicsTest < ActiveRecord::TestCase
   end
 
   def test_set_table_name_with_inheritance
-    k = Class.new( ActiveRecord::Base )
+    k = Class.new( ActiveRecord4116::Base )
     def k.name; "Foo"; end
     def k.table_name; super + "ks"; end
     assert_equal "foosks", k.table_name
   end
 
   def test_sequence_name_with_abstract_class
-    ak = Class.new(ActiveRecord::Base)
+    ak = Class.new(ActiveRecord4116::Base)
     ak.abstract_class = true
     k = Class.new(ak)
     k.table_name = "projects"
@@ -1215,7 +1215,7 @@ class BasicsTest < ActiveRecord::TestCase
 
   def test_all
     developers = Developer.all
-    assert_kind_of ActiveRecord::Relation, developers
+    assert_kind_of ActiveRecord4116::Relation, developers
     assert_equal Developer.all, developers
   end
 
@@ -1254,7 +1254,7 @@ class BasicsTest < ActiveRecord::TestCase
   end
 
   def test_abstract_class
-    assert !ActiveRecord::Base.abstract_class?
+    assert !ActiveRecord4116::Base.abstract_class?
     assert LoosePerson.abstract_class?
     assert !LooseDescendant.abstract_class?
   end
@@ -1264,7 +1264,7 @@ class BasicsTest < ActiveRecord::TestCase
   end
 
   def test_descends_from_active_record
-    assert !ActiveRecord::Base.descends_from_active_record?
+    assert !ActiveRecord4116::Base.descends_from_active_record?
 
     # Abstract subclass of AR::Base.
     assert LoosePerson.descends_from_active_record?
@@ -1302,79 +1302,79 @@ class BasicsTest < ActiveRecord::TestCase
   end
 
   def test_assert_queries
-    query = lambda { ActiveRecord::Base.connection.execute 'select count(*) from developers' }
+    query = lambda { ActiveRecord4116::Base.connection.execute 'select count(*) from developers' }
     assert_queries(2) { 2.times { query.call } }
     assert_queries 1, &query
     assert_no_queries { assert true }
   end
 
   def test_benchmark_with_log_level
-    original_logger = ActiveRecord::Base.logger
+    original_logger = ActiveRecord4116::Base.logger
     log = StringIO.new
-    ActiveRecord::Base.logger = ActiveSupport::Logger.new(log)
-    ActiveRecord::Base.logger.level = Logger::WARN
-    ActiveRecord::Base.benchmark("Debug Topic Count", :level => :debug) { Topic.count }
-    ActiveRecord::Base.benchmark("Warn Topic Count",  :level => :warn)  { Topic.count }
-    ActiveRecord::Base.benchmark("Error Topic Count", :level => :error) { Topic.count }
+    ActiveRecord4116::Base.logger = ActiveSupport::Logger.new(log)
+    ActiveRecord4116::Base.logger.level = Logger::WARN
+    ActiveRecord4116::Base.benchmark("Debug Topic Count", :level => :debug) { Topic.count }
+    ActiveRecord4116::Base.benchmark("Warn Topic Count",  :level => :warn)  { Topic.count }
+    ActiveRecord4116::Base.benchmark("Error Topic Count", :level => :error) { Topic.count }
     assert_no_match(/Debug Topic Count/, log.string)
     assert_match(/Warn Topic Count/, log.string)
     assert_match(/Error Topic Count/, log.string)
   ensure
-    ActiveRecord::Base.logger = original_logger
+    ActiveRecord4116::Base.logger = original_logger
   end
 
   def test_benchmark_with_use_silence
-    original_logger = ActiveRecord::Base.logger
+    original_logger = ActiveRecord4116::Base.logger
     log = StringIO.new
-    ActiveRecord::Base.logger = ActiveSupport::Logger.new(log)
-    ActiveRecord::Base.benchmark("Logging", :level => :debug, :silence => false)  { ActiveRecord::Base.logger.debug "Quiet" }
+    ActiveRecord4116::Base.logger = ActiveSupport::Logger.new(log)
+    ActiveRecord4116::Base.benchmark("Logging", :level => :debug, :silence => false)  { ActiveRecord4116::Base.logger.debug "Quiet" }
     assert_match(/Quiet/, log.string)
   ensure
-    ActiveRecord::Base.logger = original_logger
+    ActiveRecord4116::Base.logger = original_logger
   end
 
   def test_compute_type_success
-    assert_equal Author, ActiveRecord::Base.send(:compute_type, 'Author')
+    assert_equal Author, ActiveRecord4116::Base.send(:compute_type, 'Author')
   end
 
   def test_compute_type_nonexistent_constant
     e = assert_raises NameError do
-      ActiveRecord::Base.send :compute_type, 'NonexistentModel'
+      ActiveRecord4116::Base.send :compute_type, 'NonexistentModel'
     end
-    assert_equal 'uninitialized constant ActiveRecord::Base::NonexistentModel', e.message
-    assert_equal 'ActiveRecord::Base::NonexistentModel', e.name
+    assert_equal 'uninitialized constant ActiveRecord4116::Base::NonexistentModel', e.message
+    assert_equal 'ActiveRecord4116::Base::NonexistentModel', e.name
   end
 
   def test_compute_type_no_method_error
     ActiveSupport::Dependencies.stubs(:constantize).raises(NoMethodError)
     assert_raises NoMethodError do
-      ActiveRecord::Base.send :compute_type, 'InvalidModel'
+      ActiveRecord4116::Base.send :compute_type, 'InvalidModel'
     end
   end
 
   def test_compute_type_argument_error
     ActiveSupport::Dependencies.stubs(:constantize).raises(ArgumentError)
     assert_raises ArgumentError do
-      ActiveRecord::Base.send :compute_type, 'InvalidModel'
+      ActiveRecord4116::Base.send :compute_type, 'InvalidModel'
     end
   end
 
   def test_clear_cache!
     # preheat cache
     c1 = Post.connection.schema_cache.columns('posts')
-    ActiveRecord::Base.clear_cache!
+    ActiveRecord4116::Base.clear_cache!
     c2 = Post.connection.schema_cache.columns('posts')
     assert_not_equal c1, c2
   end
 
   def test_current_scope_is_reset
-    Object.const_set :UnloadablePost, Class.new(ActiveRecord::Base)
+    Object.const_set :UnloadablePost, Class.new(ActiveRecord4116::Base)
     UnloadablePost.send(:current_scope=, UnloadablePost.all)
 
     UnloadablePost.unloadable
-    assert_not_nil ActiveRecord::Scoping::ScopeRegistry.value_for(:current_scope, "UnloadablePost")
+    assert_not_nil ActiveRecord4116::Scoping::ScopeRegistry.value_for(:current_scope, "UnloadablePost")
     ActiveSupport::Dependencies.remove_unloadable_constants!
-    assert_nil ActiveRecord::Scoping::ScopeRegistry.value_for(:current_scope, "UnloadablePost")
+    assert_nil ActiveRecord4116::Scoping::ScopeRegistry.value_for(:current_scope, "UnloadablePost")
   ensure
     Object.class_eval{ remove_const :UnloadablePost } if defined?(UnloadablePost)
   end
@@ -1411,7 +1411,7 @@ class BasicsTest < ActiveRecord::TestCase
         flunk "there should be no post constant"
       end
 
-      self.class.const_set("Post", Class.new(ActiveRecord::Base) {
+      self.class.const_set("Post", Class.new(ActiveRecord4116::Base) {
         has_many :comments
       })
 
@@ -1419,7 +1419,7 @@ class BasicsTest < ActiveRecord::TestCase
       rd.binmode
       wr.binmode
 
-      ActiveRecord::Base.connection_handler.clear_all_connections!
+      ActiveRecord4116::Base.connection_handler.clear_all_connections!
 
       fork do
         rd.close
@@ -1459,7 +1459,7 @@ class BasicsTest < ActiveRecord::TestCase
 
   def test_touch_should_raise_error_on_a_new_object
     company = Company.new(:rating => 1, :name => "37signals", :firm_name => "37signals")
-    assert_raises(ActiveRecord::ActiveRecordError) do
+    assert_raises(ActiveRecord4116::ActiveRecord4116Error) do
       company.touch :updated_at
     end
   end
@@ -1529,7 +1529,7 @@ class BasicsTest < ActiveRecord::TestCase
       scope = mock
       scope.expects(meth).with(:foo, :bar).returns(record)
 
-      klass = Class.new(ActiveRecord::Base)
+      klass = Class.new(ActiveRecord4116::Base)
       klass.stubs(:all => scope)
 
       assert_equal record, klass.public_send(meth, :foo, :bar)
@@ -1537,14 +1537,14 @@ class BasicsTest < ActiveRecord::TestCase
   end
 
   test "scoped can take a values hash" do
-    klass = Class.new(ActiveRecord::Base)
+    klass = Class.new(ActiveRecord4116::Base)
     assert_equal ['foo'], klass.all.merge!(select: 'foo').select_values
   end
 
   test "connection_handler can be overridden" do
-    klass = Class.new(ActiveRecord::Base)
+    klass = Class.new(ActiveRecord4116::Base)
     orig_handler = klass.connection_handler
-    new_handler = ActiveRecord::ConnectionAdapters::ConnectionHandler.new
+    new_handler = ActiveRecord4116::ConnectionAdapters::ConnectionHandler.new
     thread_connection_handler = nil
 
     t = Thread.new do
@@ -1558,7 +1558,7 @@ class BasicsTest < ActiveRecord::TestCase
   end
 
   test "new threads get default the default connection handler" do
-    klass = Class.new(ActiveRecord::Base)
+    klass = Class.new(ActiveRecord4116::Base)
     orig_handler = klass.connection_handler
     handler = nil
 
@@ -1573,9 +1573,9 @@ class BasicsTest < ActiveRecord::TestCase
   end
 
   test "changing a connection handler in a main thread does not poison the other threads" do
-    klass = Class.new(ActiveRecord::Base)
+    klass = Class.new(ActiveRecord4116::Base)
     orig_handler = klass.connection_handler
-    new_handler = ActiveRecord::ConnectionAdapters::ConnectionHandler.new
+    new_handler = ActiveRecord4116::ConnectionAdapters::ConnectionHandler.new
     after_handler = nil
     latch1 = ActiveSupport::Concurrency::Latch.new
     latch2 = ActiveSupport::Concurrency::Latch.new

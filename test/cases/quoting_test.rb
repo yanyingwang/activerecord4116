@@ -1,9 +1,9 @@
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
-    class QuotingTest < ActiveRecord::TestCase
-      class FakeColumn < ActiveRecord::ConnectionAdapters::Column
+    class QuotingTest < ActiveRecord4116::TestCase
+      class FakeColumn < ActiveRecord4116::ConnectionAdapters::Column
         attr_accessor :type
 
         def initialize type

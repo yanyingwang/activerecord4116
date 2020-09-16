@@ -1,9 +1,9 @@
 require "cases/migration/helper"
 require "minitest/mock"
 
-module ActiveRecord
+module ActiveRecord4116
   class Migration
-    class TableTest < ActiveRecord::TestCase
+    class TableTest < ActiveRecord4116::TestCase
       def setup
         @connection = Minitest::Mock.new
       end

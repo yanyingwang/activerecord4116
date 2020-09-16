@@ -2,19 +2,19 @@ require 'active_record/scoping/default'
 require 'active_record/scoping/named'
 require 'active_record/base'
 
-module ActiveRecord
-  class SchemaMigration < ActiveRecord::Base
+module ActiveRecord4116
+  class SchemaMigration < ActiveRecord4116::Base
     class << self
       def primary_key
         nil
       end
 
       def table_name
-        "#{table_name_prefix}#{ActiveRecord::Base.schema_migrations_table_name}#{table_name_suffix}"
+        "#{table_name_prefix}#{ActiveRecord4116::Base.schema_migrations_table_name}#{table_name_suffix}"
       end
 
       def index_name
-        "#{table_name_prefix}unique_#{ActiveRecord::Base.schema_migrations_table_name}#{table_name_suffix}"
+        "#{table_name_prefix}unique_#{ActiveRecord4116::Base.schema_migrations_table_name}#{table_name_suffix}"
       end
 
       def table_exists?

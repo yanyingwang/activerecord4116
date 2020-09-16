@@ -1,7 +1,7 @@
 require 'cases/helper'
 require 'models/topic'
 
-class InvalidDateTest < ActiveRecord::TestCase
+class InvalidDateTest < ActiveRecord4116::TestCase
   def test_assign_valid_dates
     valid_dates = [[2007, 11, 30], [1993, 2, 28], [2008, 2, 29]]
 

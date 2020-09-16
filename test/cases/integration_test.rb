@@ -6,7 +6,7 @@ require 'models/developer'
 require 'models/owner'
 require 'models/pet'
 
-class IntegrationTest < ActiveRecord::TestCase
+class IntegrationTest < ActiveRecord4116::TestCase
   fixtures :companies, :developers, :owners, :pets
 
   def test_to_param_should_return_string

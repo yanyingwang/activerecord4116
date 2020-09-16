@@ -1,6 +1,6 @@
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   module AttributeMethods
     class SerializationTest < ActiveSupport::TestCase
       class FakeColumn < Struct.new(:name)

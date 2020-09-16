@@ -1,7 +1,7 @@
 require 'active_support/notifications'
 require 'active_record/explain_registry'
 
-module ActiveRecord
+module ActiveRecord4116
   class ExplainSubscriber # :nodoc:
     def start(name, id, payload)
       # unused

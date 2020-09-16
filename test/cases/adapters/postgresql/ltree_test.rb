@@ -3,19 +3,19 @@ require "cases/helper"
 require 'active_record/base'
 require 'active_record/connection_adapters/postgresql_adapter'
 
-class PostgresqlLtreeTest < ActiveRecord::TestCase
-  class Ltree < ActiveRecord::Base
+class PostgresqlLtreeTest < ActiveRecord4116::TestCase
+  class Ltree < ActiveRecord4116::Base
     self.table_name = 'ltrees'
   end
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     @connection.transaction do
       @connection.create_table('ltrees') do |t|
         t.ltree 'path'
       end
     end
-  rescue ActiveRecord::StatementInvalid
+  rescue ActiveRecord4116::StatementInvalid
     skip "do not test on PG without ltree"
   end
 

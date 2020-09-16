@@ -8,7 +8,7 @@ require 'models/category'
 require 'models/person'
 require 'models/reference'
 
-class RelationScopingTest < ActiveRecord::TestCase
+class RelationScopingTest < ActiveRecord4116::TestCase
   fixtures :authors, :developers, :projects, :comments, :posts, :developers_projects
 
   def test_reverse_order
@@ -185,7 +185,7 @@ class RelationScopingTest < ActiveRecord::TestCase
   end
 end
 
-class NestedRelationScopingTest < ActiveRecord::TestCase
+class NestedRelationScopingTest < ActiveRecord4116::TestCase
   fixtures :authors, :developers, :projects, :comments, :posts
 
   def test_merge_options
@@ -259,7 +259,7 @@ class NestedRelationScopingTest < ActiveRecord::TestCase
   end
 end
 
-class HasManyScopingTest< ActiveRecord::TestCase
+class HasManyScopingTest< ActiveRecord4116::TestCase
   fixtures :comments, :posts, :people, :references
 
   def setup
@@ -305,7 +305,7 @@ class HasManyScopingTest< ActiveRecord::TestCase
   end
 end
 
-class HasAndBelongsToManyScopingTest< ActiveRecord::TestCase
+class HasAndBelongsToManyScopingTest< ActiveRecord4116::TestCase
   fixtures :posts, :categories, :categories_posts
 
   def setup

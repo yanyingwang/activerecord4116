@@ -1,26 +1,26 @@
 require "cases/helper"
 
-class SchemaDumperTest < ActiveRecord::TestCase
+class SchemaDumperTest < ActiveRecord4116::TestCase
   def setup
     super
-    ActiveRecord::SchemaMigration.create_table
+    ActiveRecord4116::SchemaMigration.create_table
     @stream = StringIO.new
   end
 
   def standard_dump
     @stream = StringIO.new
-    ActiveRecord::SchemaDumper.ignore_tables = []
-    ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, @stream)
+    ActiveRecord4116::SchemaDumper.ignore_tables = []
+    ActiveRecord4116::SchemaDumper.dump(ActiveRecord4116::Base.connection, @stream)
     @stream.string
   end
 
   def test_dump_schema_information_outputs_lexically_ordered_versions
     versions = %w{ 20100101010101 20100201010101 20100301010101 }
     versions.reverse.each do |v|
-      ActiveRecord::SchemaMigration.create!(:version => v)
+      ActiveRecord4116::SchemaMigration.create!(:version => v)
     end
 
-    schema_info = ActiveRecord::Base.connection.dump_schema_information
+    schema_info = ActiveRecord4116::Base.connection.dump_schema_information
     assert_match(/20100201010101.*20100301010101/m, schema_info)
   end
 
@@ -88,8 +88,8 @@ class SchemaDumperTest < ActiveRecord::TestCase
   def test_schema_dump_includes_not_null_columns
     stream = StringIO.new
 
-    ActiveRecord::SchemaDumper.ignore_tables = [/^[^r]/]
-    ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, stream)
+    ActiveRecord4116::SchemaDumper.ignore_tables = [/^[^r]/]
+    ActiveRecord4116::SchemaDumper.dump(ActiveRecord4116::Base.connection, stream)
     output = stream.string
     assert_match %r{null: false}, output
   end
@@ -97,8 +97,8 @@ class SchemaDumperTest < ActiveRecord::TestCase
   def test_schema_dump_includes_limit_constraint_for_integer_columns
     stream = StringIO.new
 
-    ActiveRecord::SchemaDumper.ignore_tables = [/^(?!integer_limits)/]
-    ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, stream)
+    ActiveRecord4116::SchemaDumper.ignore_tables = [/^(?!integer_limits)/]
+    ActiveRecord4116::SchemaDumper.dump(ActiveRecord4116::Base.connection, stream)
     output = stream.string
 
     if current_adapter?(:PostgreSQLAdapter)
@@ -148,8 +148,8 @@ class SchemaDumperTest < ActiveRecord::TestCase
   def test_schema_dump_with_string_ignored_table
     stream = StringIO.new
 
-    ActiveRecord::SchemaDumper.ignore_tables = ['accounts']
-    ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, stream)
+    ActiveRecord4116::SchemaDumper.ignore_tables = ['accounts']
+    ActiveRecord4116::SchemaDumper.dump(ActiveRecord4116::Base.connection, stream)
     output = stream.string
     assert_no_match %r{create_table "accounts"}, output
     assert_match %r{create_table "authors"}, output
@@ -159,8 +159,8 @@ class SchemaDumperTest < ActiveRecord::TestCase
   def test_schema_dump_with_regexp_ignored_table
     stream = StringIO.new
 
-    ActiveRecord::SchemaDumper.ignore_tables = [/^account/]
-    ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, stream)
+    ActiveRecord4116::SchemaDumper.ignore_tables = [/^account/]
+    ActiveRecord4116::SchemaDumper.dump(ActiveRecord4116::Base.connection, stream)
     output = stream.string
     assert_no_match %r{create_table "accounts"}, output
     assert_match %r{create_table "authors"}, output
@@ -169,9 +169,9 @@ class SchemaDumperTest < ActiveRecord::TestCase
 
   def test_schema_dump_illegal_ignored_table_value
     stream = StringIO.new
-    ActiveRecord::SchemaDumper.ignore_tables = [5]
+    ActiveRecord4116::SchemaDumper.ignore_tables = [5]
     assert_raise(StandardError) do
-      ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, stream)
+      ActiveRecord4116::SchemaDumper.dump(ActiveRecord4116::Base.connection, stream)
     end
   end
 
@@ -190,7 +190,7 @@ class SchemaDumperTest < ActiveRecord::TestCase
       assert_equal 'add_index "companies", ["firm_id", "type"], name: "company_partial_index", where: "(rating > 10)", using: :btree', index_definition
     elsif current_adapter?(:MysqlAdapter) || current_adapter?(:Mysql2Adapter)
       assert_equal 'add_index "companies", ["firm_id", "type"], name: "company_partial_index", using: :btree', index_definition
-    elsif current_adapter?(:SQLite3Adapter) && ActiveRecord::Base.connection.supports_partial_index?
+    elsif current_adapter?(:SQLite3Adapter) && ActiveRecord4116::Base.connection.supports_partial_index?
       assert_equal 'add_index "companies", ["firm_id", "type"], name: "company_partial_index", where: "rating > 10"', index_definition
     else
       assert_equal 'add_index "companies", ["firm_id", "type"], name: "company_partial_index"', index_definition
@@ -242,8 +242,8 @@ class SchemaDumperTest < ActiveRecord::TestCase
 
   def test_schema_dump_includes_decimal_options
     stream = StringIO.new
-    ActiveRecord::SchemaDumper.ignore_tables = [/^[^n]/]
-    ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, stream)
+    ActiveRecord4116::SchemaDumper.ignore_tables = [/^[^n]/]
+    ActiveRecord4116::SchemaDumper.dump(ActiveRecord4116::Base.connection, stream)
     output = stream.string
     assert_match %r{precision: 3,[[:space:]]+scale: 2,[[:space:]]+default: 2.78}, output
   end
@@ -254,9 +254,9 @@ class SchemaDumperTest < ActiveRecord::TestCase
       assert_match %r{t.integer\s+"bigint_default",\s+limit: 8,\s+default: 0}, output
     end
 
-    if ActiveRecord::Base.connection.supports_extensions?
+    if ActiveRecord4116::Base.connection.supports_extensions?
       def test_schema_dump_includes_extensions
-        connection = ActiveRecord::Base.connection
+        connection = ActiveRecord4116::Base.connection
 
         connection.stubs(:extensions).returns(['hstore'])
         output = standard_dump
@@ -365,7 +365,7 @@ class SchemaDumperTest < ActiveRecord::TestCase
     assert_match %r{create_table "subscribers", id: false}, output
   end
 
-  class CreateDogMigration < ActiveRecord::Migration
+  class CreateDogMigration < ActiveRecord4116::Migration
     def up
       create_table("dogs") do |t|
         t.column :name, :string
@@ -379,8 +379,8 @@ class SchemaDumperTest < ActiveRecord::TestCase
 
   def test_schema_dump_with_table_name_prefix_and_suffix
     original, $stdout = $stdout, StringIO.new
-    ActiveRecord::Base.table_name_prefix = 'foo_'
-    ActiveRecord::Base.table_name_suffix = '_bar'
+    ActiveRecord4116::Base.table_name_prefix = 'foo_'
+    ActiveRecord4116::Base.table_name_suffix = '_bar'
 
     migration = CreateDogMigration.new
     migration.migrate(:up)
@@ -392,7 +392,7 @@ class SchemaDumperTest < ActiveRecord::TestCase
   ensure
     migration.migrate(:down)
 
-    ActiveRecord::Base.table_name_suffix = ActiveRecord::Base.table_name_prefix = ''
+    ActiveRecord4116::Base.table_name_suffix = ActiveRecord4116::Base.table_name_prefix = ''
     $stdout = original
   end
 

@@ -1,2 +1,2 @@
-class Minimalistic < ActiveRecord::Base
+class Minimalistic < ActiveRecord4116::Base
 end

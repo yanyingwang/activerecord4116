@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Callbacks
   #
   # Callbacks are hooks into the life cycle of an Active Record object that allow you to trigger logic
@@ -20,7 +20,7 @@ module ActiveRecord
   # * (7) <tt>after_commit</tt>
   #
   # Also, an <tt>after_rollback</tt> callback can be configured to be triggered whenever a rollback is issued.
-  # Check out <tt>ActiveRecord::Transactions</tt> for more details about <tt>after_commit</tt> and
+  # Check out <tt>ActiveRecord4116::Transactions</tt> for more details about <tt>after_commit</tt> and
   # <tt>after_rollback</tt>.
   #
   # Additionally, an <tt>after_touch</tt> callback is triggered whenever an
@@ -35,7 +35,7 @@ module ActiveRecord
   # except that each <tt>_create</tt> callback is replaced by the corresponding <tt>_update</tt> callback.
   #
   # Examples:
-  #   class CreditCard < ActiveRecord::Base
+  #   class CreditCard < ActiveRecord4116::Base
   #     # Strip everything but digits, so the user can specify "555 234 34" or
   #     # "5552-3434" and both will mean "55523434"
   #     before_validation(on: :create) do
@@ -43,7 +43,7 @@ module ActiveRecord
   #     end
   #   end
   #
-  #   class Subscription < ActiveRecord::Base
+  #   class Subscription < ActiveRecord4116::Base
   #     before_create :record_signup
   #
   #     private
@@ -52,7 +52,7 @@ module ActiveRecord
   #       end
   #   end
   #
-  #   class Firm < ActiveRecord::Base
+  #   class Firm < ActiveRecord4116::Base
   #     # Destroys the associated clients and people when the firm is destroyed
   #     before_destroy { |record| Person.destroy_all "firm_id = #{record.id}"   }
   #     before_destroy { |record| Client.destroy_all "client_of = #{record.id}" }
@@ -64,7 +64,7 @@ module ActiveRecord
   # use of the callback macros. Their main advantage is that the macros add behavior into a callback
   # queue that is kept intact down through an inheritance hierarchy.
   #
-  #   class Topic < ActiveRecord::Base
+  #   class Topic < ActiveRecord4116::Base
   #     before_destroy :destroy_author
   #   end
   #
@@ -76,7 +76,7 @@ module ActiveRecord
   # run, both +destroy_author+ and +destroy_readers+ are called. Contrast this to the following situation
   # where the +before_destroy+ method is overridden:
   #
-  #   class Topic < ActiveRecord::Base
+  #   class Topic < ActiveRecord4116::Base
   #     def before_destroy() destroy_author end
   #   end
   #
@@ -102,7 +102,7 @@ module ActiveRecord
   #
   # The method reference callbacks work by specifying a protected or private method available in the object, like this:
   #
-  #   class Topic < ActiveRecord::Base
+  #   class Topic < ActiveRecord4116::Base
   #     before_destroy :delete_parents
   #
   #     private
@@ -113,7 +113,7 @@ module ActiveRecord
   #
   # The callback objects have methods named after the callback called with the record as the only parameter, such as:
   #
-  #   class BankAccount < ActiveRecord::Base
+  #   class BankAccount < ActiveRecord4116::Base
   #     before_save      EncryptionWrapper.new
   #     after_save       EncryptionWrapper.new
   #     after_initialize EncryptionWrapper.new
@@ -144,7 +144,7 @@ module ActiveRecord
   # a method by the name of the callback messaged. You can make these callbacks more flexible by passing in other
   # initialization data such as the name of the attribute to work with:
   #
-  #   class BankAccount < ActiveRecord::Base
+  #   class BankAccount < ActiveRecord4116::Base
   #     before_save      EncryptionWrapper.new("credit_card_number")
   #     after_save       EncryptionWrapper.new("credit_card_number")
   #     after_initialize EncryptionWrapper.new("credit_card_number")
@@ -178,14 +178,14 @@ module ActiveRecord
   # The callback macros usually accept a symbol for the method they're supposed to run, but you can also
   # pass a "method string", which will then be evaluated within the binding of the callback. Example:
   #
-  #   class Topic < ActiveRecord::Base
+  #   class Topic < ActiveRecord4116::Base
   #     before_destroy 'self.class.delete_all "parent_id = #{id}"'
   #   end
   #
   # Notice that single quotes (') are used so the <tt>#{id}</tt> part isn't evaluated until the callback
   # is triggered. Also note that these inline callbacks can be stacked just like the regular ones:
   #
-  #   class Topic < ActiveRecord::Base
+  #   class Topic < ActiveRecord4116::Base
   #     before_destroy 'self.class.delete_all "parent_id = #{id}"',
   #                    'puts "Evaluated after parents are destroyed"'
   #   end
@@ -194,7 +194,7 @@ module ActiveRecord
   #
   # If the returning value of a +before_validation+ callback can be evaluated to +false+, the process will be
   # aborted and <tt>Base#save</tt> will return +false+. If Base#save! is called it will raise a
-  # ActiveRecord::RecordInvalid exception. Nothing will be appended to the errors object.
+  # ActiveRecord4116::RecordInvalid exception. Nothing will be appended to the errors object.
   #
   # == Canceling callbacks
   #
@@ -210,7 +210,7 @@ module ActiveRecord
   #
   # Let's look at the code below:
   #
-  #   class Topic < ActiveRecord::Base
+  #   class Topic < ActiveRecord4116::Base
   #     has_many :children, dependent: destroy
   #
   #     before_destroy :log_children
@@ -224,7 +224,7 @@ module ActiveRecord
   # In this case, the problem is that when the +before_destroy+ callback is executed, the children are not available
   # because the +destroy+ callback gets executed first. You can use the +prepend+ option on the +before_destroy+ callback to avoid this.
   #
-  #   class Topic < ActiveRecord::Base
+  #   class Topic < ActiveRecord4116::Base
   #     has_many :children, dependent: destroy
   #
   #     before_destroy :log_children, prepend: true

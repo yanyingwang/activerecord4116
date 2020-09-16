@@ -4,15 +4,15 @@ require "cases/helper"
 require 'active_record/base'
 require 'active_record/connection_adapters/postgresql_adapter'
 
-class PostgresqlJSONTest < ActiveRecord::TestCase
-  class JsonDataType < ActiveRecord::Base
+class PostgresqlJSONTest < ActiveRecord4116::TestCase
+  class JsonDataType < ActiveRecord4116::Base
     self.table_name = 'json_data_type'
 
     store_accessor :settings, :resolution
   end
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     begin
       @connection.transaction do
         @connection.create_table('json_data_type') do |t|
@@ -20,7 +20,7 @@ class PostgresqlJSONTest < ActiveRecord::TestCase
           t.json 'settings'
         end
       end
-    rescue ActiveRecord::StatementInvalid
+    rescue ActiveRecord4116::StatementInvalid
       skip "do not test on PG without json"
     end
     @column = JsonDataType.columns.find { |c| c.name == 'payload' }
@@ -43,7 +43,7 @@ class PostgresqlJSONTest < ActiveRecord::TestCase
       column = JsonDataType.columns.find { |c| c.name == 'users' }
       assert_equal :json, column.type
 
-      raise ActiveRecord::Rollback # reset the schema change
+      raise ActiveRecord4116::Rollback # reset the schema change
     end
   ensure
     JsonDataType.reset_column_information

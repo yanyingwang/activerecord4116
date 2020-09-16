@@ -1,14 +1,14 @@
 require 'cases/helper'
 
-class PostgresqlActiveSchemaTest < ActiveRecord::TestCase
+class PostgresqlActiveSchemaTest < ActiveRecord4116::TestCase
   def setup
-    ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.class_eval do
+    ActiveRecord4116::ConnectionAdapters::PostgreSQLAdapter.class_eval do
       def execute(sql, name = nil) sql end
     end
   end
 
   def teardown
-    ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.class_eval do
+    ActiveRecord4116::ConnectionAdapters::PostgreSQLAdapter.class_eval do
       remove_method :execute
     end
   end
@@ -25,7 +25,7 @@ class PostgresqlActiveSchemaTest < ActiveRecord::TestCase
 
   def test_add_index
     # add_index calls index_name_exists? which can't work since execute is stubbed
-    ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.stubs(:index_name_exists?).returns(false)
+    ActiveRecord4116::ConnectionAdapters::PostgreSQLAdapter.stubs(:index_name_exists?).returns(false)
 
     expected = %(CREATE UNIQUE INDEX  "index_people_on_last_name" ON "people"  ("last_name") WHERE state = 'active')
     assert_equal expected, add_index(:people, :last_name, :unique => true, :where => "state = 'active'")
@@ -53,6 +53,6 @@ class PostgresqlActiveSchemaTest < ActiveRecord::TestCase
 
   private
     def method_missing(method_symbol, *arguments)
-      ActiveRecord::Base.connection.send(method_symbol, *arguments)
+      ActiveRecord4116::Base.connection.send(method_symbol, *arguments)
     end
 end

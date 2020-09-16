@@ -1,6 +1,6 @@
 require 'active_model/forbidden_attributes_protection'
 
-module ActiveRecord
+module ActiveRecord4116
   module AttributeAssignment
     extend ActiveSupport::Concern
     include ActiveModel::ForbiddenAttributesProtection

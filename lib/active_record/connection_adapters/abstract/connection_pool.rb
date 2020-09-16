@@ -3,7 +3,7 @@ require 'thread_safe'
 require 'monitor'
 require 'set'
 
-module ActiveRecord
+module ActiveRecord4116
   # Raised when a connection could not be obtained within the connection
   # acquisition timeout period: because max connections in pool
   # are in use.
@@ -32,17 +32,17 @@ module ActiveRecord
     # Connections can be obtained and used from a connection pool in several
     # ways:
     #
-    # 1. Simply use ActiveRecord::Base.connection as with Active Record 2.1 and
+    # 1. Simply use ActiveRecord4116::Base.connection as with Active Record 2.1 and
     #    earlier (pre-connection-pooling). Eventually, when you're done with
     #    the connection(s) and wish it to be returned to the pool, you call
-    #    ActiveRecord::Base.clear_active_connections!. This will be the
+    #    ActiveRecord4116::Base.clear_active_connections!. This will be the
     #    default behavior for Active Record when used in conjunction with
     #    Action Pack's request handling cycle.
     # 2. Manually check out a connection from the pool with
-    #    ActiveRecord::Base.connection_pool.checkout. You are responsible for
+    #    ActiveRecord4116::Base.connection_pool.checkout. You are responsible for
     #    returning this connection to the pool when finished by calling
-    #    ActiveRecord::Base.connection_pool.checkin(connection).
-    # 3. Use ActiveRecord::Base.connection_pool.with_connection(&block), which
+    #    ActiveRecord4116::Base.connection_pool.checkin(connection).
+    # 3. Use ActiveRecord4116::Base.connection_pool.with_connection(&block), which
     #    obtains a connection, yields it as the sole argument to the block,
     #    and returns it to the pool after the block completes.
     #
@@ -340,7 +340,7 @@ module ActiveRecord
       #
       # If all connections are leased and the pool is at capacity (meaning the
       # number of currently leased connections is greater than or equal to the
-      # size limit set), an ActiveRecord::ConnectionTimeoutError exception will be raised.
+      # size limit set), an ActiveRecord4116::ConnectionTimeoutError exception will be raised.
       #
       # Returns: an AbstractAdapter object.
       #
@@ -477,7 +477,7 @@ module ActiveRecord
     # is not the same as the one used by Book/ScaryBook/GoodBook.
     #
     # Normally there is only a single ConnectionHandler instance, accessible via
-    # ActiveRecord::Base.connection_handler. Active Record models use this to
+    # ActiveRecord4116::Base.connection_handler. Active Record models use this to
     # determine the connection pool that they should use.
     class ConnectionHandler
       def initialize
@@ -620,12 +620,12 @@ module ActiveRecord
 
         response = @app.call(env)
         response[2] = ::Rack::BodyProxy.new(response[2]) do
-          ActiveRecord::Base.clear_active_connections! unless testing
+          ActiveRecord4116::Base.clear_active_connections! unless testing
         end
 
         response
       rescue Exception
-        ActiveRecord::Base.clear_active_connections! unless testing
+        ActiveRecord4116::Base.clear_active_connections! unless testing
         raise
       end
     end

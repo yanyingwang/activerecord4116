@@ -1,7 +1,7 @@
 require 'erb'
 require 'yaml'
 
-module ActiveRecord
+module ActiveRecord4116
   class FixtureSet
     class File # :nodoc:
       include Enumerable
@@ -38,7 +38,7 @@ module ActiveRecord
         end
 
         def render(content)
-          context = ActiveRecord::FixtureSet::RenderContext.create_subclass.new
+          context = ActiveRecord4116::FixtureSet::RenderContext.create_subclass.new
           ERB.new(content).result(context.get_binding)
         end
 

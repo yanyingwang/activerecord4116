@@ -1,4 +1,4 @@
-class PeopleHaveMiddleNames < ActiveRecord::Migration
+class PeopleHaveMiddleNames < ActiveRecord4116::Migration
   def self.up
     add_column "people", "middle_name", :string
   end

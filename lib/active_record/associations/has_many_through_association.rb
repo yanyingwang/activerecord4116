@@ -1,5 +1,5 @@
 
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Has Many Through Association
   module Associations
     class HasManyThroughAssociation < HasManyAssociation #:nodoc:

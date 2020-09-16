@@ -2,7 +2,7 @@ require 'set'
 require 'active_support/concern'
 require 'active_support/deprecation'
 
-module ActiveRecord
+module ActiveRecord4116
   module Delegation # :nodoc:
     module DelegateCache
       def relation_delegate_class(klass) # :nodoc:
@@ -12,9 +12,9 @@ module ActiveRecord
       def initialize_relation_delegate_cache # :nodoc:
         @relation_delegate_cache = cache = {}
         [
-          ActiveRecord::Relation,
-          ActiveRecord::Associations::CollectionProxy,
-          ActiveRecord::AssociationRelation
+          ActiveRecord4116::Relation,
+          ActiveRecord4116::Associations::CollectionProxy,
+          ActiveRecord4116::AssociationRelation
         ].each do |klass|
           delegate = Class.new(klass) {
             include ClassSpecificRelation

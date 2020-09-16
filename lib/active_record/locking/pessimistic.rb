@@ -1,9 +1,9 @@
-module ActiveRecord
+module ActiveRecord4116
   module Locking
     # Locking::Pessimistic provides support for row-level locking using
     # SELECT ... FOR UPDATE and other lock types.
     #
-    # Chain <tt>ActiveRecord::Base#find</tt> to <tt>ActiveRecord::QueryMethods#lock</tt> to obtain an exclusive
+    # Chain <tt>ActiveRecord4116::Base#find</tt> to <tt>ActiveRecord4116::QueryMethods#lock</tt> to obtain an exclusive
     # lock on the selected rows:
     #   # select * from accounts where id=1 for update
     #   Account.lock.find(1)
@@ -21,7 +21,7 @@ module ActiveRecord
     #     yuko.save!
     #   end
     #
-    # You can also use <tt>ActiveRecord::Base#lock!</tt> method to lock one record by id.
+    # You can also use <tt>ActiveRecord4116::Base#lock!</tt> method to lock one record by id.
     # This may be better if you don't need to lock every row. Example:
     #
     #   Account.transaction do

@@ -6,7 +6,7 @@ require 'models/traffic_light'
 require 'models/post'
 require 'bcrypt'
 
-class SerializedAttributeTest < ActiveRecord::TestCase
+class SerializedAttributeTest < ActiveRecord4116::TestCase
   fixtures :topics, :posts
 
   MyObject = Struct.new :attribute1, :attribute2
@@ -150,7 +150,7 @@ class SerializedAttributeTest < ActiveRecord::TestCase
   def test_serialized_attribute_should_raise_exception_on_save_with_wrong_type
     Topic.serialize(:content, Hash)
     topic = Topic.new(:content => "string")
-    assert_raise(ActiveRecord::SerializationTypeMismatch) { topic.save }
+    assert_raise(ActiveRecord4116::SerializationTypeMismatch) { topic.save }
   end
 
   def test_should_raise_exception_on_serialized_attribute_with_type_mismatch
@@ -158,7 +158,7 @@ class SerializedAttributeTest < ActiveRecord::TestCase
     topic = Topic.new(:content => myobj)
     assert topic.save
     Topic.serialize(:content, Hash)
-    assert_raise(ActiveRecord::SerializationTypeMismatch) { Topic.find(topic.id).content }
+    assert_raise(ActiveRecord4116::SerializationTypeMismatch) { Topic.find(topic.id).content }
   end
 
   def test_serialized_attribute_with_class_constraint
@@ -275,7 +275,7 @@ class SerializedAttributeTest < ActiveRecord::TestCase
     Topic.create(content: myobj)
     Topic.create(content: myobj)
     type = Topic.column_types["content"]
-    assert !type.instance_variable_get("@column").is_a?(ActiveRecord::AttributeMethods::Serialization::Type)
+    assert !type.instance_variable_get("@column").is_a?(ActiveRecord4116::AttributeMethods::Serialization::Type)
   end
 
   def test_serialized_column_should_unserialize_after_update_column

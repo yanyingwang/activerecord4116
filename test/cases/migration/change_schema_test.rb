@@ -1,20 +1,20 @@
 require 'cases/helper'
 
-module ActiveRecord
+module ActiveRecord4116
   class Migration
-    class ChangeSchemaTest < ActiveRecord::TestCase
+    class ChangeSchemaTest < ActiveRecord4116::TestCase
       attr_reader :connection, :table_name
 
       def setup
         super
-        @connection = ActiveRecord::Base.connection
+        @connection = ActiveRecord4116::Base.connection
         @table_name = :testings
       end
 
       def teardown
         super
         connection.drop_table :testings rescue nil
-        ActiveRecord::Base.primary_key_prefix_type = nil
+        ActiveRecord4116::Base.primary_key_prefix_type = nil
       end
 
       def test_create_table_without_id
@@ -43,7 +43,7 @@ module ActiveRecord
           t.column :foo, :string, :null => false
         end
 
-        assert_raises(ActiveRecord::StatementInvalid) do
+        assert_raises(ActiveRecord4116::StatementInvalid) do
           connection.execute "insert into testings (foo) values (NULL)"
         end
       end
@@ -136,7 +136,7 @@ module ActiveRecord
       end
 
       def test_create_table_with_primary_key_prefix_as_table_name_with_underscore
-        ActiveRecord::Base.primary_key_prefix_type = :table_name_with_underscore
+        ActiveRecord4116::Base.primary_key_prefix_type = :table_name_with_underscore
 
         connection.create_table :testings do |t|
           t.column :foo, :string
@@ -146,7 +146,7 @@ module ActiveRecord
       end
 
       def test_create_table_with_primary_key_prefix_as_table_name
-        ActiveRecord::Base.primary_key_prefix_type = :table_name
+        ActiveRecord4116::Base.primary_key_prefix_type = :table_name
 
         connection.create_table :testings do |t|
           t.column :foo, :string
@@ -214,7 +214,7 @@ module ActiveRecord
           end
           connection.add_column :testings, :bar, :string, :null => false
 
-          assert_raise(ActiveRecord::StatementInvalid) do
+          assert_raise(ActiveRecord4116::StatementInvalid) do
             connection.execute "insert into testings (foo, bar) values ('hello', NULL)"
           end
         end
@@ -231,7 +231,7 @@ module ActiveRecord
         connection.enable_identity_insert("testings", false) if current_adapter?(:SybaseAdapter)
         assert_nothing_raised {connection.add_column :testings, :bar, :string, :null => false, :default => "default" }
 
-        assert_raises(ActiveRecord::StatementInvalid) do
+        assert_raises(ActiveRecord4116::StatementInvalid) do
           unless current_adapter?(:OpenBaseAdapter)
             connection.execute "insert into testings (#{con.quote_column_name('id')}, #{con.quote_column_name('foo')}, #{con.quote_column_name('bar')}) values (2, 'hello', NULL)"
           else
@@ -260,7 +260,7 @@ module ActiveRecord
         connection.create_table :testings do |t|
           t.column :title, :string
         end
-        person_klass = Class.new(ActiveRecord::Base)
+        person_klass = Class.new(ActiveRecord4116::Base)
         person_klass.table_name = 'testings'
 
         person_klass.connection.add_column "testings", "wealth", :integer, :null => false, :default => 99
@@ -310,7 +310,7 @@ module ActiveRecord
 
       def test_change_column_null
         testing_table_with_only_foo_attribute do
-          notnull_migration = Class.new(ActiveRecord::Migration) do
+          notnull_migration = Class.new(ActiveRecord4116::Migration) do
             def change
               change_column_null :testings, :foo, false
             end

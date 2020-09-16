@@ -1,4 +1,4 @@
-ActiveRecord::Schema.define do
+ActiveRecord4116::Schema.define do
 
   %w(postgresql_tsvectors postgresql_hstores postgresql_arrays postgresql_moneys postgresql_numbers postgresql_times postgresql_network_addresses postgresql_bit_strings postgresql_uuids postgresql_ltrees
       postgresql_oids postgresql_xml_data_type defaults geometrics postgresql_timestamp_with_zones postgresql_partitioned_table postgresql_partitioned_table_parent postgresql_json_data_type).each do |table_name|
@@ -185,7 +185,7 @@ _SQL
       BEFORE INSERT ON postgresql_partitioned_table_parent
       FOR EACH ROW EXECUTE PROCEDURE partitioned_insert_trigger();
 _SQL
-  rescue ActiveRecord::StatementInvalid => e
+  rescue ActiveRecord4116::StatementInvalid => e
     if e.message =~ /language "plpgsql" does not exist/
       execute "CREATE LANGUAGE 'plpgsql';"
       retry

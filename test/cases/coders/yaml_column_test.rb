@@ -1,9 +1,9 @@
 
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   module Coders
-    class YAMLColumnTest < ActiveRecord::TestCase
+    class YAMLColumnTest < ActiveRecord4116::TestCase
       def test_initialize_takes_class
         coder = YAMLColumn.new(Object)
         assert_equal Object, coder.object_class

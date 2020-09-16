@@ -1,3 +1,3 @@
-class MemberType < ActiveRecord::Base
+class MemberType < ActiveRecord4116::Base
   has_many :members
 end

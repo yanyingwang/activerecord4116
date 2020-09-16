@@ -2,7 +2,7 @@ require "cases/helper"
 require 'models/owner'
 require 'models/pet'
 
-class ReloadModelsTest < ActiveRecord::TestCase
+class ReloadModelsTest < ActiveRecord4116::TestCase
   fixtures :pets
 
   def test_has_one_with_reload

@@ -2,14 +2,14 @@ require 'active_support/core_ext/array'
 require 'active_support/core_ext/hash/except'
 require 'active_support/core_ext/kernel/singleton_class'
 
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record \Named \Scopes
   module Scoping
     module Named
       extend ActiveSupport::Concern
 
       module ClassMethods
-        # Returns an <tt>ActiveRecord::Relation</tt> scope object.
+        # Returns an <tt>ActiveRecord4116::Relation</tt> scope object.
         #
         #   posts = Post.all
         #   posts.size # Fires "select count(*) from  posts" and returns the count
@@ -20,7 +20,7 @@ module ActiveRecord
         #   fruits = fruits.limit(10) if limited?
         #
         # You can define a scope that applies to all finders using
-        # <tt>ActiveRecord::Base.default_scope</tt>.
+        # <tt>ActiveRecord4116::Base.default_scope</tt>.
         def all
           if current_scope
             current_scope.clone
@@ -48,7 +48,7 @@ module ActiveRecord
         # represents a narrowing of a database query, such as
         # <tt>where(color: :red).select('shirts.*').includes(:washing_instructions)</tt>.
         #
-        #   class Shirt < ActiveRecord::Base
+        #   class Shirt < ActiveRecord4116::Base
         #     scope :red, -> { where(color: 'red') }
         #     scope :dry_clean_only, -> { joins(:washing_instructions).where('washing_instructions.dry_clean_only = ?', true) }
         #   end
@@ -64,7 +64,7 @@ module ActiveRecord
         # Note that this is simply 'syntactic sugar' for defining an actual
         # class method:
         #
-        #   class Shirt < ActiveRecord::Base
+        #   class Shirt < ActiveRecord4116::Base
         #     def self.red
         #       where(color: 'red')
         #     end
@@ -87,11 +87,11 @@ module ActiveRecord
         # returns the number of garments for which these criteria obtain.
         # Similarly with <tt>Shirt.red.dry_clean_only.average(:thread_count)</tt>.
         #
-        # All scopes are available as class methods on the ActiveRecord::Base
+        # All scopes are available as class methods on the ActiveRecord4116::Base
         # descendant upon which the \scopes were defined. But they are also
         # available to +has_many+ associations. If,
         #
-        #   class Person < ActiveRecord::Base
+        #   class Person < ActiveRecord4116::Base
         #     has_many :shirts
         #   end
         #
@@ -101,7 +101,7 @@ module ActiveRecord
         # \Named scopes can also have extensions, just as with +has_many+
         # declarations:
         #
-        #   class Shirt < ActiveRecord::Base
+        #   class Shirt < ActiveRecord4116::Base
         #     scope :red, -> { where(color: 'red') } do
         #       def dom_id
         #         'red_shirts'
@@ -111,7 +111,7 @@ module ActiveRecord
         #
         # Scopes can also be used while creating/building a record.
         #
-        #   class Article < ActiveRecord::Base
+        #   class Article < ActiveRecord4116::Base
         #     scope :published, -> { where(published: true) }
         #   end
         #
@@ -121,7 +121,7 @@ module ActiveRecord
         # \Class methods on your model are automatically available
         # on scopes. Assuming the following setup:
         #
-        #   class Article < ActiveRecord::Base
+        #   class Article < ActiveRecord4116::Base
         #     scope :published, -> { where(published: true) }
         #     scope :featured, -> { where(featured: true) }
         #

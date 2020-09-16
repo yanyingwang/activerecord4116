@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Has Many Association
   module Associations
     # This is the proxy that handles a has many association.
@@ -10,7 +10,7 @@ module ActiveRecord
       def handle_dependency
         case options[:dependent]
         when :restrict_with_exception
-          raise ActiveRecord::DeleteRestrictionError.new(reflection.name) unless empty?
+          raise ActiveRecord4116::DeleteRestrictionError.new(reflection.name) unless empty?
 
         when :restrict_with_error
           unless empty?

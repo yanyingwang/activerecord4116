@@ -1,9 +1,9 @@
-module ActiveRecord
+module ActiveRecord4116
   module Tasks # :nodoc:
     class DatabaseAlreadyExists < StandardError; end # :nodoc:
     class DatabaseNotSupported < StandardError; end # :nodoc:
 
-    # <tt>ActiveRecord::Tasks::DatabaseTasks</tt> is a utility class, which encapsulates
+    # <tt>ActiveRecord4116::Tasks::DatabaseTasks</tt> is a utility class, which encapsulates
     # logic behind common tasks used to manage database and migrations.
     #
     # The tasks defined here are used in rake tasks provided by Active Record.
@@ -27,7 +27,7 @@ module ActiveRecord
     #
     # Example usage of +DatabaseTasks+ outside Rails could look as such:
     #
-    #   include ActiveRecord::Tasks
+    #   include ActiveRecord4116::Tasks
     #   DatabaseTasks.database_configuration = YAML.load(File.read('my_database_config.yml'))
     #   DatabaseTasks.db_dir = 'db'
     #   # other settings...
@@ -46,9 +46,9 @@ module ActiveRecord
         @tasks[pattern] = task
       end
 
-      register_task(/mysql/,        ActiveRecord::Tasks::MySQLDatabaseTasks)
-      register_task(/postgresql/,   ActiveRecord::Tasks::PostgreSQLDatabaseTasks)
-      register_task(/sqlite/,       ActiveRecord::Tasks::SQLiteDatabaseTasks)
+      register_task(/mysql/,        ActiveRecord4116::Tasks::MySQLDatabaseTasks)
+      register_task(/postgresql/,   ActiveRecord4116::Tasks::PostgreSQLDatabaseTasks)
+      register_task(/sqlite/,       ActiveRecord4116::Tasks::SQLiteDatabaseTasks)
 
       def db_dir
         @db_dir ||= Rails.application.config.paths["db"].first
@@ -79,7 +79,7 @@ module ActiveRecord
         if options.has_key?(:config)
           @current_config = options[:config]
         else
-          @current_config ||= ActiveRecord::Base.configurations[options[:env]]
+          @current_config ||= ActiveRecord4116::Base.configurations[options[:env]]
         end
       end
 
@@ -101,7 +101,7 @@ module ActiveRecord
         each_current_configuration(environment) { |configuration|
           create configuration
         }
-        ActiveRecord::Base.establish_connection(environment.to_sym)
+        ActiveRecord4116::Base.establish_connection(environment.to_sym)
       end
 
       def drop(*arguments)
@@ -123,7 +123,7 @@ module ActiveRecord
       end
 
       def charset_current(environment = env)
-        charset ActiveRecord::Base.configurations[environment]
+        charset ActiveRecord4116::Base.configurations[environment]
       end
 
       def charset(*arguments)
@@ -132,7 +132,7 @@ module ActiveRecord
       end
 
       def collation_current(environment = env)
-        collation ActiveRecord::Base.configurations[environment]
+        collation ActiveRecord4116::Base.configurations[environment]
       end
 
       def collation(*arguments)
@@ -156,18 +156,18 @@ module ActiveRecord
         class_for_adapter(configuration['adapter']).new(*arguments).structure_load(filename)
       end
 
-      def load_schema(format = ActiveRecord::Base.schema_format, file = nil)
+      def load_schema(format = ActiveRecord4116::Base.schema_format, file = nil)
         load_schema_current(format, file)
       end
 
       # This method is the successor of +load_schema+. We should rename it
       # after +load_schema+ went through a deprecation cycle. (Rails > 4.2)
-      def load_schema_for(configuration, format = ActiveRecord::Base.schema_format, file = nil) # :nodoc:
+      def load_schema_for(configuration, format = ActiveRecord4116::Base.schema_format, file = nil) # :nodoc:
         case format
         when :ruby
           file ||= File.join(db_dir, "schema.rb")
           check_schema_file(file)
-          ActiveRecord::Base.establish_connection(configuration)
+          ActiveRecord4116::Base.establish_connection(configuration)
           load(file)
         when :sql
           file ||= File.join(db_dir, "structure.sql")
@@ -178,11 +178,11 @@ module ActiveRecord
         end
       end
 
-      def load_schema_current(format = ActiveRecord::Base.schema_format, file = nil, environment = env)
+      def load_schema_current(format = ActiveRecord4116::Base.schema_format, file = nil, environment = env)
         each_current_configuration(environment) { |configuration|
           load_schema_for configuration, format, file
         }
-        ActiveRecord::Base.establish_connection(environment.to_sym)
+        ActiveRecord4116::Base.establish_connection(environment.to_sym)
       end
 
       def check_schema_file(filename)
@@ -198,7 +198,7 @@ module ActiveRecord
           seed_loader.load_seed
         else
           raise "You tried to load seed data, but no seed loader is specified. Please specify seed " +
-                "loader with ActiveRecord::Tasks::DatabaseTasks.seed_loader = your_seed_loader\n" +
+                "loader with ActiveRecord4116::Tasks::DatabaseTasks.seed_loader = your_seed_loader\n" +
                 "Seed loader should respond to load_seed method"
         end
       end
@@ -218,14 +218,14 @@ module ActiveRecord
         # add test environment only if no RAILS_ENV was specified.
         environments << 'test' if environment == 'development' && ENV['RAILS_ENV'].nil?
 
-        configurations = ActiveRecord::Base.configurations.values_at(*environments)
+        configurations = ActiveRecord4116::Base.configurations.values_at(*environments)
         configurations.compact.each do |configuration|
           yield configuration unless configuration['database'].blank?
         end
       end
 
       def each_local_configuration
-        ActiveRecord::Base.configurations.each_value do |configuration|
+        ActiveRecord4116::Base.configurations.each_value do |configuration|
           next unless configuration['database']
 
           if local_database?(configuration)

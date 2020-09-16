@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record RecordInvalid
   #
   # Raised by <tt>save!</tt> and <tt>create!</tt> when the record is invalid. Use the
@@ -6,10 +6,10 @@ module ActiveRecord
   #
   #   begin
   #     complex_operation_that_calls_save!_internally
-  #   rescue ActiveRecord::RecordInvalid => invalid
+  #   rescue ActiveRecord4116::RecordInvalid => invalid
   #     puts invalid.record.errors
   #   end
-  class RecordInvalid < ActiveRecordError
+  class RecordInvalid < ActiveRecord4116Error
     attr_reader :record # :nodoc:
     def initialize(record) # :nodoc:
       @record = record

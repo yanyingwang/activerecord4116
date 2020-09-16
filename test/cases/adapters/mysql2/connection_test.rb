@@ -1,11 +1,11 @@
 require "cases/helper"
 
-class MysqlConnectionTest < ActiveRecord::TestCase
+class MysqlConnectionTest < ActiveRecord4116::TestCase
   def setup
     super
     @subscriber = SQLSubscriber.new
     ActiveSupport::Notifications.subscribe('sql.active_record', @subscriber)
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
   end
 
   def teardown
@@ -14,9 +14,9 @@ class MysqlConnectionTest < ActiveRecord::TestCase
   end
 
   def test_bad_connection
-    assert_raise ActiveRecord::NoDatabaseError do
-      configuration = ActiveRecord::Base.configurations['arunit'].merge(database: 'inexistent_activerecord_unittest')
-      connection = ActiveRecord::Base.mysql2_connection(configuration)
+    assert_raise ActiveRecord4116::NoDatabaseError do
+      configuration = ActiveRecord4116::Base.configurations['arunit'].merge(database: 'inexistent_activerecord_unittest')
+      connection = ActiveRecord4116::Base.mysql2_connection(configuration)
       connection.exec_query('drop table if exists ex')
     end
   end
@@ -59,33 +59,33 @@ class MysqlConnectionTest < ActiveRecord::TestCase
 
   def test_mysql_strict_mode_disabled
     run_without_connection do |orig_connection|
-      ActiveRecord::Base.establish_connection(orig_connection.merge({:strict => false}))
-      result = ActiveRecord::Base.connection.exec_query "SELECT @@SESSION.sql_mode"
+      ActiveRecord4116::Base.establish_connection(orig_connection.merge({:strict => false}))
+      result = ActiveRecord4116::Base.connection.exec_query "SELECT @@SESSION.sql_mode"
       assert_equal [['']], result.rows
     end
   end
 
   def test_mysql_set_session_variable
     run_without_connection do |orig_connection|
-      ActiveRecord::Base.establish_connection(orig_connection.deep_merge({:variables => {:default_week_format => 3}}))
-      session_mode = ActiveRecord::Base.connection.exec_query "SELECT @@SESSION.DEFAULT_WEEK_FORMAT"
+      ActiveRecord4116::Base.establish_connection(orig_connection.deep_merge({:variables => {:default_week_format => 3}}))
+      session_mode = ActiveRecord4116::Base.connection.exec_query "SELECT @@SESSION.DEFAULT_WEEK_FORMAT"
       assert_equal 3, session_mode.rows.first.first.to_i
     end
   end
 
   def test_mysql_sql_mode_variable_overides_strict_mode
     run_without_connection do |orig_connection|
-      ActiveRecord::Base.establish_connection(orig_connection.deep_merge(variables: { 'sql_mode' => 'ansi' }))
-      result = ActiveRecord::Base.connection.exec_query 'SELECT @@SESSION.sql_mode'
+      ActiveRecord4116::Base.establish_connection(orig_connection.deep_merge(variables: { 'sql_mode' => 'ansi' }))
+      result = ActiveRecord4116::Base.connection.exec_query 'SELECT @@SESSION.sql_mode'
       assert_not_equal [['STRICT_ALL_TABLES']], result.rows
     end
   end
 
   def test_mysql_set_session_variable_to_default
     run_without_connection do |orig_connection|
-      ActiveRecord::Base.establish_connection(orig_connection.deep_merge({:variables => {:default_week_format => :default}}))
-      global_mode = ActiveRecord::Base.connection.exec_query "SELECT @@GLOBAL.DEFAULT_WEEK_FORMAT"
-      session_mode = ActiveRecord::Base.connection.exec_query "SELECT @@SESSION.DEFAULT_WEEK_FORMAT"
+      ActiveRecord4116::Base.establish_connection(orig_connection.deep_merge({:variables => {:default_week_format => :default}}))
+      global_mode = ActiveRecord4116::Base.connection.exec_query "SELECT @@GLOBAL.DEFAULT_WEEK_FORMAT"
+      session_mode = ActiveRecord4116::Base.connection.exec_query "SELECT @@SESSION.DEFAULT_WEEK_FORMAT"
       assert_equal global_mode.rows, session_mode.rows
     end
   end
@@ -107,11 +107,11 @@ class MysqlConnectionTest < ActiveRecord::TestCase
   private
 
   def run_without_connection
-    original_connection = ActiveRecord::Base.remove_connection
+    original_connection = ActiveRecord4116::Base.remove_connection
     begin
       yield original_connection
     ensure
-      ActiveRecord::Base.establish_connection(original_connection)
+      ActiveRecord4116::Base.establish_connection(original_connection)
     end
   end
 end

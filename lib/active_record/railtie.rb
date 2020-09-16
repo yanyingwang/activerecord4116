@@ -8,7 +8,7 @@ require "active_model/railtie"
 # In the future, this might become an optional require.
 require "action_controller/railtie"
 
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Railtie
   class Railtie < Rails::Railtie # :nodoc:
     config.active_record = ActiveSupport::OrderedOptions.new
@@ -17,32 +17,32 @@ module ActiveRecord
                                               :timestamps => true
 
     config.app_middleware.insert_after "::ActionDispatch::Callbacks",
-      "ActiveRecord::QueryCache"
+      "ActiveRecord4116::QueryCache"
 
     config.app_middleware.insert_after "::ActionDispatch::Callbacks",
-      "ActiveRecord::ConnectionAdapters::ConnectionManagement"
+      "ActiveRecord4116::ConnectionAdapters::ConnectionManagement"
 
     config.action_dispatch.rescue_responses.merge!(
-      'ActiveRecord::RecordNotFound'   => :not_found,
-      'ActiveRecord::StaleObjectError' => :conflict,
-      'ActiveRecord::RecordInvalid'    => :unprocessable_entity,
-      'ActiveRecord::RecordNotSaved'   => :unprocessable_entity
+      'ActiveRecord4116::RecordNotFound'   => :not_found,
+      'ActiveRecord4116::StaleObjectError' => :conflict,
+      'ActiveRecord4116::RecordInvalid'    => :unprocessable_entity,
+      'ActiveRecord4116::RecordNotSaved'   => :unprocessable_entity
     )
 
 
     config.active_record.use_schema_cache_dump = true
     config.active_record.maintain_test_schema = true
 
-    config.eager_load_namespaces << ActiveRecord
+    config.eager_load_namespaces << ActiveRecord4116
 
     rake_tasks do
       namespace :db do
         task :load_config do
-          ActiveRecord::Tasks::DatabaseTasks.database_configuration = Rails.application.config.database_configuration
+          ActiveRecord4116::Tasks::DatabaseTasks.database_configuration = Rails.application.config.database_configuration
 
           if defined?(ENGINE_PATH) && engine = Rails::Engine.find(ENGINE_PATH)
             if engine.paths['db/migrate'].existent
-              ActiveRecord::Tasks::DatabaseTasks.migrations_paths += engine.paths['db/migrate'].to_a
+              ActiveRecord4116::Tasks::DatabaseTasks.migrations_paths += engine.paths['db/migrate'].to_a
             end
           end
         end
@@ -51,7 +51,7 @@ module ActiveRecord
       load "active_record/railties/databases.rake"
     end
 
-    # When loading console, force ActiveRecord::Base to be loaded
+    # When loading console, force ActiveRecord4116::Base to be loaded
     # to avoid cross references when loading a constant for the
     # first time. Also, make it output to STDERR.
     console do |app|
@@ -79,7 +79,7 @@ module ActiveRecord
     initializer "active_record.migration_error" do
       if config.active_record.delete(:migration_error) == :page_load
         config.app_middleware.insert_after "::ActionDispatch::Callbacks",
-          "ActiveRecord::Migration::CheckPending"
+          "ActiveRecord4116::Migration::CheckPending"
       end
     end
 
@@ -91,10 +91,10 @@ module ActiveRecord
 
             if File.file?(filename)
               cache = Marshal.load File.binread filename
-              if cache.version == ActiveRecord::Migrator.current_version
+              if cache.version == ActiveRecord4116::Migrator.current_version
                 self.connection.schema_cache = cache
               else
-                warn "Ignoring db/schema_cache.dump because it has expired. The current schema version is #{ActiveRecord::Migrator.current_version}, but the one in the cache is #{cache.version}."
+                warn "Ignoring db/schema_cache.dump because it has expired. The current schema version is #{ActiveRecord4116::Migrator.current_version}, but the one in the cache is #{cache.version}."
               end
             end
           end
@@ -115,7 +115,7 @@ module ActiveRecord
     initializer "active_record.initialize_database" do |app|
       ActiveSupport.on_load(:active_record) do
 
-        class ActiveRecord::NoDatabaseError
+        class ActiveRecord4116::NoDatabaseError
           remove_possible_method :extend_message
           def extend_message(message)
             message << "Run `$ bin/rake db:create db:migrate` to create your database"
@@ -132,7 +132,7 @@ module ActiveRecord
     initializer "active_record.log_runtime" do
       require "active_record/railties/controller_runtime"
       ActiveSupport.on_load(:action_controller) do
-        include ActiveRecord::Railties::ControllerRuntime
+        include ActiveRecord4116::Railties::ControllerRuntime
       end
     end
 
@@ -141,9 +141,9 @@ module ActiveRecord
 
       ActiveSupport.on_load(:active_record) do
         ActionDispatch::Reloader.send(hook) do
-          if ActiveRecord::Base.connected?
-            ActiveRecord::Base.clear_cache!
-            ActiveRecord::Base.clear_reloadable_connections!
+          if ActiveRecord4116::Base.connected?
+            ActiveRecord4116::Base.clear_cache!
+            ActiveRecord4116::Base.clear_reloadable_connections!
           end
         end
       end

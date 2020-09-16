@@ -7,7 +7,7 @@ require 'active_record/connection_adapters/abstract/schema_dumper'
 require 'active_record/connection_adapters/abstract/schema_creation'
 require 'monitor'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters # :nodoc:
     extend ActiveSupport::Autoload
 
@@ -53,7 +53,7 @@ module ActiveRecord
     # and ':limit' options, etc.
     #
     # All the concrete database adapters follow the interface laid down in this class.
-    # ActiveRecord::Base.connection returns an AbstractAdapter object, which
+    # ActiveRecord4116::Base.connection returns an AbstractAdapter object, which
     # you can use.
     #
     # Most of the methods in the adapter are useful during migrations. Most
@@ -382,7 +382,7 @@ module ActiveRecord
 
       def translate_exception(exception, message)
         # override in derived class
-        ActiveRecord::StatementInvalid.new(message, exception)
+        ActiveRecord4116::StatementInvalid.new(message, exception)
       end
 
       def without_prepared_statement?(binds)

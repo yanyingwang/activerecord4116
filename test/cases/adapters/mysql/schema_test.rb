@@ -2,18 +2,18 @@ require "cases/helper"
 require 'models/post'
 require 'models/comment'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
-    class MysqlSchemaTest < ActiveRecord::TestCase
+    class MysqlSchemaTest < ActiveRecord4116::TestCase
       fixtures :posts
 
       def setup
-        @connection = ActiveRecord::Base.connection
+        @connection = ActiveRecord4116::Base.connection
         db          = Post.connection_pool.spec.config[:database]
         table       = Post.table_name
         @db_name    = db
 
-        @omgpost = Class.new(ActiveRecord::Base) do
+        @omgpost = Class.new(ActiveRecord4116::Base) do
           self.table_name = "#{db}.#{table}"
           def self.name; 'Post'; end
         end
@@ -25,7 +25,7 @@ module ActiveRecord
         @connection.execute "drop table if exists mysql_doubles"
       end
 
-      class MysqlDouble < ActiveRecord::Base
+      class MysqlDouble < ActiveRecord4116::Base
         self.table_name = "mysql_doubles"
       end
 

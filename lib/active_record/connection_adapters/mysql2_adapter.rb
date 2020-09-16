@@ -3,7 +3,7 @@ require 'active_record/connection_adapters/abstract_mysql_adapter'
 gem 'mysql2', '~> 0.3.13'
 require 'mysql2'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionHandling # :nodoc:
     # Establishes a connection to the database that's used by all Active Record objects.
     def mysql2_connection(config)
@@ -20,7 +20,7 @@ module ActiveRecord
       ConnectionAdapters::Mysql2Adapter.new(client, logger, options, config)
     rescue Mysql2::Error => error
       if error.message.include?("Unknown database")
-        raise ActiveRecord::NoDatabaseError.new(error.message)
+        raise ActiveRecord4116::NoDatabaseError.new(error.message)
       else
         raise error
       end
@@ -47,9 +47,9 @@ module ActiveRecord
       MAX_INDEX_LENGTH_FOR_UTF8MB4 = 191
       def initialize_schema_migrations_table
         if @config[:encoding] == 'utf8mb4'
-          ActiveRecord::SchemaMigration.create_table(MAX_INDEX_LENGTH_FOR_UTF8MB4)
+          ActiveRecord4116::SchemaMigration.create_table(MAX_INDEX_LENGTH_FOR_UTF8MB4)
         else
-          ActiveRecord::SchemaMigration.create_table
+          ActiveRecord4116::SchemaMigration.create_table
         end
       end
 
@@ -220,9 +220,9 @@ module ActiveRecord
       # Executes the SQL statement in the context of this connection.
       def execute(sql, name = nil)
         if @connection
-          # make sure we carry over any changes to ActiveRecord::Base.default_timezone that have been
+          # make sure we carry over any changes to ActiveRecord4116::Base.default_timezone that have been
           # made since we established the connection
-          @connection.query_options[:database_timezone] = ActiveRecord::Base.default_timezone
+          @connection.query_options[:database_timezone] = ActiveRecord4116::Base.default_timezone
         end
 
         super
@@ -230,12 +230,12 @@ module ActiveRecord
 
       def exec_query(sql, name = 'SQL', binds = [])
         result = execute(sql, name)
-        ActiveRecord::Result.new(result.fields, result.to_a)
+        ActiveRecord4116::Result.new(result.fields, result.to_a)
       end
 
       alias exec_without_stmt exec_query
 
-      # Returns an ActiveRecord::Result instance.
+      # Returns an ActiveRecord4116::Result instance.
       def select(sql, name = nil, binds = [])
         exec_query(sql, name)
       end

@@ -2,13 +2,13 @@ require 'cases/helper'
 require 'active_record/explain_subscriber'
 require 'active_record/explain_registry'
 
-if ActiveRecord::Base.connection.supports_explain?
-  class ExplainSubscriberTest < ActiveRecord::TestCase
-    SUBSCRIBER = ActiveRecord::ExplainSubscriber.new
+if ActiveRecord4116::Base.connection.supports_explain?
+  class ExplainSubscriberTest < ActiveRecord4116::TestCase
+    SUBSCRIBER = ActiveRecord4116::ExplainSubscriber.new
 
     def setup
-      ActiveRecord::ExplainRegistry.reset
-      ActiveRecord::ExplainRegistry.collect = true
+      ActiveRecord4116::ExplainRegistry.reset
+      ActiveRecord4116::ExplainRegistry.collect = true
     end
 
     def test_collects_nothing_if_the_payload_has_an_exception
@@ -17,14 +17,14 @@ if ActiveRecord::Base.connection.supports_explain?
     end
 
     def test_collects_nothing_for_ignored_payloads
-      ActiveRecord::ExplainSubscriber::IGNORED_PAYLOADS.each do |ip|
+      ActiveRecord4116::ExplainSubscriber::IGNORED_PAYLOADS.each do |ip|
         SUBSCRIBER.finish(nil, nil, name: ip)
       end
       assert queries.empty?
     end
 
     def test_collects_nothing_if_collect_is_false
-      ActiveRecord::ExplainRegistry.collect = false
+      ActiveRecord4116::ExplainRegistry.collect = false
       SUBSCRIBER.finish(nil, nil, name: 'SQL', sql: 'select 1 from users', binds: [1, 2])
       assert queries.empty?
     end
@@ -49,11 +49,11 @@ if ActiveRecord::Base.connection.supports_explain?
     end
 
     def teardown
-      ActiveRecord::ExplainRegistry.reset
+      ActiveRecord4116::ExplainRegistry.reset
     end
 
     def queries
-      ActiveRecord::ExplainRegistry.queries
+      ActiveRecord4116::ExplainRegistry.queries
     end
   end
 end

@@ -1,10 +1,10 @@
-module ActiveRecord
+module ActiveRecord4116
   ###
   # This class encapsulates a Result returned from calling +exec_query+ on any
   # database connection adapter. For example:
   #
-  #   result = ActiveRecord::Base.connection.exec_query('SELECT id, title, body FROM posts')
-  #   result # => #<ActiveRecord::Result:0xdeadbeef>
+  #   result = ActiveRecord4116::Base.connection.exec_query('SELECT id, title, body FROM posts')
+  #   result # => #<ActiveRecord4116::Result:0xdeadbeef>
   #
   #   # Get the column names of the result:
   #   result.columns
@@ -24,7 +24,7 @@ module ActiveRecord
   #         ...
   #        ]
   #
-  #   # ActiveRecord::Result also includes Enumerable.
+  #   # ActiveRecord4116::Result also includes Enumerable.
   #   result.each do |row|
   #     puts row['title'] + " " + row['body']
   #   end
@@ -95,7 +95,7 @@ module ActiveRecord
       @hash_rows ||=
         begin
           # We freeze the strings to prevent them getting duped when
-          # used as keys in ActiveRecord::Base's @attributes hash
+          # used as keys in ActiveRecord4116::Base's @attributes hash
           columns = @columns.map { |c| c.dup.freeze }
           @rows.map { |row|
             # In the past we used Hash[columns.zip(row)]

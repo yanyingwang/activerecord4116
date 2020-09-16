@@ -1,7 +1,7 @@
 require 'active_support/lazy_load_hooks'
 require 'active_record/explain_registry'
 
-module ActiveRecord
+module ActiveRecord4116
   module Explain
     # Executes the block with the collect flag enabled. Queries are collected
     # asynchronously by the subscriber and returned.

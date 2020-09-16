@@ -1,4 +1,4 @@
-class Hotel < ActiveRecord::Base
+class Hotel < ActiveRecord4116::Base
   has_many :departments
   has_many :chefs, through: :departments
   has_many :cake_designers, source_type: 'CakeDesigner', source: :employable, through: :chefs

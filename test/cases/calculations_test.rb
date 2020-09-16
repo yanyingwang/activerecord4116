@@ -17,11 +17,11 @@ require 'models/post'
 
 Company.has_many :accounts
 
-class NumericData < ActiveRecord::Base
+class NumericData < ActiveRecord4116::Base
   self.table_name = 'numeric_data'
 end
 
-class CalculationsTest < ActiveRecord::TestCase
+class CalculationsTest < ActiveRecord4116::TestCase
   fixtures :companies, :accounts, :topics
 
   def test_should_sum_field
@@ -172,7 +172,7 @@ class CalculationsTest < ActiveRecord::TestCase
   end
 
   def test_count_on_invalid_columns_raises
-    e = assert_raises(ActiveRecord::StatementInvalid) {
+    e = assert_raises(ActiveRecord4116::StatementInvalid) {
       Account.select("credit_limit, firm_name").count
     }
 
@@ -619,7 +619,7 @@ class CalculationsTest < ActiveRecord::TestCase
   end
 
   def test_should_reference_correct_aliases_while_joining_tables_of_has_many_through_association
-    assert_nothing_raised ActiveRecord::StatementInvalid do
+    assert_nothing_raised ActiveRecord4116::StatementInvalid do
       developer = Developer.create!(name: 'developer')
       developer.ratings.includes(comment: :post).where(posts: { id: 1 }).count
     end

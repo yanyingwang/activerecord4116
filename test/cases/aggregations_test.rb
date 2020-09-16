@@ -1,7 +1,7 @@
 require "cases/helper"
 require 'models/customer'
 
-class AggregationsTest < ActiveRecord::TestCase
+class AggregationsTest < ActiveRecord4116::TestCase
   fixtures :customers
 
   def test_find_single_value_object
@@ -140,10 +140,10 @@ class AggregationsTest < ActiveRecord::TestCase
   end
 end
 
-class OverridingAggregationsTest < ActiveRecord::TestCase
+class OverridingAggregationsTest < ActiveRecord4116::TestCase
   class DifferentName; end
 
-  class Person < ActiveRecord::Base
+  class Person < ActiveRecord4116::Base
     composed_of :composed_of, :mapping => %w(person_first_name first_name)
   end
 

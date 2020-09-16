@@ -1,26 +1,26 @@
 require "cases/helper"
 
-class TestRecord < ActiveRecord::Base
+class TestRecord < ActiveRecord4116::Base
 end
 
-class TestDisconnectedAdapter < ActiveRecord::TestCase
+class TestDisconnectedAdapter < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
   end
 
   def teardown
     return if in_memory_db?
-    spec = ActiveRecord::Base.connection_config
-    ActiveRecord::Base.establish_connection(spec)
+    spec = ActiveRecord4116::Base.connection_config
+    ActiveRecord4116::Base.establish_connection(spec)
   end
 
   unless in_memory_db?
     test "can't execute statements while disconnected" do
       @connection.execute "SELECT count(*) from products"
       @connection.disconnect!
-      assert_raises(ActiveRecord::StatementInvalid) do
+      assert_raises(ActiveRecord4116::StatementInvalid) do
         @connection.execute "SELECT count(*) from products"
       end
     end

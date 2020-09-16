@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionHandling
     RAILS_ENV   = -> { (Rails.env if defined?(Rails)) || ENV["RAILS_ENV"] || ENV["RACK_ENV"] }
     DEFAULT_ENV = -> { RAILS_ENV.call || "default_env" }
@@ -7,7 +7,7 @@ module ActiveRecord
     # the <tt>:adapter</tt> key must be specified with the name of a database adapter (in lower-case)
     # example for regular databases (MySQL, Postgresql, etc):
     #
-    #   ActiveRecord::Base.establish_connection(
+    #   ActiveRecord4116::Base.establish_connection(
     #     adapter:  "mysql",
     #     host:     "localhost",
     #     username: "myuser",
@@ -17,30 +17,30 @@ module ActiveRecord
     #
     # Example for SQLite database:
     #
-    #   ActiveRecord::Base.establish_connection(
+    #   ActiveRecord4116::Base.establish_connection(
     #     adapter:  "sqlite3",
     #     database: "path/to/dbfile"
     #   )
     #
     # Also accepts keys as strings (for parsing from YAML for example):
     #
-    #   ActiveRecord::Base.establish_connection(
+    #   ActiveRecord4116::Base.establish_connection(
     #     "adapter"  => "sqlite3",
     #     "database" => "path/to/dbfile"
     #   )
     #
     # Or a URL:
     #
-    #   ActiveRecord::Base.establish_connection(
+    #   ActiveRecord4116::Base.establish_connection(
     #     "postgres://myuser:mypass@localhost/somedatabase"
     #   )
     #
-    # In case <tt>ActiveRecord::Base.configurations</tt> is set (Rails
+    # In case <tt>ActiveRecord4116::Base.configurations</tt> is set (Rails
     # automatically loads the contents of config/database.yml into it),
     # a symbol can also be given as argument, representing a key in the
     # configuration hash:
     #
-    #   ActiveRecord::Base.establish_connection(:production)
+    #   ActiveRecord4116::Base.establish_connection(:production)
     #
     # The exceptions AdapterNotSpecified, AdapterNotFound and ArgumentError
     # may be returned on an error.
@@ -88,16 +88,16 @@ module ActiveRecord
     end
 
     def connection_id
-      ActiveRecord::RuntimeRegistry.connection_id
+      ActiveRecord4116::RuntimeRegistry.connection_id
     end
 
     def connection_id=(connection_id)
-      ActiveRecord::RuntimeRegistry.connection_id = connection_id
+      ActiveRecord4116::RuntimeRegistry.connection_id = connection_id
     end
 
     # Returns the configuration of the associated connection as a hash:
     #
-    #  ActiveRecord::Base.connection_config
+    #  ActiveRecord4116::Base.connection_config
     #  # => {pool: 5, timeout: 5000, database: "db/development.sqlite3", adapter: "sqlite3"}
     #
     # Please use only for reading.

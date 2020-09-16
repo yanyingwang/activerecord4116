@@ -5,55 +5,55 @@ require 'models/category'
 require 'models/post'
 require 'rack'
 
-class QueryCacheTest < ActiveRecord::TestCase
+class QueryCacheTest < ActiveRecord4116::TestCase
   fixtures :tasks, :topics, :categories, :posts, :categories_posts
 
   teardown do
     Task.connection.clear_query_cache
-    ActiveRecord::Base.connection.disable_query_cache!
+    ActiveRecord4116::Base.connection.disable_query_cache!
   end
 
   def test_exceptional_middleware_clears_and_disables_cache_on_error
-    assert !ActiveRecord::Base.connection.query_cache_enabled, 'cache off'
+    assert !ActiveRecord4116::Base.connection.query_cache_enabled, 'cache off'
 
-    mw = ActiveRecord::QueryCache.new lambda { |env|
+    mw = ActiveRecord4116::QueryCache.new lambda { |env|
       Task.find 1
       Task.find 1
-      assert_equal 1, ActiveRecord::Base.connection.query_cache.length
+      assert_equal 1, ActiveRecord4116::Base.connection.query_cache.length
       raise "lol borked"
     }
     assert_raises(RuntimeError) { mw.call({}) }
 
-    assert_equal 0, ActiveRecord::Base.connection.query_cache.length
-    assert !ActiveRecord::Base.connection.query_cache_enabled, 'cache off'
+    assert_equal 0, ActiveRecord4116::Base.connection.query_cache.length
+    assert !ActiveRecord4116::Base.connection.query_cache_enabled, 'cache off'
   end
 
   def test_exceptional_middleware_leaves_enabled_cache_alone
-    ActiveRecord::Base.connection.enable_query_cache!
+    ActiveRecord4116::Base.connection.enable_query_cache!
 
-    mw = ActiveRecord::QueryCache.new lambda { |env|
+    mw = ActiveRecord4116::QueryCache.new lambda { |env|
       raise "lol borked"
     }
     assert_raises(RuntimeError) { mw.call({}) }
 
-    assert ActiveRecord::Base.connection.query_cache_enabled, 'cache on'
+    assert ActiveRecord4116::Base.connection.query_cache_enabled, 'cache on'
   end
 
   def test_exceptional_middleware_assigns_original_connection_id_on_error
-    connection_id = ActiveRecord::Base.connection_id
+    connection_id = ActiveRecord4116::Base.connection_id
 
-    mw = ActiveRecord::QueryCache.new lambda { |env|
-      ActiveRecord::Base.connection_id = self.object_id
+    mw = ActiveRecord4116::QueryCache.new lambda { |env|
+      ActiveRecord4116::Base.connection_id = self.object_id
       raise "lol borked"
     }
     assert_raises(RuntimeError) { mw.call({}) }
 
-    assert_equal connection_id, ActiveRecord::Base.connection_id
+    assert_equal connection_id, ActiveRecord4116::Base.connection_id
   end
 
   def test_middleware_delegates
     called = false
-    mw = ActiveRecord::QueryCache.new lambda { |env|
+    mw = ActiveRecord4116::QueryCache.new lambda { |env|
       called = true
       [200, {}, nil]
     }
@@ -62,20 +62,20 @@ class QueryCacheTest < ActiveRecord::TestCase
   end
 
   def test_middleware_caches
-    mw = ActiveRecord::QueryCache.new lambda { |env|
+    mw = ActiveRecord4116::QueryCache.new lambda { |env|
       Task.find 1
       Task.find 1
-      assert_equal 1, ActiveRecord::Base.connection.query_cache.length
+      assert_equal 1, ActiveRecord4116::Base.connection.query_cache.length
       [200, {}, nil]
     }
     mw.call({})
   end
 
   def test_cache_enabled_during_call
-    assert !ActiveRecord::Base.connection.query_cache_enabled, 'cache off'
+    assert !ActiveRecord4116::Base.connection.query_cache_enabled, 'cache off'
 
-    mw = ActiveRecord::QueryCache.new lambda { |env|
-      assert ActiveRecord::Base.connection.query_cache_enabled, 'cache on'
+    mw = ActiveRecord4116::QueryCache.new lambda { |env|
+      assert ActiveRecord4116::Base.connection.query_cache_enabled, 'cache on'
       [200, {}, nil]
     }
     mw.call({})
@@ -84,45 +84,45 @@ class QueryCacheTest < ActiveRecord::TestCase
   def test_cache_on_during_body_write
     streaming = Class.new do
       def each
-        yield ActiveRecord::Base.connection.query_cache_enabled
+        yield ActiveRecord4116::Base.connection.query_cache_enabled
       end
     end
 
-    mw = ActiveRecord::QueryCache.new lambda { |env|
+    mw = ActiveRecord4116::QueryCache.new lambda { |env|
       [200, {}, streaming.new]
     }
     body = mw.call({}).last
     body.each { |x| assert x, 'cache should be on' }
     body.close
-    assert !ActiveRecord::Base.connection.query_cache_enabled, 'cache disabled'
+    assert !ActiveRecord4116::Base.connection.query_cache_enabled, 'cache disabled'
   end
 
   def test_cache_off_after_close
-    mw = ActiveRecord::QueryCache.new lambda { |env| [200, {}, nil] }
+    mw = ActiveRecord4116::QueryCache.new lambda { |env| [200, {}, nil] }
     body = mw.call({}).last
 
-    assert ActiveRecord::Base.connection.query_cache_enabled, 'cache enabled'
+    assert ActiveRecord4116::Base.connection.query_cache_enabled, 'cache enabled'
     body.close
-    assert !ActiveRecord::Base.connection.query_cache_enabled, 'cache disabled'
+    assert !ActiveRecord4116::Base.connection.query_cache_enabled, 'cache disabled'
   end
 
   def test_cache_clear_after_close
-    mw = ActiveRecord::QueryCache.new lambda { |env|
+    mw = ActiveRecord4116::QueryCache.new lambda { |env|
       Post.first
       [200, {}, nil]
     }
     body = mw.call({}).last
 
-    assert !ActiveRecord::Base.connection.query_cache.empty?, 'cache not empty'
+    assert !ActiveRecord4116::Base.connection.query_cache.empty?, 'cache not empty'
     body.close
-    assert ActiveRecord::Base.connection.query_cache.empty?, 'cache should be empty'
+    assert ActiveRecord4116::Base.connection.query_cache.empty?, 'cache should be empty'
   end
 
   def test_cache_passing_a_relation
     post = Post.first
     Post.cache do
       query = post.categories.select(:post_id)
-      assert Post.connection.select_all(query).is_a?(ActiveRecord::Result)
+      assert Post.connection.select_all(query).is_a?(ActiveRecord4116::Result)
     end
   end
 
@@ -174,7 +174,7 @@ class QueryCacheTest < ActiveRecord::TestCase
       assert_queries(1) { Topic.find(1); Topic.find(1); }
     end
 
-    ActiveRecord::Base.cache do
+    ActiveRecord4116::Base.cache do
       assert_queries(1) { Task.find(1); Task.find(1) }
     end
   end
@@ -203,18 +203,18 @@ class QueryCacheTest < ActiveRecord::TestCase
   end
 
   def test_cache_is_available_when_connection_is_connected
-    conf = ActiveRecord::Base.configurations
+    conf = ActiveRecord4116::Base.configurations
 
-    ActiveRecord::Base.configurations = {}
+    ActiveRecord4116::Base.configurations = {}
     Task.cache do
       assert_queries(1) { Task.find(1); Task.find(1) }
     end
   ensure
-    ActiveRecord::Base.configurations = conf
+    ActiveRecord4116::Base.configurations = conf
   end
 end
 
-class QueryCacheExpiryTest < ActiveRecord::TestCase
+class QueryCacheExpiryTest < ActiveRecord4116::TestCase
   fixtures :tasks, :posts, :categories, :categories_posts
 
   def test_cache_gets_cleared_after_migration
@@ -264,15 +264,15 @@ class QueryCacheExpiryTest < ActiveRecord::TestCase
   end
 
   def test_insert
-    ActiveRecord::Base.connection.expects(:clear_query_cache).times(2)
+    ActiveRecord4116::Base.connection.expects(:clear_query_cache).times(2)
     Task.cache do
       Task.create!
     end
   end
 
   def test_cache_is_expired_by_habtm_update
-    ActiveRecord::Base.connection.expects(:clear_query_cache).times(2)
-    ActiveRecord::Base.cache do
+    ActiveRecord4116::Base.connection.expects(:clear_query_cache).times(2)
+    ActiveRecord4116::Base.cache do
       c = Category.first
       p = Post.first
       p.categories << c
@@ -280,8 +280,8 @@ class QueryCacheExpiryTest < ActiveRecord::TestCase
   end
 
   def test_cache_is_expired_by_habtm_delete
-    ActiveRecord::Base.connection.expects(:clear_query_cache).times(2)
-    ActiveRecord::Base.cache do
+    ActiveRecord4116::Base.connection.expects(:clear_query_cache).times(2)
+    ActiveRecord4116::Base.cache do
       p = Post.find(1)
       assert p.categories.any?
       p.categories.delete_all

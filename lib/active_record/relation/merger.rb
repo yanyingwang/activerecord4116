@@ -1,7 +1,7 @@
 require 'active_support/core_ext/hash/keys'
 require "set"
 
-module ActiveRecord
+module ActiveRecord4116
   class Relation
     class HashMerger # :nodoc:
       attr_reader :relation, :hash
@@ -97,7 +97,7 @@ module ActiveRecord
             end
           end
 
-          join_dependency = ActiveRecord::Associations::JoinDependency.new(other.klass,
+          join_dependency = ActiveRecord4116::Associations::JoinDependency.new(other.klass,
                                                                            joins_dependency,
                                                                            [])
           relation.joins! rest

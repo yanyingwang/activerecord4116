@@ -1,10 +1,10 @@
 require 'active_support/core_ext/object/deep_dup'
 
-module ActiveRecord
+module ActiveRecord4116
   # Declare an enum attribute where the values map to integers in the database,
   # but can be queried by name. Example:
   #
-  #   class Conversation < ActiveRecord::Base
+  #   class Conversation < ActiveRecord4116::Base
   #     enum status: [ :active, :archived ]
   #   end
   #
@@ -41,7 +41,7 @@ module ActiveRecord
   # Finally, it's also possible to explicitly map the relation between attribute and
   # database integer with a +Hash+:
   #
-  #   class Conversation < ActiveRecord::Base
+  #   class Conversation < ActiveRecord4116::Base
   #     enum status: { active: 0, archived: 1 }
   #   end
   #

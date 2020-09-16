@@ -1,15 +1,15 @@
 require "cases/helper"
 
-module ActiveRecord
-  class PostgresqlConnectionTest < ActiveRecord::TestCase
-    class NonExistentTable < ActiveRecord::Base
+module ActiveRecord4116
+  class PostgresqlConnectionTest < ActiveRecord4116::TestCase
+    class NonExistentTable < ActiveRecord4116::Base
     end
 
     def setup
       super
       @subscriber = SQLSubscriber.new
       ActiveSupport::Notifications.subscribe('sql.active_record', @subscriber)
-      @connection = ActiveRecord::Base.connection
+      @connection = ActiveRecord4116::Base.connection
     end
 
     def teardown
@@ -36,7 +36,7 @@ module ActiveRecord
     # Ensure, we can set connection params using the example of Generic
     # Query Optimizer (geqo). It is 'on' per default.
     def test_connection_options
-      params = ActiveRecord::Base.connection_config.dup
+      params = ActiveRecord4116::Base.connection_config.dup
       params[:options] = "-c geqo=off"
       NonExistentTable.establish_connection(params)
 
@@ -106,9 +106,9 @@ module ActiveRecord
       assert @connection.active?
 
       if @connection.send(:postgresql_version) >= 90200
-        secondary_connection = ActiveRecord::Base.connection_pool.checkout
+        secondary_connection = ActiveRecord4116::Base.connection_pool.checkout
         secondary_connection.query("select pg_terminate_backend(#{original_connection_pid.first.first})")
-        ActiveRecord::Base.connection_pool.checkin(secondary_connection)
+        ActiveRecord4116::Base.connection_pool.checkin(secondary_connection)
       elsif ARTest.config['with_manual_interventions']
         puts 'Kill the connection now (e.g. by restarting the PostgreSQL ' +
           'server with the "-m fast" option) and then press enter.'
@@ -140,16 +140,16 @@ module ActiveRecord
 
     def test_set_session_variable_true
       run_without_connection do |orig_connection|
-        ActiveRecord::Base.establish_connection(orig_connection.deep_merge({:variables => {:debug_print_plan => true}}))
-        set_true = ActiveRecord::Base.connection.exec_query "SHOW DEBUG_PRINT_PLAN"
+        ActiveRecord4116::Base.establish_connection(orig_connection.deep_merge({:variables => {:debug_print_plan => true}}))
+        set_true = ActiveRecord4116::Base.connection.exec_query "SHOW DEBUG_PRINT_PLAN"
         assert_equal set_true.rows, [["on"]]
       end
     end
 
     def test_set_session_variable_false
       run_without_connection do |orig_connection|
-        ActiveRecord::Base.establish_connection(orig_connection.deep_merge({:variables => {:debug_print_plan => false}}))
-        set_false = ActiveRecord::Base.connection.exec_query "SHOW DEBUG_PRINT_PLAN"
+        ActiveRecord4116::Base.establish_connection(orig_connection.deep_merge({:variables => {:debug_print_plan => false}}))
+        set_false = ActiveRecord4116::Base.connection.exec_query "SHOW DEBUG_PRINT_PLAN"
         assert_equal set_false.rows, [["off"]]
       end
     end
@@ -157,25 +157,25 @@ module ActiveRecord
     def test_set_session_variable_nil
       run_without_connection do |orig_connection|
         # This should be a no-op that does not raise an error
-        ActiveRecord::Base.establish_connection(orig_connection.deep_merge({:variables => {:debug_print_plan => nil}}))
+        ActiveRecord4116::Base.establish_connection(orig_connection.deep_merge({:variables => {:debug_print_plan => nil}}))
       end
     end
 
     def test_set_session_variable_default
       run_without_connection do |orig_connection|
         # This should execute a query that does not raise an error
-        ActiveRecord::Base.establish_connection(orig_connection.deep_merge({:variables => {:debug_print_plan => :default}}))
+        ActiveRecord4116::Base.establish_connection(orig_connection.deep_merge({:variables => {:debug_print_plan => :default}}))
       end
     end
 
     private
 
     def run_without_connection
-      original_connection = ActiveRecord::Base.remove_connection
+      original_connection = ActiveRecord4116::Base.remove_connection
       begin
         yield original_connection
       ensure
-        ActiveRecord::Base.establish_connection(original_connection)
+        ActiveRecord4116::Base.establish_connection(original_connection)
       end
     end
 

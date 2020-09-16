@@ -7,7 +7,7 @@ require 'models/pet'
 require 'models/man'
 require 'models/interest'
 
-class AssociationValidationTest < ActiveRecord::TestCase
+class AssociationValidationTest < ActiveRecord4116::TestCase
   fixtures :topics, :owners
 
   repair_validations(Topic, Reply)

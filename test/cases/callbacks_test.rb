@@ -1,6 +1,6 @@
 require "cases/helper"
 
-class CallbackDeveloper < ActiveRecord::Base
+class CallbackDeveloper < ActiveRecord4116::Base
   self.table_name = 'developers'
 
   class << self
@@ -28,7 +28,7 @@ class CallbackDeveloper < ActiveRecord::Base
     end
   end
 
-  ActiveRecord::Callbacks::CALLBACKS.each do |callback_method|
+  ActiveRecord4116::Callbacks::CALLBACKS.each do |callback_method|
     next if callback_method.to_s =~ /^around_/
     define_callback_method(callback_method)
     send(callback_method, callback_string(callback_method))
@@ -47,7 +47,7 @@ class CallbackDeveloperWithFalseValidation < CallbackDeveloper
   before_validation proc { |model| model.history << [:before_validation, :should_never_get_here] }
 end
 
-class ParentDeveloper < ActiveRecord::Base
+class ParentDeveloper < ActiveRecord4116::Base
   self.table_name = 'developers'
   attr_accessor :after_save_called
   before_validation {|record| record.after_save_called = true}
@@ -57,7 +57,7 @@ class ChildDeveloper < ParentDeveloper
 
 end
 
-class RecursiveCallbackDeveloper < ActiveRecord::Base
+class RecursiveCallbackDeveloper < ActiveRecord4116::Base
   self.table_name = 'developers'
 
   before_save :on_before_save
@@ -78,7 +78,7 @@ class RecursiveCallbackDeveloper < ActiveRecord::Base
   end
 end
 
-class ImmutableDeveloper < ActiveRecord::Base
+class ImmutableDeveloper < ActiveRecord4116::Base
   self.table_name = 'developers'
 
   validates_inclusion_of :salary, :in => 50000..200000
@@ -97,7 +97,7 @@ class ImmutableDeveloper < ActiveRecord::Base
     end
 end
 
-class ImmutableMethodDeveloper < ActiveRecord::Base
+class ImmutableMethodDeveloper < ActiveRecord4116::Base
   self.table_name = 'developers'
 
   validates_inclusion_of :salary, :in => 50000..200000
@@ -117,7 +117,7 @@ class ImmutableMethodDeveloper < ActiveRecord::Base
   end
 end
 
-class OnCallbacksDeveloper < ActiveRecord::Base
+class OnCallbacksDeveloper < ActiveRecord4116::Base
   self.table_name = 'developers'
 
   before_validation { history << :before_validation }
@@ -137,7 +137,7 @@ class OnCallbacksDeveloper < ActiveRecord::Base
   end
 end
 
-class ContextualCallbacksDeveloper < ActiveRecord::Base
+class ContextualCallbacksDeveloper < ActiveRecord4116::Base
   self.table_name = 'developers'
 
   before_validation { history << :before_validation }
@@ -163,7 +163,7 @@ class ContextualCallbacksDeveloper < ActiveRecord::Base
   end
 end
 
-class CallbackCancellationDeveloper < ActiveRecord::Base
+class CallbackCancellationDeveloper < ActiveRecord4116::Base
   self.table_name = 'developers'
 
   attr_reader   :after_save_called, :after_create_called, :after_update_called, :after_destroy_called
@@ -180,7 +180,7 @@ class CallbackCancellationDeveloper < ActiveRecord::Base
   after_destroy { @after_destroy_called = true }
 end
 
-class CallbacksTest < ActiveRecord::TestCase
+class CallbacksTest < ActiveRecord4116::TestCase
   fixtures :developers
 
   def test_initialize
@@ -441,13 +441,13 @@ class CallbacksTest < ActiveRecord::TestCase
     david = ImmutableDeveloper.find(1)
     assert david.valid?
     assert !david.save
-    assert_raise(ActiveRecord::RecordNotSaved) { david.save! }
+    assert_raise(ActiveRecord4116::RecordNotSaved) { david.save! }
 
     david = ImmutableDeveloper.find(1)
     david.salary = 10_000_000
     assert !david.valid?
     assert !david.save
-    assert_raise(ActiveRecord::RecordInvalid) { david.save! }
+    assert_raise(ActiveRecord4116::RecordInvalid) { david.save! }
 
     someone = CallbackCancellationDeveloper.find(1)
     someone.cancel_before_save = true
@@ -475,13 +475,13 @@ class CallbacksTest < ActiveRecord::TestCase
   def test_before_destroy_returning_false
     david = ImmutableDeveloper.find(1)
     assert !david.destroy
-    assert_raise(ActiveRecord::RecordNotDestroyed) { david.destroy! }
+    assert_raise(ActiveRecord4116::RecordNotDestroyed) { david.destroy! }
     assert_not_nil ImmutableDeveloper.find_by_id(1)
 
     someone = CallbackCancellationDeveloper.find(1)
     someone.cancel_before_destroy = true
     assert !someone.destroy
-    assert_raise(ActiveRecord::RecordNotDestroyed) { someone.destroy! }
+    assert_raise(ActiveRecord4116::RecordNotDestroyed) { someone.destroy! }
     assert !someone.after_destroy_called
   end
 

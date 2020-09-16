@@ -2,9 +2,9 @@ require 'active_support/core_ext/hash/except'
 require 'active_support/core_ext/object/try'
 require 'active_support/core_ext/hash/indifferent_access'
 
-module ActiveRecord
+module ActiveRecord4116
   module NestedAttributes #:nodoc:
-    class TooManyRecords < ActiveRecordError
+    class TooManyRecords < ActiveRecord4116Error
     end
 
     extend ActiveSupport::Concern
@@ -28,7 +28,7 @@ module ActiveRecord
     # <tt>author_attributes=(attributes)</tt> and
     # <tt>pages_attributes=(attributes)</tt>.
     #
-    #   class Book < ActiveRecord::Base
+    #   class Book < ActiveRecord4116::Base
     #     has_one :author
     #     has_many :pages
     #
@@ -42,7 +42,7 @@ module ActiveRecord
     #
     # Consider a Member model that has one Avatar:
     #
-    #   class Member < ActiveRecord::Base
+    #   class Member < ActiveRecord4116::Base
     #     has_one :avatar
     #     accepts_nested_attributes_for :avatar
     #   end
@@ -66,7 +66,7 @@ module ActiveRecord
     # attributes hash, you have to enable it first using the
     # <tt>:allow_destroy</tt> option.
     #
-    #   class Member < ActiveRecord::Base
+    #   class Member < ActiveRecord4116::Base
     #     has_one :avatar
     #     accepts_nested_attributes_for :avatar, allow_destroy: true
     #   end
@@ -85,7 +85,7 @@ module ActiveRecord
     #
     # Consider a member that has a number of posts:
     #
-    #   class Member < ActiveRecord::Base
+    #   class Member < ActiveRecord4116::Base
     #     has_many :posts
     #     accepts_nested_attributes_for :posts
     #   end
@@ -115,7 +115,7 @@ module ActiveRecord
     # hashes if they fail to pass your criteria. For example, the previous
     # example could be rewritten as:
     #
-    #   class Member < ActiveRecord::Base
+    #   class Member < ActiveRecord4116::Base
     #     has_many :posts
     #     accepts_nested_attributes_for :posts, reject_if: proc { |attributes| attributes['title'].blank? }
     #   end
@@ -135,12 +135,12 @@ module ActiveRecord
     #
     # Alternatively, :reject_if also accepts a symbol for using methods:
     #
-    #   class Member < ActiveRecord::Base
+    #   class Member < ActiveRecord4116::Base
     #     has_many :posts
     #     accepts_nested_attributes_for :posts, reject_if: :new_record?
     #   end
     #
-    #   class Member < ActiveRecord::Base
+    #   class Member < ActiveRecord4116::Base
     #     has_many :posts
     #     accepts_nested_attributes_for :posts, reject_if: :reject_posts
     #
@@ -169,7 +169,7 @@ module ActiveRecord
     # option. This will allow you to also use the <tt>_destroy</tt> key to
     # destroy existing records:
     #
-    #   class Member < ActiveRecord::Base
+    #   class Member < ActiveRecord4116::Base
     #     has_many :posts
     #     accepts_nested_attributes_for :posts, allow_destroy: true
     #   end
@@ -212,7 +212,7 @@ module ActiveRecord
     # All changes to models, including the destruction of those marked for
     # destruction, are saved and destroyed automatically and atomically when
     # the parent model is saved. This happens inside the transaction initiated
-    # by the parents save method. See ActiveRecord::AutosaveAssociation.
+    # by the parents save method. See ActiveRecord4116::AutosaveAssociation.
     #
     # === Validating the presence of a parent model
     #
@@ -220,12 +220,12 @@ module ActiveRecord
     # record, you can use <tt>validates_presence_of</tt> and
     # <tt>inverse_of</tt> as this example illustrates:
     #
-    #   class Member < ActiveRecord::Base
+    #   class Member < ActiveRecord4116::Base
     #     has_many :posts, inverse_of: :member
     #     accepts_nested_attributes_for :posts
     #   end
     #
-    #   class Post < ActiveRecord::Base
+    #   class Post < ActiveRecord4116::Base
     #     belongs_to :member, inverse_of: :posts
     #     validates_presence_of :member
     #   end
@@ -238,7 +238,7 @@ module ActiveRecord
     # child object yourself before assignment, then this module will not
     # overwrite it, e.g.:
     #
-    #   class Member < ActiveRecord::Base
+    #   class Member < ActiveRecord4116::Base
     #     has_one :avatar
     #     accepts_nested_attributes_for :avatar
     #
@@ -346,7 +346,7 @@ module ActiveRecord
       end
     end
 
-    # Returns ActiveRecord::AutosaveAssociation::marked_for_destruction? It's
+    # Returns ActiveRecord4116::AutosaveAssociation::marked_for_destruction? It's
     # used in conjunction with fields_for to build a form element for the
     # destruction of this association.
     #

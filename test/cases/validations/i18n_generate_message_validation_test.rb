@@ -1,7 +1,7 @@
 require "cases/helper"
 require 'models/topic'
 
-class I18nGenerateMessageValidationTest < ActiveRecord::TestCase
+class I18nGenerateMessageValidationTest < ActiveRecord4116::TestCase
   def setup
     Topic.clear_validators!
     @topic = Topic.new
@@ -36,13 +36,13 @@ class I18nGenerateMessageValidationTest < ActiveRecord::TestCase
     assert_equal 'custom message title', @topic.errors.generate_message(:title, :taken, :message => 'custom message %{value}', :value => 'title')
   end
 
-  # ActiveRecord#RecordInvalid exception
+  # ActiveRecord4116#RecordInvalid exception
 
   test "RecordInvalid exception can be localized" do
     topic = Topic.new
     topic.errors.add(:title, :invalid)
     topic.errors.add(:title, :blank)
-    assert_equal "Validation failed: Title is invalid, Title can't be blank", ActiveRecord::RecordInvalid.new(topic).message
+    assert_equal "Validation failed: Title is invalid, Title can't be blank", ActiveRecord4116::RecordInvalid.new(topic).message
   end
 
   test "RecordInvalid exception translation falls back to the :errors namespace" do
@@ -50,7 +50,7 @@ class I18nGenerateMessageValidationTest < ActiveRecord::TestCase
       I18n.backend.store_translations 'en', :errors => {:messages => {:record_invalid => 'fallback message'}}
       topic = Topic.new
       topic.errors.add(:title, :blank)
-      assert_equal "fallback message", ActiveRecord::RecordInvalid.new(topic).message
+      assert_equal "fallback message", ActiveRecord4116::RecordInvalid.new(topic).message
     end
   end
 

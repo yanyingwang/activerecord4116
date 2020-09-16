@@ -1,7 +1,7 @@
 require 'cases/helper'
 require 'models/book'
 
-class EnumTest < ActiveRecord::TestCase
+class EnumTest < ActiveRecord4116::TestCase
   fixtures :books
 
   setup do
@@ -165,7 +165,7 @@ class EnumTest < ActiveRecord::TestCase
   end
 
   test "reserved enum names" do
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       self.table_name = "books"
       enum status: [:proposed, :written, :published]
     end
@@ -184,7 +184,7 @@ class EnumTest < ActiveRecord::TestCase
   end
 
   test "reserved enum values" do
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       self.table_name = "books"
       enum status: [:proposed, :written, :published]
     end
@@ -207,7 +207,7 @@ class EnumTest < ActiveRecord::TestCase
 
   test "overriding enum method should not raise" do
     assert_nothing_raised do
-      Class.new(ActiveRecord::Base) do
+      Class.new(ActiveRecord4116::Base) do
         self.table_name = "books"
 
         def published!
@@ -226,7 +226,7 @@ class EnumTest < ActiveRecord::TestCase
   end
 
   test "validate uniqueness" do
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Book'; end
       enum status: [:proposed, :written]
       validates_uniqueness_of :status
@@ -240,7 +240,7 @@ class EnumTest < ActiveRecord::TestCase
   end
 
   test "validate inclusion of value in array" do
-    klass = Class.new(ActiveRecord::Base) do
+    klass = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Book'; end
       enum status: [:proposed, :written]
       validates_inclusion_of :status, in: ["written"]
@@ -253,12 +253,12 @@ class EnumTest < ActiveRecord::TestCase
   end
 
   test "enums are distinct per class" do
-    klass1 = Class.new(ActiveRecord::Base) do
+    klass1 = Class.new(ActiveRecord4116::Base) do
       self.table_name = "books"
       enum status: [:proposed, :written]
     end
 
-    klass2 = Class.new(ActiveRecord::Base) do
+    klass2 = Class.new(ActiveRecord4116::Base) do
       self.table_name = "books"
       enum status: [:drafted, :uploaded]
     end

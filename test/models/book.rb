@@ -1,4 +1,4 @@
-class Book < ActiveRecord::Base
+class Book < ActiveRecord4116::Base
   has_many :authors
 
   has_many :citations, :foreign_key => 'book1_id'

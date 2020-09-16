@@ -1,9 +1,9 @@
 require "cases/helper"
 require 'thread'
 
-module ActiveRecord
+module ActiveRecord4116
   module AttributeMethods
-    class ReadTest < ActiveRecord::TestCase
+    class ReadTest < ActiveRecord4116::TestCase
       class FakeColumn < Struct.new(:name)
         def type; :integer; end
       end
@@ -14,7 +14,7 @@ module ActiveRecord
           def self.base_class; self; end
           def self.initialize_generated_modules; end
 
-          include ActiveRecord::AttributeMethods
+          include ActiveRecord4116::AttributeMethods
 
           def self.column_names
             %w{ one two three }

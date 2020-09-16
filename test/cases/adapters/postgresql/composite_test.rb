@@ -3,8 +3,8 @@ require "cases/helper"
 require 'active_record/base'
 require 'active_record/connection_adapters/postgresql_adapter'
 
-class PostgresqlCompositeTest < ActiveRecord::TestCase
-  class PostgresqlComposite < ActiveRecord::Base
+class PostgresqlCompositeTest < ActiveRecord4116::TestCase
+  class PostgresqlComposite < ActiveRecord4116::Base
     self.table_name = "postgresql_composites"
   end
 
@@ -14,7 +14,7 @@ class PostgresqlCompositeTest < ActiveRecord::TestCase
   end
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     @connection.transaction do
       @connection.execute <<-SQL
          CREATE TYPE full_address AS

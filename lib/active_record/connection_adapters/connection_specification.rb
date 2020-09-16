@@ -1,6 +1,6 @@
 require 'uri'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     class ConnectionSpecification #:nodoc:
       attr_reader :config, :adapter_method
@@ -150,7 +150,7 @@ module ActiveRecord
         def resolve(config)
           if config
             resolve_connection config
-          elsif env = ActiveRecord::ConnectionHandling::RAILS_ENV.call
+          elsif env = ActiveRecord4116::ConnectionHandling::RAILS_ENV.call
             resolve_symbol_connection env.to_sym
           else
             raise AdapterNotSpecified
@@ -187,7 +187,7 @@ module ActiveRecord
           begin
             require path_to_adapter
           rescue Gem::LoadError => e
-            raise Gem::LoadError, "Specified '#{spec[:adapter]}' for database adapter, but the gem is not loaded. Add `gem '#{e.name}'` to your Gemfile (and ensure its version is at the minimum required by ActiveRecord)."
+            raise Gem::LoadError, "Specified '#{spec[:adapter]}' for database adapter, but the gem is not loaded. Add `gem '#{e.name}'` to your Gemfile (and ensure its version is at the minimum required by ActiveRecord4116)."
           rescue LoadError => e
             raise LoadError, "Could not load '#{path_to_adapter}'. Make sure that the adapter in config/database.yml is valid. If you use an adapter other than 'mysql', 'mysql2', 'postgresql' or 'sqlite3' add the necessary adapter gem to the Gemfile.", e.backtrace
           end
@@ -235,7 +235,7 @@ module ActiveRecord
           # this ambiguous behaviour and in the future this function
           # can be removed in favor of resolve_url_connection.
           if configurations.key?(spec) || spec !~ /:/
-            ActiveSupport::Deprecation.warn "Passing a string to ActiveRecord::Base.establish_connection " \
+            ActiveSupport::Deprecation.warn "Passing a string to ActiveRecord4116::Base.establish_connection " \
               "for a configuration lookup is deprecated, please pass a symbol (#{spec.to_sym.inspect}) instead"
             resolve_symbol_connection(spec)
           else

@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module Sanitization
     extend ActiveSupport::Concern
 
@@ -46,7 +46,7 @@ module ActiveRecord
       # that correspond to a +composed_of+ relationship with their expanded
       # aggregate attribute values.
       # Given:
-      #     class Person < ActiveRecord::Base
+      #     class Person < ActiveRecord4116::Base
       #       composed_of :address, class_name: "Address",
       #         mapping: [%w(address_street street), %w(address_city city)]
       #     end
@@ -133,7 +133,7 @@ module ActiveRecord
       end
 
       def replace_bind_variable(value, c = connection) #:nodoc:
-        if ActiveRecord::Relation === value
+        if ActiveRecord4116::Relation === value
           value.to_sql
         else
           quote_bound_value(value, c)

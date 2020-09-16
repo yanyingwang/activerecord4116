@@ -1,4 +1,4 @@
-module ActiveRecord::Associations::Builder
+module ActiveRecord4116::Associations::Builder
   class HasOne < SingularAssociation #:nodoc:
     def macro
       :has_one

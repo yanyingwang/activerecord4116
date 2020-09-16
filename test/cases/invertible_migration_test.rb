@@ -1,8 +1,8 @@
 require "cases/helper"
 
-module ActiveRecord
-  class InvertibleMigrationTest < ActiveRecord::TestCase
-    class SilentMigration < ActiveRecord::Migration
+module ActiveRecord4116
+  class InvertibleMigrationTest < ActiveRecord4116::TestCase
+    class SilentMigration < ActiveRecord4116::Migration
       def write(text = '')
         # sssshhhhh!!
       end
@@ -76,7 +76,7 @@ module ActiveRecord
       end
     end
 
-    class LegacyMigration < ActiveRecord::Migration
+    class LegacyMigration < ActiveRecord4116::Migration
       def self.up
         create_table("horses") do |t|
           t.column :content, :text
@@ -124,8 +124,8 @@ module ActiveRecord
 
     def teardown
       %w[horses new_horses].each do |table|
-        if ActiveRecord::Base.connection.table_exists?(table)
-          ActiveRecord::Base.connection.drop_table(table)
+        if ActiveRecord4116::Base.connection.table_exists?(table)
+          ActiveRecord4116::Base.connection.drop_table(table)
         end
       end
     end
@@ -216,7 +216,7 @@ module ActiveRecord
 
     def test_revert_order
       block = Proc.new{|t| t.string :name }
-      recorder = ActiveRecord::Migration::CommandRecorder.new(ActiveRecord::Base.connection)
+      recorder = ActiveRecord4116::Migration::CommandRecorder.new(ActiveRecord4116::Base.connection)
       recorder.instance_eval do
         create_table("apples", &block)
         revert do
@@ -240,35 +240,35 @@ module ActiveRecord
 
     def test_legacy_up
       LegacyMigration.migrate :up
-      assert ActiveRecord::Base.connection.table_exists?("horses"), "horses should exist"
+      assert ActiveRecord4116::Base.connection.table_exists?("horses"), "horses should exist"
     end
 
     def test_legacy_down
       LegacyMigration.migrate :up
       LegacyMigration.migrate :down
-      assert !ActiveRecord::Base.connection.table_exists?("horses"), "horses should not exist"
+      assert !ActiveRecord4116::Base.connection.table_exists?("horses"), "horses should not exist"
     end
 
     def test_up
       LegacyMigration.up
-      assert ActiveRecord::Base.connection.table_exists?("horses"), "horses should exist"
+      assert ActiveRecord4116::Base.connection.table_exists?("horses"), "horses should exist"
     end
 
     def test_down
       LegacyMigration.up
       LegacyMigration.down
-      assert !ActiveRecord::Base.connection.table_exists?("horses"), "horses should not exist"
+      assert !ActiveRecord4116::Base.connection.table_exists?("horses"), "horses should not exist"
     end
 
     def test_migrate_down_with_table_name_prefix
-      ActiveRecord::Base.table_name_prefix = 'p_'
-      ActiveRecord::Base.table_name_suffix = '_s'
+      ActiveRecord4116::Base.table_name_prefix = 'p_'
+      ActiveRecord4116::Base.table_name_suffix = '_s'
       migration = InvertibleMigration.new
       migration.migrate(:up)
       assert_nothing_raised { migration.migrate(:down) }
-      assert !ActiveRecord::Base.connection.table_exists?("p_horses_s"), "p_horses_s should not exist"
+      assert !ActiveRecord4116::Base.connection.table_exists?("p_horses_s"), "p_horses_s should not exist"
     ensure
-      ActiveRecord::Base.table_name_prefix = ActiveRecord::Base.table_name_suffix = ''
+      ActiveRecord4116::Base.table_name_prefix = ActiveRecord4116::Base.table_name_suffix = ''
     end
 
     # MySQL 5.7 and Oracle do not allow to create duplicate indexes on the same columns
@@ -278,7 +278,7 @@ module ActiveRecord
         RevertNamedIndexMigration2.new.migrate(:up)
         RevertNamedIndexMigration2.new.migrate(:down)
 
-        connection = ActiveRecord::Base.connection
+        connection = ActiveRecord4116::Base.connection
         assert connection.index_exists?(:horses, :content),
                "index on content should exist"
         assert !connection.index_exists?(:horses, :content, name: "horses_index_named"),

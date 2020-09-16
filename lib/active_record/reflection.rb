@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Reflection
   module Reflection # :nodoc:
     extend ActiveSupport::Concern
@@ -207,7 +207,7 @@ module ActiveRecord
     class AssociationReflection < MacroReflection #:nodoc:
       # Returns the target association's class.
       #
-      #   class Author < ActiveRecord::Base
+      #   class Author < ActiveRecord4116::Base
       #     has_many :books
       #   end
       #
@@ -519,19 +519,19 @@ module ActiveRecord
       # Returns the source of the through reflection. It checks both a singularized
       # and pluralized form for <tt>:belongs_to</tt> or <tt>:has_many</tt>.
       #
-      #   class Post < ActiveRecord::Base
+      #   class Post < ActiveRecord4116::Base
       #     has_many :taggings
       #     has_many :tags, through: :taggings
       #   end
       #
-      #   class Tagging < ActiveRecord::Base
+      #   class Tagging < ActiveRecord4116::Base
       #     belongs_to :post
       #     belongs_to :tag
       #   end
       #
       #   tags_reflection = Post.reflect_on_association(:tags)
       #   tags_reflection.source_reflection
-      #   # => <ActiveRecord::Reflection::AssociationReflection: @macro=:belongs_to, @name=:tag, @active_record=Tagging, @plural_name="tags">
+      #   # => <ActiveRecord4116::Reflection::AssociationReflection: @macro=:belongs_to, @name=:tag, @active_record=Tagging, @plural_name="tags">
       #
       def source_reflection
         if source_reflection_name
@@ -542,14 +542,14 @@ module ActiveRecord
       # Returns the AssociationReflection object specified in the <tt>:through</tt> option
       # of a HasManyThrough or HasOneThrough association.
       #
-      #   class Post < ActiveRecord::Base
+      #   class Post < ActiveRecord4116::Base
       #     has_many :taggings
       #     has_many :tags, through: :taggings
       #   end
       #
       #   tags_reflection = Post.reflect_on_association(:tags)
       #   tags_reflection.through_reflection
-      #   # => <ActiveRecord::Reflection::AssociationReflection: @macro=:has_many, @name=:taggings, @active_record=Post, @plural_name="taggings">
+      #   # => <ActiveRecord4116::Reflection::AssociationReflection: @macro=:has_many, @name=:taggings, @active_record=Post, @plural_name="taggings">
       #
       def through_reflection
         active_record._reflect_on_association(options[:through])
@@ -562,15 +562,15 @@ module ActiveRecord
       # reflection. The base case for the recursion is a normal association, which just returns
       # [self] as its #chain.
       #
-      #   class Post < ActiveRecord::Base
+      #   class Post < ActiveRecord4116::Base
       #     has_many :taggings
       #     has_many :tags, through: :taggings
       #   end
       #
       #   tags_reflection = Post.reflect_on_association(:tags)
       #   tags_reflection.chain
-      #   # => [<ActiveRecord::Reflection::ThroughReflection: @macro=:has_many, @name=:tags, @options={:through=>:taggings}, @active_record=Post>,
-      #         <ActiveRecord::Reflection::AssociationReflection: @macro=:has_many, @name=:taggings, @options={}, @active_record=Post>]
+      #   # => [<ActiveRecord4116::Reflection::ThroughReflection: @macro=:has_many, @name=:tags, @options={:through=>:taggings}, @active_record=Post>,
+      #         <ActiveRecord4116::Reflection::AssociationReflection: @macro=:has_many, @name=:taggings, @options={}, @active_record=Post>]
       #
       def chain
         @chain ||= begin
@@ -644,7 +644,7 @@ module ActiveRecord
 
       # Gets an array of possible <tt>:through</tt> source reflection names in both singular and plural form.
       #
-      #   class Post < ActiveRecord::Base
+      #   class Post < ActiveRecord4116::Base
       #     has_many :taggings
       #     has_many :tags, through: :taggings
       #   end
@@ -672,7 +672,7 @@ module ActiveRecord
 Ambiguous source reflection for through association.  Please specify a :source
 directive on your declaration like:
 
-  class #{active_record.name} < ActiveRecord::Base
+  class #{active_record.name} < ActiveRecord4116::Base
     #{macro} :#{name}, #{example_options}
   end
 

@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Persistence
   module Persistence
     extend ActiveSupport::Concern
@@ -44,7 +44,7 @@ module ActiveRecord
       # +instantiate+ instead of +new+, finder methods ensure they get new
       # instances of the appropriate class for each record.
       #
-      # See +ActiveRecord::Inheritance#discriminate_class_for_record+ to see
+      # See +ActiveRecord4116::Inheritance#discriminate_class_for_record+ to see
       # how this "single-table" inheritance mapping is implemented.
       def instantiate(attributes, column_types = {})
         klass = discriminate_class_for_record(attributes)
@@ -56,7 +56,7 @@ module ActiveRecord
         # Called by +instantiate+ to decide which class to use for a new
         # record instance.
         #
-        # See +ActiveRecord::Inheritance#discriminate_class_for_record+ for
+        # See +ActiveRecord4116::Inheritance#discriminate_class_for_record+ for
         # the single-table inheritance discriminator.
         def discriminate_class_for_record(record)
           self
@@ -90,18 +90,18 @@ module ActiveRecord
     # By default, save always run validations. If any of them fail the action
     # is cancelled and +save+ returns +false+. However, if you supply
     # validate: false, validations are bypassed altogether. See
-    # ActiveRecord::Validations for more information.
+    # ActiveRecord4116::Validations for more information.
     #
     # There's a series of callbacks associated with +save+. If any of the
     # <tt>before_*</tt> callbacks return +false+ the action is cancelled and
-    # +save+ returns +false+. See ActiveRecord::Callbacks for further
+    # +save+ returns +false+. See ActiveRecord4116::Callbacks for further
     # details.
     #
     # Attributes marked as readonly are silently ignored if the record is
     # being updated.
     def save(*)
       create_or_update
-    rescue ActiveRecord::RecordInvalid
+    rescue ActiveRecord4116::RecordInvalid
       false
     end
 
@@ -111,13 +111,13 @@ module ActiveRecord
     # the existing record gets updated.
     #
     # With <tt>save!</tt> validations always run. If any of them fail
-    # ActiveRecord::RecordInvalid gets raised. See ActiveRecord::Validations
+    # ActiveRecord4116::RecordInvalid gets raised. See ActiveRecord4116::Validations
     # for more information.
     #
     # There's a series of callbacks associated with <tt>save!</tt>. If any of
     # the <tt>before_*</tt> callbacks return +false+ the action is cancelled
-    # and <tt>save!</tt> raises ActiveRecord::RecordNotSaved. See
-    # ActiveRecord::Callbacks for further details.
+    # and <tt>save!</tt> raises ActiveRecord4116::RecordNotSaved. See
+    # ActiveRecord4116::Callbacks for further details.
     #
     # Attributes marked as readonly are silently ignored if the record is
     # being updated.
@@ -147,7 +147,7 @@ module ActiveRecord
     # There's a series of callbacks associated with <tt>destroy</tt>. If
     # the <tt>before_destroy</tt> callback return +false+ the action is cancelled
     # and <tt>destroy</tt> returns +false+. See
-    # ActiveRecord::Callbacks for further details.
+    # ActiveRecord4116::Callbacks for further details.
     def destroy
       raise ReadOnlyRecord if readonly?
       destroy_associations
@@ -161,10 +161,10 @@ module ActiveRecord
     #
     # There's a series of callbacks associated with <tt>destroy!</tt>. If
     # the <tt>before_destroy</tt> callback return +false+ the action is cancelled
-    # and <tt>destroy!</tt> raises ActiveRecord::RecordNotDestroyed. See
-    # ActiveRecord::Callbacks for further details.
+    # and <tt>destroy!</tt> raises ActiveRecord4116::RecordNotDestroyed. See
+    # ActiveRecord4116::Callbacks for further details.
     def destroy!
-      destroy || raise(ActiveRecord::RecordNotDestroyed)
+      destroy || raise(ActiveRecord4116::RecordNotDestroyed)
     end
 
     # Returns an instance of the specified +klass+ with the attributes of the
@@ -213,7 +213,7 @@ module ActiveRecord
     # * updated_at/updated_on column is updated if that column is available.
     # * Updates all the attributes that are dirty in this object.
     #
-    # This method raises an +ActiveRecord::ActiveRecordError+  if the
+    # This method raises an +ActiveRecord4116::ActiveRecord4116Error+  if the
     # attribute is marked as readonly.
     def update_attribute(name, value)
       name = name.to_s
@@ -267,10 +267,10 @@ module ActiveRecord
     # * Callbacks are skipped.
     # * +updated_at+/+updated_on+ are not updated.
     #
-    # This method raises an +ActiveRecord::ActiveRecordError+ when called on new
+    # This method raises an +ActiveRecord4116::ActiveRecord4116Error+ when called on new
     # objects, or when at least one of the attributes is marked as readonly.
     def update_columns(attributes)
-      raise ActiveRecordError, "cannot update on a new record object" unless persisted?
+      raise ActiveRecord4116Error, "cannot update on a new record object" unless persisted?
 
       attributes.each_key do |key|
         verify_readonly_attribute(key.to_s)
@@ -351,7 +351,7 @@ module ActiveRecord
     # Attributes are reloaded from the database, and caches busted, in
     # particular the associations cache.
     #
-    # If the record no longer exists in the database <tt>ActiveRecord::RecordNotFound</tt>
+    # If the record no longer exists in the database <tt>ActiveRecord4116::RecordNotFound</tt>
     # is raised. Otherwise, in addition to the in-place modification the method
     # returns +self+ for convenience.
     #
@@ -372,11 +372,11 @@ module ActiveRecord
     #   def with_optimistic_retry
     #     begin
     #       yield
-    #     rescue ActiveRecord::StaleObjectError
+    #     rescue ActiveRecord4116::StaleObjectError
     #       begin
     #         # Reload lock_version in particular.
     #         reload
-    #       rescue ActiveRecord::RecordNotFound
+    #       rescue ActiveRecord4116::RecordNotFound
     #         # If the record is gone there is nothing to do.
     #       else
     #         retry
@@ -415,11 +415,11 @@ module ActiveRecord
     #
     # If used along with +belongs_to+ then +touch+ will invoke +touch+ method on associated object.
     #
-    #   class Brake < ActiveRecord::Base
+    #   class Brake < ActiveRecord4116::Base
     #     belongs_to :car, touch: true
     #   end
     #
-    #   class Car < ActiveRecord::Base
+    #   class Car < ActiveRecord4116::Base
     #     belongs_to :corporation, touch: true
     #   end
     #
@@ -427,13 +427,13 @@ module ActiveRecord
     #   @brake.touch
     #
     # Note that +touch+ must be used on a persisted object, or else an
-    # ActiveRecordError will be thrown. For example:
+    # ActiveRecord4116Error will be thrown. For example:
     #
     #   ball = Ball.new
-    #   ball.touch(:updated_at)   # => raises ActiveRecordError
+    #   ball.touch(:updated_at)   # => raises ActiveRecord4116Error
     #
     def touch(name = nil)
-      raise ActiveRecordError, "cannot touch on a new record object" unless persisted?
+      raise ActiveRecord4116Error, "cannot touch on a new record object" unless persisted?
 
       attributes = timestamp_attributes_for_update_in_model
       attributes << name if name
@@ -509,7 +509,7 @@ module ActiveRecord
     end
 
     def verify_readonly_attribute(name)
-      raise ActiveRecordError, "#{name} is marked as readonly" if self.class.readonly_attributes.include?(name)
+      raise ActiveRecord4116Error, "#{name} is marked as readonly" if self.class.readonly_attributes.include?(name)
     end
   end
 end

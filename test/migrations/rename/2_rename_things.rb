@@ -1,4 +1,4 @@
-class RenameThings < ActiveRecord::Migration
+class RenameThings < ActiveRecord4116::Migration
   def self.up
     rename_table "things", "awesome_things"
   end

@@ -1,4 +1,4 @@
-module ActiveRecord::Associations::Builder
+module ActiveRecord4116::Associations::Builder
   class HasAndBelongsToMany # :nodoc:
     class JoinTableResolver
       KnownTable = Struct.new :join_table
@@ -44,7 +44,7 @@ module ActiveRecord::Associations::Builder
     def through_model
       habtm = JoinTableResolver.build lhs_model, association_name, options
 
-      join_model = Class.new(ActiveRecord::Base) {
+      join_model = Class.new(ActiveRecord4116::Base) {
         class << self;
           attr_accessor :class_resolver
           attr_accessor :name

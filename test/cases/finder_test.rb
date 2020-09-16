@@ -14,17 +14,17 @@ require 'models/toy'
 require 'models/matey'
 require 'models/dog'
 
-class FinderTest < ActiveRecord::TestCase
+class FinderTest < ActiveRecord4116::TestCase
   fixtures :companies, :topics, :entrants, :developers, :developers_projects, :posts, :comments, :accounts, :authors, :customers, :categories, :categorizations
 
   def test_find_by_id_with_hash
-    assert_raises(ActiveRecord::StatementInvalid) do
+    assert_raises(ActiveRecord4116::StatementInvalid) do
       Post.find_by_id(:limit => 1)
     end
   end
 
   def test_find_by_title_and_id_with_hash
-    assert_raises(ActiveRecord::StatementInvalid) do
+    assert_raises(ActiveRecord4116::StatementInvalid) do
       Post.find_by_title_and_id('foo', :limit => 1)
     end
   end
@@ -71,7 +71,7 @@ class FinderTest < ActiveRecord::TestCase
 
     begin
       assert_equal false, Topic.exists?("foo")
-    rescue ActiveRecord::StatementInvalid
+    rescue ActiveRecord4116::StatementInvalid
       # PostgreSQL complains about string comparison with integer field
     rescue Exception
       flunk
@@ -182,7 +182,7 @@ class FinderTest < ActiveRecord::TestCase
   end
 
   def test_find_by_ids_missing_one
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.find(1, 2, 45) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.find(1, 2, 45) }
   end
 
   def test_find_with_group_and_sanitized_having_method
@@ -226,7 +226,7 @@ class FinderTest < ActiveRecord::TestCase
   end
 
   def test_take_bang_missing
-    assert_raises ActiveRecord::RecordNotFound do
+    assert_raises ActiveRecord4116::RecordNotFound do
       Topic.where("title = 'This title does not exist'").take!
     end
   end
@@ -246,7 +246,7 @@ class FinderTest < ActiveRecord::TestCase
   end
 
   def test_first_bang_missing
-    assert_raises ActiveRecord::RecordNotFound do
+    assert_raises ActiveRecord4116::RecordNotFound do
       Topic.where("title = 'This title does not exist'").first!
     end
   end
@@ -260,7 +260,7 @@ class FinderTest < ActiveRecord::TestCase
   def test_model_class_responds_to_first_bang
     assert Topic.first!
     Topic.delete_all
-    assert_raises ActiveRecord::RecordNotFound do
+    assert_raises ActiveRecord4116::RecordNotFound do
       Topic.first!
     end
   end
@@ -282,7 +282,7 @@ class FinderTest < ActiveRecord::TestCase
   def test_model_class_responds_to_second_bang
     assert Topic.second!
     Topic.delete_all
-    assert_raises ActiveRecord::RecordNotFound do
+    assert_raises ActiveRecord4116::RecordNotFound do
       Topic.second!
     end
   end
@@ -304,7 +304,7 @@ class FinderTest < ActiveRecord::TestCase
   def test_model_class_responds_to_third_bang
     assert Topic.third!
     Topic.delete_all
-    assert_raises ActiveRecord::RecordNotFound do
+    assert_raises ActiveRecord4116::RecordNotFound do
       Topic.third!
     end
   end
@@ -326,7 +326,7 @@ class FinderTest < ActiveRecord::TestCase
   def test_model_class_responds_to_fourth_bang
     assert Topic.fourth!
     Topic.delete_all
-    assert_raises ActiveRecord::RecordNotFound do
+    assert_raises ActiveRecord4116::RecordNotFound do
       Topic.fourth!
     end
   end
@@ -348,7 +348,7 @@ class FinderTest < ActiveRecord::TestCase
   def test_model_class_responds_to_fifth_bang
     assert Topic.fifth!
     Topic.delete_all
-    assert_raises ActiveRecord::RecordNotFound do
+    assert_raises ActiveRecord4116::RecordNotFound do
       Topic.fifth!
     end
   end
@@ -360,14 +360,14 @@ class FinderTest < ActiveRecord::TestCase
   end
 
   def test_last_bang_missing
-    assert_raises ActiveRecord::RecordNotFound do
+    assert_raises ActiveRecord4116::RecordNotFound do
       Topic.where("title = 'This title does not exist'").last!
     end
   end
 
   def test_model_class_responds_to_last_bang
     assert_equal topics(:fifth), Topic.last!
-    assert_raises ActiveRecord::RecordNotFound do
+    assert_raises ActiveRecord4116::RecordNotFound do
       Topic.delete_all
       Topic.last!
     end
@@ -402,7 +402,7 @@ class FinderTest < ActiveRecord::TestCase
   end
 
   def test_unexisting_record_exception_handling
-    assert_raise(ActiveRecord::RecordNotFound) {
+    assert_raise(ActiveRecord4116::RecordNotFound) {
       Topic.find(1).parent
     }
 
@@ -423,22 +423,22 @@ class FinderTest < ActiveRecord::TestCase
 
   def test_find_on_array_conditions
     assert Topic.where(["approved = ?", false]).find(1)
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.where(["approved = ?", true]).find(1) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.where(["approved = ?", true]).find(1) }
   end
 
   def test_find_on_hash_conditions
     assert Topic.where(approved: false).find(1)
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.where(approved: true).find(1) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.where(approved: true).find(1) }
   end
 
   def test_find_on_hash_conditions_with_explicit_table_name
     assert Topic.where('topics.approved' => false).find(1)
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.where('topics.approved' => true).find(1) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.where('topics.approved' => true).find(1) }
   end
 
   def test_find_on_hash_conditions_with_hashed_table_name
     assert Topic.where(topics: { approved: false }).find(1)
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.where(topics: { approved: true }).find(1) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.where(topics: { approved: true }).find(1) }
   end
 
   def test_find_with_hash_conditions_on_joined_table
@@ -456,7 +456,7 @@ class FinderTest < ActiveRecord::TestCase
   def test_find_on_hash_conditions_with_explicit_table_name_and_aggregate
     david = customers(:david)
     assert Customer.where('customers.name' => david.name, :address => david.address).find(david.id)
-    assert_raise(ActiveRecord::RecordNotFound) {
+    assert_raise(ActiveRecord4116::RecordNotFound) {
       Customer.where('customers.name' => david.name + "1", :address => david.address).find(david.id)
     }
   end
@@ -467,13 +467,13 @@ class FinderTest < ActiveRecord::TestCase
 
   def test_find_on_hash_conditions_with_range
     assert_equal [1,2], Topic.where(id: 1..2).to_a.map(&:id).sort
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.where(id: 2..3).find(1) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.where(id: 2..3).find(1) }
   end
 
   def test_find_on_hash_conditions_with_end_exclusive_range
     assert_equal [1,2,3], Topic.where(id: 1..3).to_a.map(&:id).sort
     assert_equal [1,2], Topic.where(id: 1...3).to_a.map(&:id).sort
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.where(id: 2...3).find(3) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.where(id: 2...3).find(3) }
   end
 
   def test_find_on_hash_conditions_with_multiple_ranges
@@ -487,9 +487,9 @@ class FinderTest < ActiveRecord::TestCase
 
   def test_find_on_multiple_hash_conditions
     assert Topic.where(author_name: "David", title: "The First Topic", replies_count: 1, approved: false).find(1)
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.where(author_name: "David", title: "The First Topic", replies_count: 1, approved: true).find(1) }
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.where(author_name: "David", title: "HHC", replies_count: 1, approved: false).find(1) }
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.where(author_name: "David", title: "The First Topic", replies_count: 1, approved: true).find(1) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.where(author_name: "David", title: "The First Topic", replies_count: 1, approved: true).find(1) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.where(author_name: "David", title: "HHC", replies_count: 1, approved: false).find(1) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.where(author_name: "David", title: "The First Topic", replies_count: 1, approved: true).find(1) }
   end
 
   def test_condition_interpolation
@@ -513,7 +513,7 @@ class FinderTest < ActiveRecord::TestCase
   end
 
   def test_hash_condition_find_malformed
-    assert_raise(ActiveRecord::StatementInvalid) {
+    assert_raise(ActiveRecord4116::StatementInvalid) {
       Company.where(id: 2, dhh: true).first
     }
   end
@@ -618,10 +618,10 @@ class FinderTest < ActiveRecord::TestCase
     assert_nil Company.where(["name = ?", "37signals!"]).first
     assert_nil Company.where(["name = ?", "37signals!' OR 1=1"]).first
     assert_kind_of Time, Topic.where(["id = ?", 1]).first.written_on
-    assert_raise(ActiveRecord::PreparedStatementInvalid) {
+    assert_raise(ActiveRecord4116::PreparedStatementInvalid) {
       Company.where(["id=? AND name = ?", 2]).first
     }
-    assert_raise(ActiveRecord::PreparedStatementInvalid) {
+    assert_raise(ActiveRecord4116::PreparedStatementInvalid) {
      Company.where(["id=?", 2, 3, 4]).first
     }
   end
@@ -638,11 +638,11 @@ class FinderTest < ActiveRecord::TestCase
 
   def test_bind_arity
     assert_nothing_raised                                 { bind '' }
-    assert_raise(ActiveRecord::PreparedStatementInvalid) { bind '', 1 }
+    assert_raise(ActiveRecord4116::PreparedStatementInvalid) { bind '', 1 }
 
-    assert_raise(ActiveRecord::PreparedStatementInvalid) { bind '?' }
+    assert_raise(ActiveRecord4116::PreparedStatementInvalid) { bind '?' }
     assert_nothing_raised                                 { bind '?', 1 }
-    assert_raise(ActiveRecord::PreparedStatementInvalid) { bind '?', 1, 1  }
+    assert_raise(ActiveRecord4116::PreparedStatementInvalid) { bind '?', 1, 1  }
   end
 
   def test_named_bind_variables
@@ -670,7 +670,7 @@ class FinderTest < ActiveRecord::TestCase
   end
 
   def test_bind_enumerable
-    quoted_abc = %(#{ActiveRecord::Base.connection.quote('a')},#{ActiveRecord::Base.connection.quote('b')},#{ActiveRecord::Base.connection.quote('c')})
+    quoted_abc = %(#{ActiveRecord4116::Base.connection.quote('a')},#{ActiveRecord4116::Base.connection.quote('b')},#{ActiveRecord4116::Base.connection.quote('c')})
 
     assert_equal '1,2,3', bind('?', [1, 2, 3])
     assert_equal quoted_abc, bind('?', %w(a b c))
@@ -686,20 +686,20 @@ class FinderTest < ActiveRecord::TestCase
   end
 
   def test_bind_empty_enumerable
-    quoted_nil = ActiveRecord::Base.connection.quote(nil)
+    quoted_nil = ActiveRecord4116::Base.connection.quote(nil)
     assert_equal quoted_nil, bind('?', [])
     assert_equal " in (#{quoted_nil})", bind(' in (?)', [])
     assert_equal "foo in (#{quoted_nil})", bind('foo in (?)', [])
   end
 
   def test_bind_empty_string
-    quoted_empty = ActiveRecord::Base.connection.quote('')
+    quoted_empty = ActiveRecord4116::Base.connection.quote('')
     assert_equal quoted_empty, bind('?', '')
   end
 
   def test_bind_chars
-    quoted_bambi = ActiveRecord::Base.connection.quote("Bambi")
-    quoted_bambi_and_thumper = ActiveRecord::Base.connection.quote("Bambi\nand\nThumper")
+    quoted_bambi = ActiveRecord4116::Base.connection.quote("Bambi")
+    quoted_bambi_and_thumper = ActiveRecord4116::Base.connection.quote("Bambi\nand\nThumper")
     assert_equal "name=#{quoted_bambi}", bind('name=?', "Bambi")
     assert_equal "name=#{quoted_bambi_and_thumper}", bind('name=?', "Bambi\nand\nThumper")
     assert_equal "name=#{quoted_bambi}", bind('name=?', "Bambi".mb_chars)
@@ -717,12 +717,12 @@ class FinderTest < ActiveRecord::TestCase
   def test_named_bind_with_postgresql_type_casts
     l = Proc.new { bind(":a::integer '2009-01-01'::date", :a => '10') }
     assert_nothing_raised(&l)
-    assert_equal "#{ActiveRecord::Base.connection.quote('10')}::integer '2009-01-01'::date", l.call
+    assert_equal "#{ActiveRecord4116::Base.connection.quote('10')}::integer '2009-01-01'::date", l.call
   end
 
   def test_string_sanitation
-    assert_not_equal "'something ' 1=1'", ActiveRecord::Base.sanitize("something ' 1=1")
-    assert_equal "'something; select table'", ActiveRecord::Base.sanitize("something; select table")
+    assert_not_equal "'something ' 1=1'", ActiveRecord4116::Base.sanitize("something ' 1=1")
+    assert_equal "'something; select table'", ActiveRecord4116::Base.sanitize("something; select table")
   end
 
   def test_count_by_sql
@@ -738,7 +738,7 @@ class FinderTest < ActiveRecord::TestCase
 
   def test_find_by_one_attribute_bang
     assert_equal topics(:first), Topic.find_by_title!("The First Topic")
-    assert_raise(ActiveRecord::RecordNotFound) { Topic.find_by_title!("The First Topic!") }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Topic.find_by_title!("The First Topic!") }
   end
 
   def test_find_by_on_attribute_that_is_a_reserved_word
@@ -848,7 +848,7 @@ class FinderTest < ActiveRecord::TestCase
   end
 
   def test_find_with_bad_sql
-    assert_raise(ActiveRecord::StatementInvalid) { Topic.find_by_sql "select 1 from badtable" }
+    assert_raise(ActiveRecord4116::StatementInvalid) { Topic.find_by_sql "select 1 from badtable" }
   end
 
   def test_find_all_with_join
@@ -964,7 +964,7 @@ class FinderTest < ActiveRecord::TestCase
   def test_find_one_message_with_custom_primary_key
     table_with_custom_primary_key do |model|
       model.primary_key = :name
-      e = assert_raises(ActiveRecord::RecordNotFound) do
+      e = assert_raises(ActiveRecord4116::RecordNotFound) do
         model.find 'Hello World!'
       end
       assert_equal %Q{Couldn't find MercedesCar with 'name'=Hello World!}, e.message
@@ -974,7 +974,7 @@ class FinderTest < ActiveRecord::TestCase
   def test_find_some_message_with_custom_primary_key
     table_with_custom_primary_key do |model|
       model.primary_key = :name
-      e = assert_raises(ActiveRecord::RecordNotFound) do
+      e = assert_raises(ActiveRecord4116::RecordNotFound) do
         model.find 'Hello', 'World!'
       end
       assert_equal %Q{Couldn't find all MercedesCars with 'name': (Hello, World!) (found 0 results, but was looking for 2)}, e.message
@@ -982,21 +982,21 @@ class FinderTest < ActiveRecord::TestCase
   end
 
   def test_find_without_primary_key
-    assert_raises(ActiveRecord::UnknownPrimaryKey) do
+    assert_raises(ActiveRecord4116::UnknownPrimaryKey) do
       Matey.find(1)
     end
   end
 
   def test_finder_with_offset_string
-    assert_nothing_raised(ActiveRecord::StatementInvalid) { Topic.offset("3").to_a }
+    assert_nothing_raised(ActiveRecord4116::StatementInvalid) { Topic.offset("3").to_a }
   end
 
   protected
     def bind(statement, *vars)
       if vars.first.is_a?(Hash)
-        ActiveRecord::Base.send(:replace_named_bind_variables, statement, vars.first)
+        ActiveRecord4116::Base.send(:replace_named_bind_variables, statement, vars.first)
       else
-        ActiveRecord::Base.send(:replace_bind_variables, statement, vars)
+        ActiveRecord4116::Base.send(:replace_bind_variables, statement, vars)
       end
     end
 

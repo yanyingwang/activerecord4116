@@ -2,7 +2,7 @@ require "cases/helper"
 require 'models/topic'
 require 'models/reply'
 
-class I18nValidationTest < ActiveRecord::TestCase
+class I18nValidationTest < ActiveRecord4116::TestCase
   repair_validations(Topic, Reply)
 
   def setup

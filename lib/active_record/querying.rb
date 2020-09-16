@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module Querying
     delegate :find, :take, :take!, :first, :first!, :last, :last!, :exists?, :any?, :many?, to: :all
     delegate :second, :second!, :third, :third!, :fourth, :fourth!, :fifth, :fifth!, :forty_two, :forty_two!, to: :all
@@ -31,7 +31,7 @@ module ActiveRecord
     #   Post.find_by_sql "SELECT p.title, c.author FROM posts p, comments c WHERE p.id = c.post_id"
     #   # => [#<Post:0x36bff9c @attributes={"title"=>"Ruby Meetup", "first_name"=>"Quentin"}>, ...]
     #
-    # You can use the same string replacement techniques as you can with <tt>ActiveRecord::QueryMethods#where</tt>:
+    # You can use the same string replacement techniques as you can with <tt>ActiveRecord4116::QueryMethods#where</tt>:
     #
     #   Post.find_by_sql ["SELECT title FROM posts WHERE author = ? AND created > ?", author_id, start_date]
     #   Post.find_by_sql ["SELECT body FROM comments WHERE author = :user_id OR approved_by = :user_id", { :user_id => user_id }]
@@ -50,7 +50,7 @@ module ActiveRecord
 
     # Returns the result of an SQL statement that should only include a COUNT(*) in the SELECT part.
     # The use of this method should be restricted to complicated SQL queries that can't be executed
-    # using the ActiveRecord::Calculations class methods. Look into those before using this.
+    # using the ActiveRecord4116::Calculations class methods. Look into those before using this.
     #
     # ==== Parameters
     #

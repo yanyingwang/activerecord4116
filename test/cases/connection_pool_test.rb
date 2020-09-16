@@ -1,15 +1,15 @@
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
-    class ConnectionPoolTest < ActiveRecord::TestCase
+    class ConnectionPoolTest < ActiveRecord4116::TestCase
       attr_reader :pool
 
       def setup
         super
 
         # Keep a duplicate pool so we do not bother others
-        @pool = ConnectionPool.new ActiveRecord::Base.connection_pool.spec
+        @pool = ConnectionPool.new ActiveRecord4116::Base.connection_pool.spec
 
         if in_memory_db?
           # Separate connections to an in-memory database create an entirely new database,
@@ -181,7 +181,7 @@ module ActiveRecord
       end
 
       def test_checkout_behaviour
-        pool = ConnectionPool.new ActiveRecord::Base.connection_pool.spec
+        pool = ConnectionPool.new ActiveRecord4116::Base.connection_pool.spec
         connection = pool.connection
         assert_not_nil connection
         threads = []
@@ -306,7 +306,7 @@ module ActiveRecord
       end
 
       def test_automatic_reconnect=
-        pool = ConnectionPool.new ActiveRecord::Base.connection_pool.spec
+        pool = ConnectionPool.new ActiveRecord4116::Base.connection_pool.spec
         assert pool.automatic_reconnect
         assert pool.connection
 
@@ -332,8 +332,8 @@ module ActiveRecord
       # make sure exceptions are thrown when establish_connection
       # is called with an anonymous class
       def test_anonymous_class_exception
-        anonymous = Class.new(ActiveRecord::Base)
-        handler = ActiveRecord::Base.connection_handler
+        anonymous = Class.new(ActiveRecord4116::Base)
+        handler = ActiveRecord4116::Base.connection_handler
 
         assert_raises(RuntimeError) {
           handler.establish_connection anonymous, nil

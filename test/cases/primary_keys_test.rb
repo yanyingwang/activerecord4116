@@ -7,7 +7,7 @@ require 'models/keyboard'
 require 'models/mixed_case_monkey'
 require 'models/dashboard'
 
-class PrimaryKeysTest < ActiveRecord::TestCase
+class PrimaryKeysTest < ActiveRecord4116::TestCase
   fixtures :topics, :subscribers, :movies, :mixed_case_monkeys
 
   def test_to_key_with_default_primary_key
@@ -93,15 +93,15 @@ class PrimaryKeysTest < ActiveRecord::TestCase
   end
 
   def test_primary_key_prefix
-    ActiveRecord::Base.primary_key_prefix_type = :table_name
+    ActiveRecord4116::Base.primary_key_prefix_type = :table_name
     Topic.reset_primary_key
     assert_equal "topicid", Topic.primary_key
 
-    ActiveRecord::Base.primary_key_prefix_type = :table_name_with_underscore
+    ActiveRecord4116::Base.primary_key_prefix_type = :table_name_with_underscore
     Topic.reset_primary_key
     assert_equal "topic_id", Topic.primary_key
 
-    ActiveRecord::Base.primary_key_prefix_type = nil
+    ActiveRecord4116::Base.primary_key_prefix_type = nil
     Topic.reset_primary_key
     assert_equal "id", Topic.primary_key
   end
@@ -127,35 +127,35 @@ class PrimaryKeysTest < ActiveRecord::TestCase
 
   def test_supports_primary_key
     assert_nothing_raised NoMethodError do
-      ActiveRecord::Base.connection.supports_primary_key?
+      ActiveRecord4116::Base.connection.supports_primary_key?
     end
   end
 
   def test_primary_key_returns_value_if_it_exists
-    if ActiveRecord::Base.connection.supports_primary_key?
-      assert_equal 'id', ActiveRecord::Base.connection.primary_key('developers')
+    if ActiveRecord4116::Base.connection.supports_primary_key?
+      assert_equal 'id', ActiveRecord4116::Base.connection.primary_key('developers')
     end
   end
 
   def test_primary_key_returns_nil_if_it_does_not_exist
-    if ActiveRecord::Base.connection.supports_primary_key?
-      assert_nil ActiveRecord::Base.connection.primary_key('developers_projects')
+    if ActiveRecord4116::Base.connection.supports_primary_key?
+      assert_nil ActiveRecord4116::Base.connection.primary_key('developers_projects')
     end
   end
 
   def test_quoted_primary_key_after_set_primary_key
-    k = Class.new( ActiveRecord::Base )
+    k = Class.new( ActiveRecord4116::Base )
     assert_equal k.connection.quote_column_name("id"), k.quoted_primary_key
     k.primary_key = "foo"
     assert_equal k.connection.quote_column_name("foo"), k.quoted_primary_key
   end
 
   def test_two_models_with_same_table_but_different_primary_key
-    k1 = Class.new(ActiveRecord::Base)
+    k1 = Class.new(ActiveRecord4116::Base)
     k1.table_name = 'posts'
     k1.primary_key = 'id'
 
-    k2 = Class.new(ActiveRecord::Base)
+    k2 = Class.new(ActiveRecord4116::Base)
     k2.table_name = 'posts'
     k2.primary_key = 'title'
 
@@ -171,10 +171,10 @@ class PrimaryKeysTest < ActiveRecord::TestCase
   end
 
   def test_models_with_same_table_have_different_columns
-    k1 = Class.new(ActiveRecord::Base)
+    k1 = Class.new(ActiveRecord4116::Base)
     k1.table_name = 'posts'
 
-    k2 = Class.new(ActiveRecord::Base)
+    k2 = Class.new(ActiveRecord4116::Base)
     k2.table_name = 'posts'
 
     k1.columns.zip(k2.columns).each do |col1, col2|
@@ -197,19 +197,19 @@ class PrimaryKeysTest < ActiveRecord::TestCase
   end
 end
 
-class PrimaryKeyWithNoConnectionTest < ActiveRecord::TestCase
+class PrimaryKeyWithNoConnectionTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
 
   unless in_memory_db?
     def test_set_primary_key_with_no_connection
-      connection = ActiveRecord::Base.remove_connection
+      connection = ActiveRecord4116::Base.remove_connection
 
-      model = Class.new(ActiveRecord::Base)
+      model = Class.new(ActiveRecord4116::Base)
       model.primary_key = 'foo'
 
       assert_equal 'foo', model.primary_key
 
-      ActiveRecord::Base.establish_connection(connection)
+      ActiveRecord4116::Base.establish_connection(connection)
 
       assert_equal 'foo', model.primary_key
     end
@@ -217,11 +217,11 @@ class PrimaryKeyWithNoConnectionTest < ActiveRecord::TestCase
 end
 
 if current_adapter?(:MysqlAdapter, :Mysql2Adapter)
-  class PrimaryKeyWithAnsiQuotesTest < ActiveRecord::TestCase
+  class PrimaryKeyWithAnsiQuotesTest < ActiveRecord4116::TestCase
     self.use_transactional_fixtures = false
 
     def test_primary_key_method_with_ansi_quotes
-      con = ActiveRecord::Base.connection
+      con = ActiveRecord4116::Base.connection
       con.execute("SET SESSION sql_mode='ANSI_QUOTES'")
       assert_equal "id", con.primary_key("topics")
     ensure
@@ -231,14 +231,14 @@ if current_adapter?(:MysqlAdapter, :Mysql2Adapter)
 end
 
 if current_adapter?(:PostgreSQLAdapter)
-  class PrimaryKeyBigSerialTest < ActiveRecord::TestCase
+  class PrimaryKeyBigSerialTest < ActiveRecord4116::TestCase
     self.use_transactional_fixtures = false
 
-    class Widget < ActiveRecord::Base
+    class Widget < ActiveRecord4116::Base
     end
 
     setup do
-      @connection = ActiveRecord::Base.connection
+      @connection = ActiveRecord4116::Base.connection
       @connection.create_table(:widgets, id: :bigserial) { |t| }
     end
 

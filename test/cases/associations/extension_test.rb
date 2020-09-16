@@ -5,7 +5,7 @@ require 'models/project'
 require 'models/developer'
 require 'models/company_in_module'
 
-class AssociationsExtensionsTest < ActiveRecord::TestCase
+class AssociationsExtensionsTest < ActiveRecord4116::TestCase
   fixtures :projects, :developers, :developers_projects, :comments, :posts
 
   def test_extension_on_has_many
@@ -75,7 +75,7 @@ class AssociationsExtensionsTest < ActiveRecord::TestCase
   private
 
     def extend!(model)
-      builder = ActiveRecord::Associations::Builder::HasMany.new(model, :association_name, nil, {}) { }
+      builder = ActiveRecord4116::Associations::Builder::HasMany.new(model, :association_name, nil, {}) { }
       builder.define_extensions(model)
     end
 end

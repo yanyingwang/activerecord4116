@@ -7,15 +7,15 @@ require 'models/subscriber'
 require 'models/vegetables'
 require 'models/shop'
 
-class InheritanceTest < ActiveRecord::TestCase
+class InheritanceTest < ActiveRecord4116::TestCase
   fixtures :companies, :projects, :subscribers, :accounts, :vegetables
 
   def test_class_with_store_full_sti_class_returns_full_name
-    old = ActiveRecord::Base.store_full_sti_class
-    ActiveRecord::Base.store_full_sti_class = true
+    old = ActiveRecord4116::Base.store_full_sti_class
+    ActiveRecord4116::Base.store_full_sti_class = true
     assert_equal 'Namespaced::Company', Namespaced::Company.sti_name
   ensure
-    ActiveRecord::Base.store_full_sti_class = old
+    ActiveRecord4116::Base.store_full_sti_class = old
   end
 
   def test_class_with_blank_sti_name
@@ -33,46 +33,46 @@ class InheritanceTest < ActiveRecord::TestCase
   end
 
   def test_class_without_store_full_sti_class_returns_demodulized_name
-    old = ActiveRecord::Base.store_full_sti_class
-    ActiveRecord::Base.store_full_sti_class = false
+    old = ActiveRecord4116::Base.store_full_sti_class
+    ActiveRecord4116::Base.store_full_sti_class = false
     assert_equal 'Company', Namespaced::Company.sti_name
   ensure
-    ActiveRecord::Base.store_full_sti_class = old
+    ActiveRecord4116::Base.store_full_sti_class = old
   end
 
   def test_should_store_demodulized_class_name_with_store_full_sti_class_option_disabled
-    old = ActiveRecord::Base.store_full_sti_class
-    ActiveRecord::Base.store_full_sti_class = false
+    old = ActiveRecord4116::Base.store_full_sti_class
+    ActiveRecord4116::Base.store_full_sti_class = false
     item = Namespaced::Company.new
     assert_equal 'Company', item[:type]
   ensure
-    ActiveRecord::Base.store_full_sti_class = old
+    ActiveRecord4116::Base.store_full_sti_class = old
   end
 
   def test_should_store_full_class_name_with_store_full_sti_class_option_enabled
-    old = ActiveRecord::Base.store_full_sti_class
-    ActiveRecord::Base.store_full_sti_class = true
+    old = ActiveRecord4116::Base.store_full_sti_class
+    ActiveRecord4116::Base.store_full_sti_class = true
     item = Namespaced::Company.new
     assert_equal 'Namespaced::Company', item[:type]
   ensure
-    ActiveRecord::Base.store_full_sti_class = old
+    ActiveRecord4116::Base.store_full_sti_class = old
   end
 
   def test_different_namespace_subclass_should_load_correctly_with_store_full_sti_class_option
-    old = ActiveRecord::Base.store_full_sti_class
-    ActiveRecord::Base.store_full_sti_class = true
+    old = ActiveRecord4116::Base.store_full_sti_class
+    ActiveRecord4116::Base.store_full_sti_class = true
     item = Namespaced::Company.create :name => "Wolverine 2"
     assert_not_nil Company.find(item.id)
     assert_not_nil Namespaced::Company.find(item.id)
   ensure
-    ActiveRecord::Base.store_full_sti_class = old
+    ActiveRecord4116::Base.store_full_sti_class = old
   end
 
   def test_company_descends_from_active_record
-    assert !ActiveRecord::Base.descends_from_active_record?
-    assert AbstractCompany.descends_from_active_record?, 'AbstractCompany should descend from ActiveRecord::Base'
-    assert Company.descends_from_active_record?, 'Company should descend from ActiveRecord::Base'
-    assert !Class.new(Company).descends_from_active_record?, 'Company subclass should not descend from ActiveRecord::Base'
+    assert !ActiveRecord4116::Base.descends_from_active_record?
+    assert AbstractCompany.descends_from_active_record?, 'AbstractCompany should descend from ActiveRecord4116::Base'
+    assert Company.descends_from_active_record?, 'Company should descend from ActiveRecord4116::Base'
+    assert !Class.new(Company).descends_from_active_record?, 'Company subclass should not descend from ActiveRecord4116::Base'
   end
 
   def test_inheritance_base_class
@@ -90,8 +90,8 @@ class InheritanceTest < ActiveRecord::TestCase
   end
 
   def test_base_class_activerecord_error
-    klass = Class.new { include ActiveRecord::Inheritance }
-    assert_raise(ActiveRecord::ActiveRecordError) { klass.base_class }
+    klass = Class.new { include ActiveRecord4116::Inheritance }
+    assert_raise(ActiveRecord4116::ActiveRecord4116Error) { klass.base_class }
   end
 
   def test_a_bad_type_column
@@ -105,7 +105,7 @@ class InheritanceTest < ActiveRecord::TestCase
     if current_adapter?(:SybaseAdapter)
       Company.connection.execute "SET IDENTITY_INSERT companies OFF"
     end
-    assert_raise(ActiveRecord::SubclassNotFound) { Company.find(100) }
+    assert_raise(ActiveRecord4116::SubclassNotFound) { Company.find(100) }
   end
 
   def test_inheritance_find
@@ -199,17 +199,17 @@ class InheritanceTest < ActiveRecord::TestCase
 
   def test_new_with_ar_base
     e = assert_raises(NotImplementedError) do
-      ActiveRecord::Base.new
+      ActiveRecord4116::Base.new
     end
-    assert_equal("ActiveRecord::Base is an abstract class and cannot be instantiated.", e.message)
+    assert_equal("ActiveRecord4116::Base is an abstract class and cannot be instantiated.", e.message)
   end
 
   def test_new_with_invalid_type
-    assert_raise(ActiveRecord::SubclassNotFound) { Company.new(:type => 'InvalidType') }
+    assert_raise(ActiveRecord4116::SubclassNotFound) { Company.new(:type => 'InvalidType') }
   end
 
   def test_new_with_unrelated_type
-    assert_raise(ActiveRecord::SubclassNotFound) { Company.new(:type => 'Account') }
+    assert_raise(ActiveRecord4116::SubclassNotFound) { Company.new(:type => 'Account') }
   end
 
   def test_new_with_complex_inheritance
@@ -240,12 +240,12 @@ class InheritanceTest < ActiveRecord::TestCase
   end
 
   def test_finding_incorrect_type_data
-    assert_raise(ActiveRecord::RecordNotFound) { Firm.find(2) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Firm.find(2) }
     assert_nothing_raised   { Firm.find(1) }
   end
 
   def test_alt_finding_incorrect_type_data
-    assert_raise(ActiveRecord::RecordNotFound) { Cucumber.find(2) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Cucumber.find(2) }
     assert_nothing_raised   { Cucumber.find(1) }
   end
 
@@ -338,7 +338,7 @@ class InheritanceTest < ActiveRecord::TestCase
   end
 end
 
-class InheritanceComputeTypeTest < ActiveRecord::TestCase
+class InheritanceComputeTypeTest < ActiveRecord4116::TestCase
   fixtures :companies
 
   def setup
@@ -352,17 +352,17 @@ class InheritanceComputeTypeTest < ActiveRecord::TestCase
   end
 
   def test_instantiation_doesnt_try_to_require_corresponding_file
-    ActiveRecord::Base.store_full_sti_class = false
+    ActiveRecord4116::Base.store_full_sti_class = false
     foo = Firm.first.clone
     foo.type = 'FirmOnTheFly'
     foo.save!
 
     # Should fail without FirmOnTheFly in the type condition.
-    assert_raise(ActiveRecord::RecordNotFound) { Firm.find(foo.id) }
+    assert_raise(ActiveRecord4116::RecordNotFound) { Firm.find(foo.id) }
 
     # Nest FirmOnTheFly in the test case where Dependencies won't see it.
     self.class.const_set :FirmOnTheFly, Class.new(Firm)
-    assert_raise(ActiveRecord::SubclassNotFound) { Firm.find(foo.id) }
+    assert_raise(ActiveRecord4116::SubclassNotFound) { Firm.find(foo.id) }
 
     # Nest FirmOnTheFly in Firm where Dependencies will see it.
     # This is analogous to nesting models in a migration.
@@ -372,7 +372,7 @@ class InheritanceComputeTypeTest < ActiveRecord::TestCase
     # to require firm_on_the_fly.
     assert_nothing_raised { assert_kind_of Firm::FirmOnTheFly, Firm.find(foo.id) }
   ensure
-    ActiveRecord::Base.store_full_sti_class = true
+    ActiveRecord4116::Base.store_full_sti_class = true
   end
 
   def test_sti_type_from_attributes_disabled_in_non_sti_class

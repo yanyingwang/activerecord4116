@@ -4,12 +4,12 @@ require 'models/comment'
 require 'models/author'
 require 'models/rating'
 
-module ActiveRecord
-  class RelationTest < ActiveRecord::TestCase
+module ActiveRecord4116
+  class RelationTest < ActiveRecord4116::TestCase
     fixtures :posts, :comments, :authors
 
     class FakeKlass < Struct.new(:table_name, :name)
-      extend ActiveRecord::Delegation::DelegateCache
+      extend ActiveRecord4116::Delegation::DelegateCache
 
       inherited self
 
@@ -121,7 +121,7 @@ module ActiveRecord
 
     def test_bad_constants_raise_errors
       assert_raises(NameError) do
-        ActiveRecord::Relation::HelloWorld
+        ActiveRecord4116::Relation::HelloWorld
       end
     end
 

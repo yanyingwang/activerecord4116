@@ -2,8 +2,8 @@ require 'cases/helper'
 require 'models/post'
 require 'models/comment'
 
-module ActiveRecord
-  class DelegationTest < ActiveRecord::TestCase
+module ActiveRecord4116
+  class DelegationTest < ActiveRecord4116::TestCase
     fixtures :posts
 
     def call_method(target, method)
@@ -41,7 +41,7 @@ module ActiveRecord
       end
     end
 
-    ActiveRecord::Delegation::BLACKLISTED_ARRAY_METHODS.each do |method|
+    ActiveRecord4116::Delegation::BLACKLISTED_ARRAY_METHODS.each do |method|
       define_method "test_#{method}_is_not_delegated_to_Array" do
         assert_raises(NoMethodError) { call_method(target, method) }
       end

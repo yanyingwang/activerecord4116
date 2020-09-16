@@ -1,9 +1,9 @@
 require "cases/helper"
 
-class TestAdapterWithInvalidConnection < ActiveRecord::TestCase
+class TestAdapterWithInvalidConnection < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
 
-  class Bird < ActiveRecord::Base
+  class Bird < ActiveRecord4116::Base
   end
 
   def setup

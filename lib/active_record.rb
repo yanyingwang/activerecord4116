@@ -28,7 +28,7 @@ require 'arel'
 
 require 'active_record/version'
 
-module ActiveRecord
+module ActiveRecord4116
   extend ActiveSupport::Autoload
 
   autoload :Base
@@ -67,7 +67,7 @@ module ActiveRecord
   autoload :Validations
 
   eager_autoload do
-    autoload :ActiveRecordError, 'active_record/errors'
+    autoload :ActiveRecord4116Error, 'active_record/errors'
     autoload :ConnectionNotEstablished, 'active_record/errors'
     autoload :ConnectionAdapters, 'active_record/connection_adapters/abstract_adapter'
 
@@ -155,11 +155,11 @@ module ActiveRecord
 
   def self.eager_load!
     super
-    ActiveRecord::Locking.eager_load!
-    ActiveRecord::Scoping.eager_load!
-    ActiveRecord::Associations.eager_load!
-    ActiveRecord::AttributeMethods.eager_load!
-    ActiveRecord::ConnectionAdapters.eager_load!
+    ActiveRecord4116::Locking.eager_load!
+    ActiveRecord4116::Scoping.eager_load!
+    ActiveRecord4116::Associations.eager_load!
+    ActiveRecord4116::AttributeMethods.eager_load!
+    ActiveRecord4116::ConnectionAdapters.eager_load!
   end
 end
 

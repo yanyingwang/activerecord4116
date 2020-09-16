@@ -6,7 +6,7 @@ require 'models/post'
 require 'models/project'
 require 'models/rating'
 
-class RelationMergingTest < ActiveRecord::TestCase
+class RelationMergingTest < ActiveRecord4116::TestCase
   fixtures :developers, :comments, :authors, :posts
 
   def test_relation_merging
@@ -137,7 +137,7 @@ class RelationMergingTest < ActiveRecord::TestCase
   end
 end
 
-class MergingDifferentRelationsTest < ActiveRecord::TestCase
+class MergingDifferentRelationsTest < ActiveRecord4116::TestCase
   fixtures :posts, :authors
 
   test "merging where relations" do

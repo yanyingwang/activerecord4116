@@ -1,7 +1,7 @@
 require 'cases/helper'
 require 'models/topic'
 
-class YamlSerializationTest < ActiveRecord::TestCase
+class YamlSerializationTest < ActiveRecord4116::TestCase
   fixtures :topics
 
   def test_to_yaml_with_time_with_zone_should_not_raise_exception

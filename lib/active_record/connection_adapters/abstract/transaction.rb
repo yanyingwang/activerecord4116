@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     class Transaction #:nodoc:
       attr_reader :connection
@@ -185,7 +185,7 @@ module ActiveRecord
     class SavepointTransaction < OpenTransaction #:nodoc:
       def initialize(connection, parent, options = {})
         if options[:isolation]
-          raise ActiveRecord::TransactionIsolationError, "cannot set transaction isolation in a nested transaction"
+          raise ActiveRecord4116::TransactionIsolationError, "cannot set transaction isolation in a nested transaction"
         end
 
         super

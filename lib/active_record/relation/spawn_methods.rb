@@ -2,7 +2,7 @@ require 'active_support/core_ext/hash/except'
 require 'active_support/core_ext/hash/slice'
 require 'active_record/relation/merger'
 
-module ActiveRecord
+module ActiveRecord4116
   module SpawnMethods
 
     # This is overridden by Associations::CollectionProxy
@@ -10,7 +10,7 @@ module ActiveRecord
       clone
     end
 
-    # Merges in the conditions from <tt>other</tt>, if <tt>other</tt> is an <tt>ActiveRecord::Relation</tt>.
+    # Merges in the conditions from <tt>other</tt>, if <tt>other</tt> is an <tt>ActiveRecord4116::Relation</tt>.
     # Returns an array representing the intersection of the resulting records with <tt>other</tt>, if <tt>other</tt> is an array.
     #
     #   Post.where(published: true).joins(:comments).merge( Comment.where(spam: false) )
@@ -45,7 +45,7 @@ module ActiveRecord
       elsif other.respond_to?(:to_proc)
         instance_exec(&other)
       else
-        raise ArgumentError, "#{other.inspect} is not an ActiveRecord::Relation"
+        raise ArgumentError, "#{other.inspect} is not an ActiveRecord4116::Relation"
       end
     end
 

@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module AttributeMethods
     module Query
       extend ActiveSupport::Concern
@@ -19,7 +19,7 @@ module ActiveRecord
             if Numeric === value || value !~ /[^0-9]/
               !value.to_i.zero?
             else
-              return false if ActiveRecord::ConnectionAdapters::Column::FALSE_VALUES.include?(value)
+              return false if ActiveRecord4116::ConnectionAdapters::Column::FALSE_VALUES.include?(value)
               !value.blank?
             end
           elsif column.number?

@@ -24,7 +24,7 @@ require 'models/club'
 require 'models/categorization'
 require 'models/sponsor'
 
-class EagerAssociationTest < ActiveRecord::TestCase
+class EagerAssociationTest < ActiveRecord4116::TestCase
   fixtures :posts, :comments, :authors, :essays, :author_addresses, :categories, :categories_posts,
             :companies, :accounts, :tags, :taggings, :people, :readers, :categorizations,
             :owners, :pets, :author_favorites, :jobs, :references, :subscribers, :subscriptions, :books,
@@ -728,16 +728,16 @@ class EagerAssociationTest < ActiveRecord::TestCase
   end
 
   def test_eager_with_invalid_association_reference
-    assert_raise(ActiveRecord::AssociationNotFoundError, "Association was not found; perhaps you misspelled it?  You specified :include => :monkeys") {
+    assert_raise(ActiveRecord4116::AssociationNotFoundError, "Association was not found; perhaps you misspelled it?  You specified :include => :monkeys") {
       Post.all.merge!(:includes=> :monkeys ).find(6)
     }
-    assert_raise(ActiveRecord::AssociationNotFoundError, "Association was not found; perhaps you misspelled it?  You specified :include => :monkeys") {
+    assert_raise(ActiveRecord4116::AssociationNotFoundError, "Association was not found; perhaps you misspelled it?  You specified :include => :monkeys") {
       Post.all.merge!(:includes=>[ :monkeys ]).find(6)
     }
-    assert_raise(ActiveRecord::AssociationNotFoundError, "Association was not found; perhaps you misspelled it?  You specified :include => :monkeys") {
+    assert_raise(ActiveRecord4116::AssociationNotFoundError, "Association was not found; perhaps you misspelled it?  You specified :include => :monkeys") {
       Post.all.merge!(:includes=>[ 'monkeys' ]).find(6)
     }
-    assert_raise(ActiveRecord::AssociationNotFoundError, "Association was not found; perhaps you misspelled it?  You specified :include => :monkeys, :elephants") {
+    assert_raise(ActiveRecord4116::AssociationNotFoundError, "Association was not found; perhaps you misspelled it?  You specified :include => :monkeys, :elephants") {
       Post.all.merge!(:includes=>[ :monkeys, :elephants ]).find(6)
     }
   end
@@ -1146,13 +1146,13 @@ class EagerAssociationTest < ActiveRecord::TestCase
   end
 
   def test_join_eager_with_empty_order_should_generate_valid_sql
-    assert_nothing_raised(ActiveRecord::StatementInvalid) do
+    assert_nothing_raised(ActiveRecord4116::StatementInvalid) do
       Post.includes(:comments).order("").where(:comments => {:body => "Thank you for the welcome"}).first
     end
   end
 
   def test_join_eager_with_nil_order_should_generate_valid_sql
-    assert_nothing_raised(ActiveRecord::StatementInvalid) do
+    assert_nothing_raised(ActiveRecord4116::StatementInvalid) do
       Post.includes(:comments).order(nil).where(:comments => {:body => "Thank you for the welcome"}).first
     end
   end

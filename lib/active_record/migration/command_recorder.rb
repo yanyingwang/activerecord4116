@@ -1,6 +1,6 @@
-module ActiveRecord
+module ActiveRecord4116
   class Migration
-    # <tt>ActiveRecord::Migration::CommandRecorder</tt> records commands done during
+    # <tt>ActiveRecord4116::Migration::CommandRecorder</tt> records commands done during
     # a migration and knows how to reverse those commands. The CommandRecorder
     # knows how to invert the following commands:
     #
@@ -116,7 +116,7 @@ module ActiveRecord
 
       def invert_drop_table(args, &block)
         if args.size == 1 && block == nil
-          raise ActiveRecord::IrreversibleMigration, "To avoid mistakes, drop_table is only reversible if given options or a block (can be empty)."
+          raise ActiveRecord4116::IrreversibleMigration, "To avoid mistakes, drop_table is only reversible if given options or a block (can be empty)."
         end
         super
       end
@@ -126,7 +126,7 @@ module ActiveRecord
       end
 
       def invert_remove_column(args)
-        raise ActiveRecord::IrreversibleMigration, "remove_column is only reversible if given a type." if args.size <= 2
+        raise ActiveRecord4116::IrreversibleMigration, "remove_column is only reversible if given a type." if args.size <= 2
         super
       end
 
@@ -152,7 +152,7 @@ module ActiveRecord
         table, options = *args
 
         unless options && options.is_a?(Hash) && options[:column]
-          raise ActiveRecord::IrreversibleMigration, "remove_index is only reversible if given a :column option."
+          raise ActiveRecord4116::IrreversibleMigration, "remove_index is only reversible if given a :column option."
         end
 
         options = options.dup

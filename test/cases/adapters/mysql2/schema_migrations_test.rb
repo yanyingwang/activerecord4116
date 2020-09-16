@@ -1,9 +1,9 @@
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     class Mysql2Adapter
-      class SchemaMigrationsTest < ActiveRecord::TestCase
+      class SchemaMigrationsTest < ActiveRecord4116::TestCase
         def test_renaming_index_on_foreign_key
           connection.add_index "engines", "car_id"
           connection.execute "ALTER TABLE engines ADD CONSTRAINT fk_engines_cars FOREIGN KEY (car_id) REFERENCES cars(id)"
@@ -15,7 +15,7 @@ module ActiveRecord
         end
 
         def test_initializes_schema_migrations_for_encoding_utf8mb4
-          smtn = ActiveRecord::Migrator.schema_migrations_table_name
+          smtn = ActiveRecord4116::Migrator.schema_migrations_table_name
           connection.drop_table(smtn) if connection.table_exists?(smtn)
 
           config = connection.instance_variable_get(:@config)
@@ -31,7 +31,7 @@ module ActiveRecord
 
         private
         def connection
-          @connection ||= ActiveRecord::Base.connection
+          @connection ||= ActiveRecord4116::Base.connection
         end
       end
     end

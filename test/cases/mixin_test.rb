@@ -1,9 +1,9 @@
 require "cases/helper"
 
-class Mixin < ActiveRecord::Base
+class Mixin < ActiveRecord4116::Base
 end
 
-class TouchTest < ActiveRecord::TestCase
+class TouchTest < ActiveRecord4116::TestCase
   fixtures :mixins
 
   setup do

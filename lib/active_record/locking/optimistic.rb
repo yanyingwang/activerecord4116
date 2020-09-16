@@ -1,13 +1,13 @@
-module ActiveRecord
+module ActiveRecord4116
   module Locking
     # == What is Optimistic Locking
     #
     # Optimistic locking allows multiple users to access the same record for edits, and assumes a minimum of
     # conflicts with the data. It does this by checking whether another process has made changes to a record since
-    # it was opened, an <tt>ActiveRecord::StaleObjectError</tt> exception is thrown if that has occurred
+    # it was opened, an <tt>ActiveRecord4116::StaleObjectError</tt> exception is thrown if that has occurred
     # and the update is ignored.
     #
-    # Check out <tt>ActiveRecord::Locking::Pessimistic</tt> for an alternative.
+    # Check out <tt>ActiveRecord4116::Locking::Pessimistic</tt> for an alternative.
     #
     # == Usage
     #
@@ -22,7 +22,7 @@ module ActiveRecord
     #   p1.save
     #
     #   p2.first_name = "should fail"
-    #   p2.save # Raises a ActiveRecord::StaleObjectError
+    #   p2.save # Raises a ActiveRecord4116::StaleObjectError
     #
     # Optimistic locking will also check for stale data when objects are destroyed. Example:
     #
@@ -32,7 +32,7 @@ module ActiveRecord
     #   p1.first_name = "Michael"
     #   p1.save
     #
-    #   p2.destroy # Raises a ActiveRecord::StaleObjectError
+    #   p2.destroy # Raises a ActiveRecord4116::StaleObjectError
     #
     # You're then responsible for dealing with the conflict by rescuing the exception and either rolling back, merging,
     # or otherwise apply the business logic needed to resolve the conflict.
@@ -40,10 +40,10 @@ module ActiveRecord
     # This locking mechanism will function inside a single Ruby process. To make it work across all
     # web requests, the recommended approach is to add +lock_version+ as a hidden field to your form.
     #
-    # This behavior can be turned off by setting <tt>ActiveRecord::Base.lock_optimistically = false</tt>.
+    # This behavior can be turned off by setting <tt>ActiveRecord4116::Base.lock_optimistically = false</tt>.
     # To override the name of the +lock_version+ column, set the <tt>locking_column</tt> class attribute:
     #
-    #   class Person < ActiveRecord::Base
+    #   class Person < ActiveRecord4116::Base
     #     self.locking_column = :lock_person
     #   end
     #
@@ -92,7 +92,7 @@ module ActiveRecord
             affected_rows = self.class.connection.update stmt
 
             unless affected_rows == 1
-              raise ActiveRecord::StaleObjectError.new(self, "update")
+              raise ActiveRecord4116::StaleObjectError.new(self, "update")
             end
 
             affected_rows
@@ -108,7 +108,7 @@ module ActiveRecord
           affected_rows = super
 
           if locking_enabled? && affected_rows != 1
-            raise ActiveRecord::StaleObjectError.new(self, "destroy")
+            raise ActiveRecord4116::StaleObjectError.new(self, "destroy")
           end
 
           affected_rows
@@ -153,7 +153,7 @@ module ActiveRecord
 
         # Quote the column name used for optimistic locking.
         def quoted_locking_column
-          ActiveSupport::Deprecation.warn "ActiveRecord::Base.quoted_locking_column is deprecated and will be removed in Rails 4.2 or later."
+          ActiveSupport::Deprecation.warn "ActiveRecord4116::Base.quoted_locking_column is deprecated and will be removed in Rails 4.2 or later."
           connection.quote_column_name(locking_column)
         end
 

@@ -27,22 +27,22 @@ I18n.enforce_available_locales = false
 ARTest.connect
 
 # Quote "type" if it's a reserved word for the current connection.
-QUOTED_TYPE = ActiveRecord::Base.connection.quote_column_name('type')
+QUOTED_TYPE = ActiveRecord4116::Base.connection.quote_column_name('type')
 
 def current_adapter?(*types)
   types.any? do |type|
-    ActiveRecord::ConnectionAdapters.const_defined?(type) &&
-      ActiveRecord::Base.connection.is_a?(ActiveRecord::ConnectionAdapters.const_get(type))
+    ActiveRecord4116::ConnectionAdapters.const_defined?(type) &&
+      ActiveRecord4116::Base.connection.is_a?(ActiveRecord4116::ConnectionAdapters.const_get(type))
   end
 end
 
 def in_memory_db?
   current_adapter?(:SQLite3Adapter) &&
-  ActiveRecord::Base.connection_pool.spec.config[:database] == ":memory:"
+  ActiveRecord4116::Base.connection_pool.spec.config[:database] == ":memory:"
 end
 
 def supports_savepoints?
-  ActiveRecord::Base.connection.supports_savepoints?
+  ActiveRecord4116::Base.connection.supports_savepoints?
 end
 
 def with_env_tz(new_tz = 'US/Eastern')
@@ -55,23 +55,23 @@ end
 def with_timezone_config(cfg)
   verify_default_timezone_config
 
-  old_default_zone = ActiveRecord::Base.default_timezone
-  old_awareness = ActiveRecord::Base.time_zone_aware_attributes
+  old_default_zone = ActiveRecord4116::Base.default_timezone
+  old_awareness = ActiveRecord4116::Base.time_zone_aware_attributes
   old_zone = Time.zone
 
   if cfg.has_key?(:default)
-    ActiveRecord::Base.default_timezone = cfg[:default]
+    ActiveRecord4116::Base.default_timezone = cfg[:default]
   end
   if cfg.has_key?(:aware_attributes)
-    ActiveRecord::Base.time_zone_aware_attributes = cfg[:aware_attributes]
+    ActiveRecord4116::Base.time_zone_aware_attributes = cfg[:aware_attributes]
   end
   if cfg.has_key?(:zone)
     Time.zone = cfg[:zone]
   end
   yield
 ensure
-  ActiveRecord::Base.default_timezone = old_default_zone
-  ActiveRecord::Base.time_zone_aware_attributes = old_awareness
+  ActiveRecord4116::Base.default_timezone = old_default_zone
+  ActiveRecord4116::Base.time_zone_aware_attributes = old_awareness
   Time.zone = old_zone
 end
 
@@ -88,31 +88,31 @@ def verify_default_timezone_config
       Got: #{Time.zone}
     MSG
   end
-  if ActiveRecord::Base.default_timezone != EXPECTED_DEFAULT_TIMEZONE
+  if ActiveRecord4116::Base.default_timezone != EXPECTED_DEFAULT_TIMEZONE
     $stderr.puts <<-MSG
 \n#{self.to_s}
-    Global state `ActiveRecord::Base.default_timezone` was leaked.
+    Global state `ActiveRecord4116::Base.default_timezone` was leaked.
       Expected: #{EXPECTED_DEFAULT_TIMEZONE}
-      Got: #{ActiveRecord::Base.default_timezone}
+      Got: #{ActiveRecord4116::Base.default_timezone}
     MSG
   end
-  if ActiveRecord::Base.time_zone_aware_attributes != EXPECTED_TIME_ZONE_AWARE_ATTRIBUTES
+  if ActiveRecord4116::Base.time_zone_aware_attributes != EXPECTED_TIME_ZONE_AWARE_ATTRIBUTES
     $stderr.puts <<-MSG
 \n#{self.to_s}
-    Global state `ActiveRecord::Base.time_zone_aware_attributes` was leaked.
+    Global state `ActiveRecord4116::Base.time_zone_aware_attributes` was leaked.
       Expected: #{EXPECTED_TIME_ZONE_AWARE_ATTRIBUTES}
-      Got: #{ActiveRecord::Base.time_zone_aware_attributes}
+      Got: #{ActiveRecord4116::Base.time_zone_aware_attributes}
     MSG
   end
 end
 
 unless ENV['FIXTURE_DEBUG']
-  module ActiveRecord::TestFixtures::ClassMethods
+  module ActiveRecord4116::TestFixtures::ClassMethods
     def try_to_load_dependency_with_silence(*args)
-      old = ActiveRecord::Base.logger.level
-      ActiveRecord::Base.logger.level = ActiveSupport::Logger::ERROR
+      old = ActiveRecord4116::Base.logger.level
+      ActiveRecord4116::Base.logger.level = ActiveSupport::Logger::ERROR
       try_to_load_dependency_without_silence(*args)
-      ActiveRecord::Base.logger.level = old
+      ActiveRecord4116::Base.logger.level = old
     end
 
     alias_method_chain :try_to_load_dependency, :silence
@@ -121,15 +121,15 @@ end
 
 require "cases/validations_repair_helper"
 class ActiveSupport::TestCase
-  include ActiveRecord::TestFixtures
-  include ActiveRecord::ValidationsRepairHelper
+  include ActiveRecord4116::TestFixtures
+  include ActiveRecord4116::ValidationsRepairHelper
 
   self.fixture_path = FIXTURES_ROOT
   self.use_instantiated_fixtures  = false
   self.use_transactional_fixtures = true
 
   def create_fixtures(*fixture_set_names, &block)
-    ActiveRecord::FixtureSet.create_fixtures(ActiveSupport::TestCase.fixture_path, fixture_set_names, fixture_class_names, &block)
+    ActiveRecord4116::FixtureSet.create_fixtures(ActiveSupport::TestCase.fixture_path, fixture_set_names, fixture_class_names, &block)
   end
 end
 
@@ -138,7 +138,7 @@ def load_schema
   original_stdout = $stdout
   $stdout = StringIO.new
 
-  adapter_name = ActiveRecord::Base.connection.adapter_name.downcase
+  adapter_name = ActiveRecord4116::Base.connection.adapter_name.downcase
   adapter_specific_schema_file = SCHEMA_ROOT + "/#{adapter_name}_specific_schema.rb"
 
   load SCHEMA_ROOT + "/schema.rb"
@@ -174,13 +174,13 @@ module InTimeZone
 
   def in_time_zone(zone)
     old_zone  = Time.zone
-    old_tz    = ActiveRecord::Base.time_zone_aware_attributes
+    old_tz    = ActiveRecord4116::Base.time_zone_aware_attributes
 
     Time.zone = zone ? ActiveSupport::TimeZone[zone] : nil
-    ActiveRecord::Base.time_zone_aware_attributes = !zone.nil?
+    ActiveRecord4116::Base.time_zone_aware_attributes = !zone.nil?
     yield
   ensure
     Time.zone = old_zone
-    ActiveRecord::Base.time_zone_aware_attributes = old_tz
+    ActiveRecord4116::Base.time_zone_aware_attributes = old_tz
   end
 end

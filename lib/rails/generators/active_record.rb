@@ -3,10 +3,10 @@ require 'rails/generators/active_model'
 require 'rails/generators/active_record/migration'
 require 'active_record'
 
-module ActiveRecord
+module ActiveRecord4116
   module Generators # :nodoc:
     class Base < Rails::Generators::NamedBase # :nodoc:
-      include ActiveRecord::Generators::Migration
+      include ActiveRecord4116::Generators::Migration
 
       # Set the current directory as base for the inherited generators.
       def self.base_root

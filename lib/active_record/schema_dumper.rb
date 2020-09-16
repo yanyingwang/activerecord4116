@@ -1,11 +1,11 @@
 require 'stringio'
 require 'active_support/core_ext/big_decimal'
 
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Schema Dumper
   #
   # This class is used to dump the database schema for some connection to some
-  # output format (i.e., ActiveRecord::Schema).
+  # output format (i.e., ActiveRecord4116::Schema).
   class SchemaDumper #:nodoc:
     private_class_method :new
 
@@ -13,12 +13,12 @@ module ActiveRecord
     # :singleton-method:
     # A list of tables which should not be dumped to the schema.
     # Acceptable values are strings as well as regexp.
-    # This setting is only used if ActiveRecord::Base.schema_format == :ruby
+    # This setting is only used if ActiveRecord4116::Base.schema_format == :ruby
     cattr_accessor :ignore_tables
     @@ignore_tables = []
 
     class << self
-      def dump(connection=ActiveRecord::Base.connection, stream=STDOUT, config = ActiveRecord::Base)
+      def dump(connection=ActiveRecord4116::Base.connection, stream=STDOUT, config = ActiveRecord4116::Base)
         new(connection, generate_options(config)).dump(stream)
         stream
       end
@@ -69,7 +69,7 @@ module ActiveRecord
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(#{define_params}) do
+ActiveRecord4116::Schema.define(#{define_params}) do
 
 HEADER
       end
@@ -97,7 +97,7 @@ HEADER
             when String; remove_prefix_and_suffix(tbl) == ignored
             when Regexp; remove_prefix_and_suffix(tbl) =~ ignored
             else
-              raise StandardError, 'ActiveRecord::SchemaDumper.ignore_tables accepts an array of String and / or Regexp values.'
+              raise StandardError, 'ActiveRecord4116::SchemaDumper.ignore_tables accepts an array of String and / or Regexp values.'
             end
           end
           table(tbl, stream)

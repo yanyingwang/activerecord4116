@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module FinderMethods
     ONE_AS_ONE = '1 AS one'
 
@@ -14,7 +14,7 @@ module ActiveRecord
     #   Person.find([1])        # returns an array for the object with ID = 1
     #   Person.where("administrator = 1").order("created_on DESC").find(1)
     #
-    # <tt>ActiveRecord::RecordNotFound</tt> will be raised if one or more ids are not found.
+    # <tt>ActiveRecord4116::RecordNotFound</tt> will be raised if one or more ids are not found.
     #
     # NOTE: The returned records may not be in the same order as the ids you
     # provide since database rows are unordered. You'd need to provide an explicit <tt>order</tt>
@@ -82,7 +82,7 @@ module ActiveRecord
     end
 
     # Like <tt>find_by</tt>, except that if no record is found, raises
-    # an <tt>ActiveRecord::RecordNotFound</tt> error.
+    # an <tt>ActiveRecord4116::RecordNotFound</tt> error.
     def find_by!(*args)
       where(*args).take!
     end
@@ -98,7 +98,7 @@ module ActiveRecord
       limit ? limit(limit).to_a : find_take
     end
 
-    # Same as +take+ but raises <tt>ActiveRecord::RecordNotFound</tt> if no record
+    # Same as +take+ but raises <tt>ActiveRecord4116::RecordNotFound</tt> if no record
     # is found. Note that <tt>take!</tt> accepts no arguments.
     def take!
       take or raise RecordNotFound
@@ -133,7 +133,7 @@ module ActiveRecord
       end
     end
 
-    # Same as +first+ but raises <tt>ActiveRecord::RecordNotFound</tt> if no record
+    # Same as +first+ but raises <tt>ActiveRecord4116::RecordNotFound</tt> if no record
     # is found. Note that <tt>first!</tt> accepts no arguments.
     def first!
       first or raise RecordNotFound
@@ -166,7 +166,7 @@ module ActiveRecord
       end
     end
 
-    # Same as +last+ but raises <tt>ActiveRecord::RecordNotFound</tt> if no record
+    # Same as +last+ but raises <tt>ActiveRecord4116::RecordNotFound</tt> if no record
     # is found. Note that <tt>last!</tt> accepts no arguments.
     def last!
       last or raise RecordNotFound
@@ -182,7 +182,7 @@ module ActiveRecord
       find_nth(:second, offset_value ? offset_value + 1 : 1)
     end
 
-    # Same as +second+ but raises <tt>ActiveRecord::RecordNotFound</tt> if no record
+    # Same as +second+ but raises <tt>ActiveRecord4116::RecordNotFound</tt> if no record
     # is found.
     def second!
       second or raise RecordNotFound
@@ -198,7 +198,7 @@ module ActiveRecord
       find_nth(:third, offset_value ? offset_value + 2 : 2)
     end
 
-    # Same as +third+ but raises <tt>ActiveRecord::RecordNotFound</tt> if no record
+    # Same as +third+ but raises <tt>ActiveRecord4116::RecordNotFound</tt> if no record
     # is found.
     def third!
       third or raise RecordNotFound
@@ -214,7 +214,7 @@ module ActiveRecord
       find_nth(:fourth, offset_value ? offset_value + 3 : 3)
     end
 
-    # Same as +fourth+ but raises <tt>ActiveRecord::RecordNotFound</tt> if no record
+    # Same as +fourth+ but raises <tt>ActiveRecord4116::RecordNotFound</tt> if no record
     # is found.
     def fourth!
       fourth or raise RecordNotFound
@@ -230,7 +230,7 @@ module ActiveRecord
       find_nth(:fifth, offset_value ? offset_value + 4 : 4)
     end
 
-    # Same as +fifth+ but raises <tt>ActiveRecord::RecordNotFound</tt> if no record
+    # Same as +fifth+ but raises <tt>ActiveRecord4116::RecordNotFound</tt> if no record
     # is found.
     def fifth!
       fifth or raise RecordNotFound
@@ -246,7 +246,7 @@ module ActiveRecord
       find_nth(:forty_two, offset_value ? offset_value + 41 : 41)
     end
 
-    # Same as +forty_two+ but raises <tt>ActiveRecord::RecordNotFound</tt> if no record
+    # Same as +forty_two+ but raises <tt>ActiveRecord4116::RecordNotFound</tt> if no record
     # is found.
     def forty_two!
       forty_two or raise RecordNotFound
@@ -266,7 +266,7 @@ module ActiveRecord
     # * No args - Returns +false+ if the table is empty, +true+ otherwise.
     #
     # For more information about specifying conditions as a hash or array,
-    # see the Conditions section in the introduction to <tt>ActiveRecord::Base</tt>.
+    # see the Conditions section in the introduction to <tt>ActiveRecord4116::Base</tt>.
     #
     # Note: You can't pass in a condition as a string (like <tt>name =
     # 'Jamie'</tt>), since it would be sanitized and then queried against
@@ -284,7 +284,7 @@ module ActiveRecord
       return false if !conditions
 
       relation = apply_join_dependency(self, construct_join_dependency)
-      return false if ActiveRecord::NullRelation === relation
+      return false if ActiveRecord4116::NullRelation === relation
 
       relation = relation.except(:select, :order).select(ONE_AS_ONE).limit(1)
 
@@ -299,7 +299,7 @@ module ActiveRecord
     end
 
     # This method is called whenever no records are found with either a single
-    # id or multiple ids and raises a +ActiveRecord::RecordNotFound+ exception.
+    # id or multiple ids and raises a +ActiveRecord4116::RecordNotFound+ exception.
     #
     # The error message is different depending on whether a single id or
     # multiple ids are provided. If multiple ids are provided, then the number
@@ -341,7 +341,7 @@ module ActiveRecord
       if block_given?
         yield relation
       else
-        if ActiveRecord::NullRelation === relation
+        if ActiveRecord4116::NullRelation === relation
           []
         else
           rows = connection.select_all(relation.arel, 'SQL', relation.bind_values.dup)
@@ -352,7 +352,7 @@ module ActiveRecord
 
     def construct_join_dependency(joins = [])
       including = eager_load_values + includes_values
-      ActiveRecord::Associations::JoinDependency.new(@klass, including, joins)
+      ActiveRecord4116::Associations::JoinDependency.new(@klass, including, joins)
     end
 
     def construct_relation_for_association_calculations
@@ -418,7 +418,7 @@ module ActiveRecord
     end
 
     def find_one(id)
-      id = id.id if ActiveRecord::Base === id
+      id = id.id if ActiveRecord4116::Base === id
 
       column = columns_hash[primary_key]
       substitute = connection.substitute_at(column, bind_values.length)

@@ -1,9 +1,9 @@
 require "cases/migration/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   class Migration
-    class ColumnsTest < ActiveRecord::TestCase
-      include ActiveRecord::Migration::TestHelper
+    class ColumnsTest < ActiveRecord4116::TestCase
+      include ActiveRecord4116::Migration::TestHelper
 
       self.use_transactional_fixtures = false
 
@@ -71,9 +71,9 @@ module ActiveRecord
 
       def test_rename_nonexistent_column
         exception = if current_adapter?(:PostgreSQLAdapter, :OracleAdapter)
-                      ActiveRecord::StatementInvalid
+                      ActiveRecord4116::StatementInvalid
                     else
-                      ActiveRecord::ActiveRecordError
+                      ActiveRecord4116::ActiveRecord4116Error
                     end
         assert_raise(exception) do
           rename_column "test_models", "nonexistent", "should_fail"

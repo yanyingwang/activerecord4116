@@ -1,9 +1,9 @@
 require 'active_support/per_thread_registry'
 
-module ActiveRecord
+module ActiveRecord4116
   # This is a thread locals registry for Active Record. For example:
   #
-  #   ActiveRecord::RuntimeRegistry.connection_handler
+  #   ActiveRecord4116::RuntimeRegistry.connection_handler
   #
   # returns the connection handler local to the current thread.
   #

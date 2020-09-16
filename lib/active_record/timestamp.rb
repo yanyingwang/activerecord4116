@@ -1,5 +1,5 @@
 
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Timestamp
   #
   # Active Record automatically timestamps create and update operations if the
@@ -16,7 +16,7 @@ module ActiveRecord
   #
   # == Time Zone aware attributes
   #
-  # By default, ActiveRecord::Base keeps all the datetime columns time zone aware by executing following code.
+  # By default, ActiveRecord4116::Base keeps all the datetime columns time zone aware by executing following code.
   #
   #   config.active_record.time_zone_aware_attributes = true
   #
@@ -25,7 +25,7 @@ module ActiveRecord
   # If your attributes are time zone aware and you desire to skip time zone conversion to the current Time.zone
   # when reading certain attributes then you can do following:
   #
-  #   class Topic < ActiveRecord::Base
+  #   class Topic < ActiveRecord4116::Base
   #     self.skip_time_zone_conversion_for_attributes = [:written_on]
   #   end
   module Timestamp

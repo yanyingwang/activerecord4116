@@ -1,12 +1,12 @@
 require 'shellwords'
 
-module ActiveRecord
+module ActiveRecord4116
   module Tasks # :nodoc:
     class PostgreSQLDatabaseTasks # :nodoc:
       DEFAULT_ENCODING = ENV['CHARSET'] || 'utf8'
 
       delegate :connection, :establish_connection, :clear_active_connections!,
-        to: ActiveRecord::Base
+        to: ActiveRecord4116::Base
 
       def initialize(configuration)
         @configuration = configuration
@@ -17,7 +17,7 @@ module ActiveRecord
         connection.create_database configuration['database'],
           configuration.merge('encoding' => encoding)
         establish_connection configuration
-      rescue ActiveRecord::StatementInvalid => error
+      rescue ActiveRecord4116::StatementInvalid => error
         if /database .* already exists/ === error.message
           raise DatabaseAlreadyExists
         else
@@ -54,7 +54,7 @@ module ActiveRecord
         command = "pg_dump -s -x -O -f #{Shellwords.escape(filename)} #{search_path} #{Shellwords.escape(configuration['database'])}"
         raise 'Error dumping database' unless Kernel.system(command)
 
-        File.open(filename, "a") { |f| f << "SET search_path TO #{ActiveRecord::Base.connection.schema_search_path};\n\n" }
+        File.open(filename, "a") { |f| f << "SET search_path TO #{ActiveRecord4116::Base.connection.schema_search_path};\n\n" }
       end
 
       def structure_load(filename)

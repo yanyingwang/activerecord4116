@@ -26,7 +26,7 @@ require 'models/membership'
 require 'models/club'
 require 'models/organization'
 
-class HasManyThroughAssociationsTest < ActiveRecord::TestCase
+class HasManyThroughAssociationsTest < ActiveRecord4116::TestCase
   fixtures :posts, :readers, :people, :comments, :authors, :categories, :taggings, :tags,
            :owners, :pets, :toys, :jobs, :references, :companies, :members, :author_addresses,
            :subscribers, :books, :subscriptions, :developers, :categorizations, :essays,
@@ -59,11 +59,11 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
   end
 
   def make_model(name)
-    Class.new(ActiveRecord::Base) { define_singleton_method(:name) { name } }
+    Class.new(ActiveRecord4116::Base) { define_singleton_method(:name) { name } }
   end
 
   def test_ordered_habtm
-    person_prime = Class.new(ActiveRecord::Base) do
+    person_prime = Class.new(ActiveRecord4116::Base) do
       def self.name; 'Person'; end
 
       has_many :readers
@@ -382,12 +382,12 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
 
   def test_should_raise_exception_for_destroying_mismatching_records
     assert_no_difference ["Person.count", "Reader.count"] do
-      assert_raise(ActiveRecord::AssociationTypeMismatch) { posts(:welcome).people.destroy(posts(:thinking)) }
+      assert_raise(ActiveRecord4116::AssociationTypeMismatch) { posts(:welcome).people.destroy(posts(:thinking)) }
     end
   end
 
   def test_should_raise_exception_for_association_not_found
-    assert_raise(ActiveRecord::HasManyThroughSourceAssociationNotFoundError) do
+    assert_raise(ActiveRecord4116::HasManyThroughSourceAssociationNotFoundError) do
       posts(:welcome).author_toys
     end
   end
@@ -621,8 +621,8 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
   def test_create_on_new_record
     p = Post.new
 
-    assert_raises(ActiveRecord::RecordNotSaved) { p.people.create(:first_name => "mew") }
-    assert_raises(ActiveRecord::RecordNotSaved) { p.people.create!(:first_name => "snow") }
+    assert_raises(ActiveRecord4116::RecordNotSaved) { p.people.create(:first_name => "mew") }
+    assert_raises(ActiveRecord4116::RecordNotSaved) { p.people.create!(:first_name => "snow") }
   end
 
   def test_associate_with_create_and_invalid_options
@@ -637,7 +637,7 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
 
   def test_associate_with_create_bang_and_invalid_options
     firm = companies(:first_firm)
-    assert_no_difference('firm.developers.count') { assert_raises(ActiveRecord::RecordInvalid) { firm.developers.create!(:name => '0') } }
+    assert_no_difference('firm.developers.count') { assert_raises(ActiveRecord4116::RecordInvalid) { firm.developers.create!(:name => '0') } }
   end
 
   def test_associate_with_create_bang_and_valid_options
@@ -647,7 +647,7 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
 
   def test_push_with_invalid_record
     firm = companies(:first_firm)
-    assert_raises(ActiveRecord::RecordInvalid) { firm.developers << Developer.new(:name => '0') }
+    assert_raises(ActiveRecord4116::RecordInvalid) { firm.developers << Developer.new(:name => '0') }
   end
 
   def test_push_with_invalid_join_record
@@ -656,10 +656,10 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
 
       firm = companies(:first_firm)
       lifo = Developer.new(:name => 'lifo')
-      assert_raises(ActiveRecord::RecordInvalid) { firm.developers << lifo }
+      assert_raises(ActiveRecord4116::RecordInvalid) { firm.developers << lifo }
 
       lifo = Developer.create!(:name => 'lifo')
-      assert_raises(ActiveRecord::RecordInvalid) { firm.developers << lifo }
+      assert_raises(ActiveRecord4116::RecordInvalid) { firm.developers << lifo }
     end
   end
 
@@ -743,7 +743,7 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
 
   def test_get_ids_for_has_many_through_with_conditions_should_not_preload
     Tagging.create!(:taggable_type => 'Post', :taggable_id => posts(:welcome).id, :tag => tags(:misc))
-    ActiveRecord::Associations::Preloader.expects(:new).never
+    ActiveRecord4116::Associations::Preloader.expects(:new).never
     posts(:welcome).misc_tag_ids
   end
 
@@ -807,7 +807,7 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
       lambda { authors(:david).very_special_comments = [VerySpecialComment.create!(:body => "Gorp!", :post_id => 1011), VerySpecialComment.create!(:body => "Eep!", :post_id => 1012)] },
       lambda { authors(:david).very_special_comments << VerySpecialComment.create!(:body => "Hoohah!", :post_id => 1013) },
       lambda { authors(:david).very_special_comments.delete(authors(:david).very_special_comments.first) },
-    ].each {|block| assert_raise(ActiveRecord::HasManyThroughCantAssociateThroughHasOneOrManyReflection, &block) }
+    ].each {|block| assert_raise(ActiveRecord4116::HasManyThroughCantAssociateThroughHasOneOrManyReflection, &block) }
   end
 
   def test_has_many_association_through_a_has_many_association_to_self
@@ -881,7 +881,7 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
   def test_collection_singular_ids_setter_raises_exception_when_invalid_ids_set
     company = companies(:rails_core)
     ids =  [Developer.first.id, -9999]
-    assert_raises(ActiveRecord::RecordNotFound) {company.developer_ids= ids}
+    assert_raises(ActiveRecord4116::RecordNotFound) {company.developer_ids= ids}
   end
 
   def test_build_a_model_from_hm_through_association_with_where_clause
@@ -1055,7 +1055,7 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
   def test_create_bang_should_raise_exception_when_join_record_has_errors
     repair_validations(Categorization) do
       Categorization.validate { |r| r.errors[:base] << 'Invalid Categorization' }
-      assert_raises(ActiveRecord::RecordInvalid) do
+      assert_raises(ActiveRecord4116::RecordInvalid) do
         Category.create!(:name => 'Fishing', :authors => [Author.first])
       end
     end
@@ -1065,7 +1065,7 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
     repair_validations(Categorization) do
       Categorization.validate { |r| r.errors[:base] << 'Invalid Categorization' }
       c = Category.new(:name => 'Fishing', :authors => [Author.first])
-      assert_raises(ActiveRecord::RecordInvalid) do
+      assert_raises(ActiveRecord4116::RecordInvalid) do
         c.save!
       end
     end
@@ -1167,25 +1167,25 @@ class HasManyThroughAssociationsTest < ActiveRecord::TestCase
   end
 end
 
-class NonTransactionalHMTAssociationsTest < ActiveRecord::TestCase
+class NonTransactionalHMTAssociationsTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
 
-  class Shout < ActiveRecord::Base
+  class Shout < ActiveRecord4116::Base
     self.table_name = "test_poly_shouts"
 
     belongs_to :account
     belongs_to :content, :polymorphic => true
   end
 
-  class TextShout < ActiveRecord::Base
+  class TextShout < ActiveRecord4116::Base
     self.table_name = "test_poly_text_shouts"
   end
 
-  class PictureShout < ActiveRecord::Base
+  class PictureShout < ActiveRecord4116::Base
     self.table_name = "test_poly_picture_shouts"
   end
 
-  class Account < ActiveRecord::Base
+  class Account < ActiveRecord4116::Base
     self.table_name = "test_poly_accounts"
     has_many :shouts
     has_many :text_shouts, :through => :shouts, :source => :content, :source_type => TextShout
@@ -1193,7 +1193,7 @@ class NonTransactionalHMTAssociationsTest < ActiveRecord::TestCase
   end
 
   def test_eager_load_polymorphic_nested_associations
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
     @connection.create_table(:test_poly_accounts, force: true)
     @connection.create_table(:test_poly_shouts, force: true) do |t|
       t.references :account

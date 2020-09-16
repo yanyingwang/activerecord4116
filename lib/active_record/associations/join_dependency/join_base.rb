@@ -1,6 +1,6 @@
 require 'active_record/associations/join_dependency/join_part'
 
-module ActiveRecord
+module ActiveRecord4116
   module Associations
     class JoinDependency # :nodoc:
       class JoinBase < JoinPart # :nodoc:

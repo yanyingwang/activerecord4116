@@ -1,4 +1,4 @@
-class PeopleHaveLastNames < ActiveRecord::Migration
+class PeopleHaveLastNames < ActiveRecord4116::Migration
   def self.up
     add_column "people", "hobbies", :string
   end

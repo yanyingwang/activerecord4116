@@ -1,7 +1,7 @@
 require "cases/helper"
 
-class MysqlEnumTest < ActiveRecord::TestCase
-  class EnumTest < ActiveRecord::Base
+class MysqlEnumTest < ActiveRecord4116::TestCase
+  class EnumTest < ActiveRecord4116::Base
   end
 
   def test_enum_limit

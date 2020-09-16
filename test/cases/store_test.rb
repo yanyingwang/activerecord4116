@@ -2,7 +2,7 @@ require 'cases/helper'
 require 'models/admin'
 require 'models/admin/user'
 
-class StoreTest < ActiveRecord::TestCase
+class StoreTest < ActiveRecord4116::TestCase
   fixtures :'admin/users'
 
   setup do
@@ -152,10 +152,10 @@ class StoreTest < ActiveRecord::TestCase
   end
 
   test "stored_attributes are tracked per class" do
-    first_model = Class.new(ActiveRecord::Base) do
+    first_model = Class.new(ActiveRecord4116::Base) do
       store_accessor :data, :color
     end
-    second_model = Class.new(ActiveRecord::Base) do
+    second_model = Class.new(ActiveRecord4116::Base) do
       store_accessor :data, :width, :height
     end
 
@@ -164,7 +164,7 @@ class StoreTest < ActiveRecord::TestCase
   end
 
   test "stored_attributes are tracked per subclass" do
-    first_model = Class.new(ActiveRecord::Base) do
+    first_model = Class.new(ActiveRecord4116::Base) do
       store_accessor :data, :color
     end
     second_model = Class.new(first_model) do

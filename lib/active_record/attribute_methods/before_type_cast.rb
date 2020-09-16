@@ -1,11 +1,11 @@
-module ActiveRecord
+module ActiveRecord4116
   module AttributeMethods
     # = Active Record Attribute Methods Before Type Cast
     #
-    # <tt>ActiveRecord::AttributeMethods::BeforeTypeCast</tt> provides a way to
+    # <tt>ActiveRecord4116::AttributeMethods::BeforeTypeCast</tt> provides a way to
     # read the value of the attributes before typecasting and deserialization.
     #
-    #   class Task < ActiveRecord::Base
+    #   class Task < ActiveRecord4116::Base
     #   end
     #
     #   task = Task.new(id: '1', completed_on: '2012-10-21')
@@ -33,7 +33,7 @@ module ActiveRecord
       # Returns the value of the attribute identified by +attr_name+ before
       # typecasting and deserialization.
       #
-      #   class Task < ActiveRecord::Base
+      #   class Task < ActiveRecord4116::Base
       #   end
       #
       #   task = Task.new(id: '1', completed_on: '2012-10-21')
@@ -48,7 +48,7 @@ module ActiveRecord
 
       # Returns a hash of attributes before typecasting and deserialization.
       #
-      #   class Task < ActiveRecord::Base
+      #   class Task < ActiveRecord4116::Base
       #   end
       #
       #   task = Task.new(title: nil, is_done: true, completed_on: '2012-10-21')

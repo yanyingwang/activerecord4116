@@ -1,4 +1,4 @@
-class Pet < ActiveRecord::Base
+class Pet < ActiveRecord4116::Base
   attr_accessor :current_user
 
   self.primary_key = :pet_id

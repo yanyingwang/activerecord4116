@@ -20,9 +20,9 @@ require 'models/eye'
 require 'models/electron'
 require 'models/molecule'
 
-class TestAutosaveAssociationsInGeneral < ActiveRecord::TestCase
+class TestAutosaveAssociationsInGeneral < ActiveRecord4116::TestCase
   def test_autosave_validation
-    person = Class.new(ActiveRecord::Base) {
+    person = Class.new(ActiveRecord4116::Base) {
       self.table_name = 'people'
       validate :should_be_cool, :on => :create
       def self.name; 'Person'; end
@@ -35,7 +35,7 @@ class TestAutosaveAssociationsInGeneral < ActiveRecord::TestCase
         end
       end
     }
-    reference = Class.new(ActiveRecord::Base) {
+    reference = Class.new(ActiveRecord4116::Base) {
       self.table_name = "references"
       def self.name; 'Reference'; end
       belongs_to :person, autosave: true, anonymous_class: person
@@ -65,7 +65,7 @@ class TestAutosaveAssociationsInGeneral < ActiveRecord::TestCase
   private
 
   def base
-    ActiveRecord::Base
+    ActiveRecord4116::Base
   end
 
   def assert_no_difference_when_adding_callbacks_twice_for(model, association_name)
@@ -82,7 +82,7 @@ class TestAutosaveAssociationsInGeneral < ActiveRecord::TestCase
   end
 end
 
-class TestDefaultAutosaveAssociationOnAHasOneAssociation < ActiveRecord::TestCase
+class TestDefaultAutosaveAssociationOnAHasOneAssociation < ActiveRecord4116::TestCase
   fixtures :companies, :accounts
 
   def test_should_save_parent_but_not_invalid_child
@@ -202,7 +202,7 @@ class TestDefaultAutosaveAssociationOnAHasOneAssociation < ActiveRecord::TestCas
   end
 end
 
-class TestDefaultAutosaveAssociationOnABelongsToAssociation < ActiveRecord::TestCase
+class TestDefaultAutosaveAssociationOnABelongsToAssociation < ActiveRecord4116::TestCase
   fixtures :companies, :posts, :tags, :taggings
 
   def test_should_save_parent_but_not_invalid_child
@@ -370,7 +370,7 @@ class TestDefaultAutosaveAssociationOnABelongsToAssociation < ActiveRecord::Test
   end
 end
 
-class TestDefaultAutosaveAssociationOnAHasManyAssociationWithAcceptsNestedAttributes < ActiveRecord::TestCase
+class TestDefaultAutosaveAssociationOnAHasManyAssociationWithAcceptsNestedAttributes < ActiveRecord4116::TestCase
   def test_invalid_adding_with_nested_attributes
     molecule = Molecule.new
     valid_electron = Electron.new(name: 'electron')
@@ -397,7 +397,7 @@ class TestDefaultAutosaveAssociationOnAHasManyAssociationWithAcceptsNestedAttrib
   end
 end
 
-class TestDefaultAutosaveAssociationOnAHasManyAssociation < ActiveRecord::TestCase
+class TestDefaultAutosaveAssociationOnAHasManyAssociation < ActiveRecord4116::TestCase
   fixtures :companies, :people
 
   def test_invalid_adding
@@ -555,7 +555,7 @@ class TestDefaultAutosaveAssociationOnAHasManyAssociation < ActiveRecord::TestCa
   end
 end
 
-class TestDefaultAutosaveAssociationOnNewRecord < ActiveRecord::TestCase
+class TestDefaultAutosaveAssociationOnNewRecord < ActiveRecord4116::TestCase
   def test_autosave_new_record_on_belongs_to_can_be_disabled_per_relationship
     new_account = Account.new("credit_limit" => 1000)
     new_firm = Firm.new("name" => "some firm")
@@ -619,7 +619,7 @@ class TestDefaultAutosaveAssociationOnNewRecord < ActiveRecord::TestCase
   end
 end
 
-class TestDestroyAsPartOfAutosaveAssociation < ActiveRecord::TestCase
+class TestDestroyAsPartOfAutosaveAssociation < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
 
   def setup
@@ -1001,7 +1001,7 @@ class TestDestroyAsPartOfAutosaveAssociation < ActiveRecord::TestCase
   end
 end
 
-class TestAutosaveAssociationOnAHasOneAssociation < ActiveRecord::TestCase
+class TestAutosaveAssociationOnAHasOneAssociation < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false unless supports_savepoints?
 
   def setup
@@ -1085,9 +1085,9 @@ class TestAutosaveAssociationOnAHasOneAssociation < ActiveRecord::TestCase
     end
   end
 
-  def test_should_still_raise_an_ActiveRecordRecord_Invalid_exception_if_we_want_that
+  def test_should_still_raise_an_ActiveRecord4116Record_Invalid_exception_if_we_want_that
     @pirate.ship.name = ''
-    assert_raise(ActiveRecord::RecordInvalid) do
+    assert_raise(ActiveRecord4116::RecordInvalid) do
       @pirate.save!
     end
   end
@@ -1127,7 +1127,7 @@ class TestAutosaveAssociationOnAHasOneAssociation < ActiveRecord::TestCase
   end
 end
 
-class TestAutosaveAssociationOnABelongsToAssociation < ActiveRecord::TestCase
+class TestAutosaveAssociationOnABelongsToAssociation < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false unless supports_savepoints?
 
   def setup
@@ -1181,9 +1181,9 @@ class TestAutosaveAssociationOnABelongsToAssociation < ActiveRecord::TestCase
     end
   end
 
-  def test_should_still_raise_an_ActiveRecordRecord_Invalid_exception_if_we_want_that
+  def test_should_still_raise_an_ActiveRecord4116Record_Invalid_exception_if_we_want_that
     @ship.pirate.catchphrase = ''
-    assert_raise(ActiveRecord::RecordInvalid) do
+    assert_raise(ActiveRecord4116::RecordInvalid) do
       @ship.save!
     end
   end
@@ -1354,9 +1354,9 @@ module AutosaveAssociationOnACollectionAssociationTests
     assert_equal before, [@pirate.reload.catchphrase, *@pirate.send(@association_name).map(&:name)]
   end
 
-  def test_should_still_raise_an_ActiveRecordRecord_Invalid_exception_if_we_want_that
+  def test_should_still_raise_an_ActiveRecord4116Record_Invalid_exception_if_we_want_that
     @pirate.send(@association_name).each { |child| child.name = '' }
-    assert_raise(ActiveRecord::RecordInvalid) do
+    assert_raise(ActiveRecord4116::RecordInvalid) do
       @pirate.save!
     end
   end
@@ -1375,7 +1375,7 @@ module AutosaveAssociationOnACollectionAssociationTests
   end
 end
 
-class TestAutosaveAssociationOnAHasManyAssociation < ActiveRecord::TestCase
+class TestAutosaveAssociationOnAHasManyAssociation < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false unless supports_savepoints?
 
   def setup
@@ -1391,7 +1391,7 @@ class TestAutosaveAssociationOnAHasManyAssociation < ActiveRecord::TestCase
   include AutosaveAssociationOnACollectionAssociationTests
 end
 
-class TestAutosaveAssociationOnAHasAndBelongsToManyAssociation < ActiveRecord::TestCase
+class TestAutosaveAssociationOnAHasAndBelongsToManyAssociation < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false unless supports_savepoints?
 
   def setup
@@ -1408,7 +1408,7 @@ class TestAutosaveAssociationOnAHasAndBelongsToManyAssociation < ActiveRecord::T
   include AutosaveAssociationOnACollectionAssociationTests
 end
 
-class TestAutosaveAssociationOnAHasAndBelongsToManyAssociationWithAcceptsNestedAttributes < ActiveRecord::TestCase
+class TestAutosaveAssociationOnAHasAndBelongsToManyAssociationWithAcceptsNestedAttributes < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false unless supports_savepoints?
 
   def setup
@@ -1425,7 +1425,7 @@ class TestAutosaveAssociationOnAHasAndBelongsToManyAssociationWithAcceptsNestedA
   include AutosaveAssociationOnACollectionAssociationTests
 end
 
-class TestAutosaveAssociationValidationsOnAHasManyAssociation < ActiveRecord::TestCase
+class TestAutosaveAssociationValidationsOnAHasManyAssociation < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false unless supports_savepoints?
 
   def setup
@@ -1442,7 +1442,7 @@ class TestAutosaveAssociationValidationsOnAHasManyAssociation < ActiveRecord::Te
   end
 end
 
-class TestAutosaveAssociationValidationsOnAHasOneAssociation < ActiveRecord::TestCase
+class TestAutosaveAssociationValidationsOnAHasOneAssociation < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false unless supports_savepoints?
 
   def setup
@@ -1465,7 +1465,7 @@ class TestAutosaveAssociationValidationsOnAHasOneAssociation < ActiveRecord::Tes
   end
 end
 
-class TestAutosaveAssociationValidationsOnABelongsToAssociation < ActiveRecord::TestCase
+class TestAutosaveAssociationValidationsOnABelongsToAssociation < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false unless supports_savepoints?
 
   def setup
@@ -1486,7 +1486,7 @@ class TestAutosaveAssociationValidationsOnABelongsToAssociation < ActiveRecord::
   end
 end
 
-class TestAutosaveAssociationValidationsOnAHABTMAssociation < ActiveRecord::TestCase
+class TestAutosaveAssociationValidationsOnAHABTMAssociation < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false unless supports_savepoints?
 
   def setup
@@ -1509,7 +1509,7 @@ class TestAutosaveAssociationValidationsOnAHABTMAssociation < ActiveRecord::Test
   end
 end
 
-class TestAutosaveAssociationValidationMethodsGeneration < ActiveRecord::TestCase
+class TestAutosaveAssociationValidationMethodsGeneration < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false unless supports_savepoints?
 
   def setup
@@ -1542,7 +1542,7 @@ class TestAutosaveAssociationValidationMethodsGeneration < ActiveRecord::TestCas
   end
 end
 
-class TestAutosaveAssociationWithTouch < ActiveRecord::TestCase
+class TestAutosaveAssociationWithTouch < ActiveRecord4116::TestCase
   def test_autosave_with_touch_should_not_raise_system_stack_error
     invoice = Invoice.create
     assert_nothing_raised { invoice.line_items.create(:amount => 10) }

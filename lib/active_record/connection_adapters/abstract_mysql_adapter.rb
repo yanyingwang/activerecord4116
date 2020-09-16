@@ -1,6 +1,6 @@
 require 'arel/visitors/bind_visitor'
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
     class AbstractMysqlAdapter < AbstractAdapter
       include Savepoints
@@ -137,7 +137,7 @@ module ActiveRecord
       # behavior in versions 0.13.1 and earlier) you can add the following line
       # to your application.rb file:
       #
-      #   ActiveRecord::ConnectionAdapters::Mysql[2]Adapter.emulate_booleans = false
+      #   ActiveRecord4116::ConnectionAdapters::Mysql[2]Adapter.emulate_booleans = false
       class_attribute :emulate_booleans
       self.emulate_booleans = true
 
@@ -533,7 +533,7 @@ module ActiveRecord
           when 0..0xfff;           "varbinary(#{limit})"
           when nil;                "blob"
           when 0x1000..0xffffffff; "blob(#{limit})"
-          else raise(ActiveRecordError, "No binary type has character length #{limit}")
+          else raise(ActiveRecord4116Error, "No binary type has character length #{limit}")
           end
         when 'integer'
           case limit
@@ -542,7 +542,7 @@ module ActiveRecord
           when 3; 'mediumint'
           when nil, 4, 11; 'int(11)'  # compatibility with MySQL default
           when 5..8; 'bigint'
-          else raise(ActiveRecordError, "No integer type has byte size #{limit}")
+          else raise(ActiveRecord4116Error, "No integer type has byte size #{limit}")
           end
         when 'text'
           case limit
@@ -550,7 +550,7 @@ module ActiveRecord
           when nil, 0x100..0xffff;    'text'
           when 0x10000..0xffffff;     'mediumtext'
           when 0x1000000..0xffffffff; 'longtext'
-          else raise(ActiveRecordError, "No text type has character length #{limit}")
+          else raise(ActiveRecord4116Error, "No text type has character length #{limit}")
           end
         else
           super
@@ -692,7 +692,7 @@ module ActiveRecord
           options[:null] = column.null
           options[:auto_increment] = (column.extra == "auto_increment")
         else
-          raise ActiveRecordError, "No such column: #{table_name}.#{column_name}"
+          raise ActiveRecord4116Error, "No such column: #{table_name}.#{column_name}"
         end
 
         current_type = select_one("SHOW COLUMNS FROM #{quote_table_name(table_name)} LIKE '#{column_name}'", 'SCHEMA')["Type"]

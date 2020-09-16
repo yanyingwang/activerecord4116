@@ -1,7 +1,7 @@
 require 'cases/helper'
 
 class PostgreSQLUtilsTest < ActiveSupport::TestCase
-  include ActiveRecord::ConnectionAdapters::PostgreSQLAdapter::Utils
+  include ActiveRecord4116::ConnectionAdapters::PostgreSQLAdapter::Utils
 
   def test_extract_schema_and_table
     {

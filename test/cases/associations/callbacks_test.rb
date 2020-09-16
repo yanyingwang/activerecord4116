@@ -5,7 +5,7 @@ require 'models/project'
 require 'models/developer'
 require 'models/company'
 
-class AssociationCallbacksTest < ActiveRecord::TestCase
+class AssociationCallbacksTest < ActiveRecord4116::TestCase
   fixtures :posts, :authors, :projects, :developers
 
   def setup

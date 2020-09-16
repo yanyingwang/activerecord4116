@@ -1,6 +1,6 @@
 require 'active_support/core_ext/module/method_transplanting'
 
-module ActiveRecord
+module ActiveRecord4116
   module AttributeMethods
     module Write
       WriterMethodCache = Class.new(AttributeMethodCache) {
@@ -9,7 +9,7 @@ module ActiveRecord
         def method_body(method_name, const_name)
           <<-EOMETHOD
           def #{method_name}(value)
-            name = ::ActiveRecord::AttributeMethods::AttrNames::ATTR_#{const_name}
+            name = ::ActiveRecord4116::AttributeMethods::AttrNames::ATTR_#{const_name}
             write_attribute(name, value)
           end
           EOMETHOD
@@ -37,11 +37,11 @@ module ActiveRecord
         else
           def define_method_attribute=(name)
             safe_name = name.unpack('h*').first
-            ActiveRecord::AttributeMethods::AttrNames.set_name_cache safe_name, name
+            ActiveRecord4116::AttributeMethods::AttrNames.set_name_cache safe_name, name
 
             generated_attribute_methods.module_eval <<-STR, __FILE__, __LINE__ + 1
               def __temp__#{safe_name}=(value)
-                name = ::ActiveRecord::AttributeMethods::AttrNames::ATTR_#{safe_name}
+                name = ::ActiveRecord4116::AttributeMethods::AttrNames::ATTR_#{safe_name}
                 write_attribute(name, value)
               end
               alias_method #{(name + '=').inspect}, :__temp__#{safe_name}=

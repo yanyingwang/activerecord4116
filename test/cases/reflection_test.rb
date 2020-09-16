@@ -24,8 +24,8 @@ require 'models/department'
 require 'models/cake_designer'
 require 'models/drink_designer'
 
-class ReflectionTest < ActiveRecord::TestCase
-  include ActiveRecord::Reflection
+class ReflectionTest < ActiveRecord4116::TestCase
+  include ActiveRecord4116::Reflection
 
   fixtures :topics, :customers, :companies, :subscribers, :price_estimates
 
@@ -81,7 +81,7 @@ class ReflectionTest < ActiveRecord::TestCase
   end
 
   def test_reflection_klass_for_nested_class_name
-    reflection = MacroReflection.new(:company, nil, nil, { :class_name => 'MyApplication::Business::Company' }, ActiveRecord::Base)
+    reflection = MacroReflection.new(:company, nil, nil, { :class_name => 'MyApplication::Business::Company' }, ActiveRecord4116::Base)
     assert_nothing_raised do
       assert_equal MyApplication::Business::Company, reflection.klass
     end
@@ -91,7 +91,7 @@ class ReflectionTest < ActiveRecord::TestCase
     ActiveSupport::Inflector.inflections do |inflect|
       inflect.irregular 'plural_irregular', 'plurales_irregulares'
     end
-    reflection = AssociationReflection.new(:has_many, 'plurales_irregulares', nil, {}, ActiveRecord::Base)
+    reflection = AssociationReflection.new(:has_many, 'plurales_irregulares', nil, {}, ActiveRecord4116::Base)
     assert_equal 'PluralIrregular', reflection.class_name
   end
 
@@ -158,7 +158,7 @@ class ReflectionTest < ActiveRecord::TestCase
   end
 
   def test_association_reflection_in_modules
-    ActiveRecord::Base.store_full_sti_class = false
+    ActiveRecord4116::Base.store_full_sti_class = false
 
     assert_reflection MyApplication::Business::Firm,
       :clients_of_firm,
@@ -196,7 +196,7 @@ class ReflectionTest < ActiveRecord::TestCase
       :class_name => 'Nested::Firm',
       :table_name => 'companies'
   ensure
-    ActiveRecord::Base.store_full_sti_class = true
+    ActiveRecord4116::Base.store_full_sti_class = true
   end
 
   def test_reflection_should_not_raise_error_when_compared_to_other_object
@@ -278,13 +278,13 @@ class ReflectionTest < ActiveRecord::TestCase
   end
 
   def test_association_primary_key_raises_when_missing_primary_key
-    reflection = ActiveRecord::Reflection::AssociationReflection.new(:fuu, :edge, nil, {}, Author)
-    assert_raises(ActiveRecord::UnknownPrimaryKey) { reflection.association_primary_key }
+    reflection = ActiveRecord4116::Reflection::AssociationReflection.new(:fuu, :edge, nil, {}, Author)
+    assert_raises(ActiveRecord4116::UnknownPrimaryKey) { reflection.association_primary_key }
 
-    through = Class.new(ActiveRecord::Reflection::ThroughReflection) {
+    through = Class.new(ActiveRecord4116::Reflection::ThroughReflection) {
       define_method(:source_reflection) { reflection }
     }.new(:fuu, :edge, nil, {}, Author)
-    assert_raises(ActiveRecord::UnknownPrimaryKey) { through.association_primary_key }
+    assert_raises(ActiveRecord4116::UnknownPrimaryKey) { through.association_primary_key }
   end
 
   def test_active_record_primary_key
@@ -293,8 +293,8 @@ class ReflectionTest < ActiveRecord::TestCase
   end
 
   def test_active_record_primary_key_raises_when_missing_primary_key
-    reflection = ActiveRecord::Reflection::AssociationReflection.new(:fuu, :author, nil, {}, Edge)
-    assert_raises(ActiveRecord::UnknownPrimaryKey) { reflection.active_record_primary_key }
+    reflection = ActiveRecord4116::Reflection::AssociationReflection.new(:fuu, :author, nil, {}, Edge)
+    assert_raises(ActiveRecord4116::UnknownPrimaryKey) { reflection.active_record_primary_key }
   end
 
   def test_foreign_type

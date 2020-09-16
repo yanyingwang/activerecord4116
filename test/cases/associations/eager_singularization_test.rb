@@ -1,29 +1,29 @@
 require "cases/helper"
 
 
-if ActiveRecord::Base.connection.supports_migrations?
-class EagerSingularizationTest < ActiveRecord::TestCase
-  class Virus < ActiveRecord::Base
+if ActiveRecord4116::Base.connection.supports_migrations?
+class EagerSingularizationTest < ActiveRecord4116::TestCase
+  class Virus < ActiveRecord4116::Base
     belongs_to :octopus
   end
 
-  class Octopus < ActiveRecord::Base
+  class Octopus < ActiveRecord4116::Base
     has_one :virus
   end
 
-  class Pass < ActiveRecord::Base
+  class Pass < ActiveRecord4116::Base
     belongs_to :bus
   end
 
-  class Bus < ActiveRecord::Base
+  class Bus < ActiveRecord4116::Base
     has_many :passes
   end
 
-  class Mess < ActiveRecord::Base
+  class Mess < ActiveRecord4116::Base
     has_and_belongs_to_many :crises
   end
 
-  class Crisis < ActiveRecord::Base
+  class Crisis < ActiveRecord4116::Base
     has_and_belongs_to_many :messes
     has_many :analyses, :dependent => :destroy
     has_many :successes, :through => :analyses
@@ -31,22 +31,22 @@ class EagerSingularizationTest < ActiveRecord::TestCase
     has_many :compresses, :through => :dresses
   end
 
-  class Analysis < ActiveRecord::Base
+  class Analysis < ActiveRecord4116::Base
     belongs_to :crisis
     belongs_to :success
   end
 
-  class Success < ActiveRecord::Base
+  class Success < ActiveRecord4116::Base
     has_many :analyses, :dependent => :destroy
     has_many :crises, :through => :analyses
   end
 
-  class Dress < ActiveRecord::Base
+  class Dress < ActiveRecord4116::Base
     belongs_to :crisis
     has_many :compresses
   end
 
-  class Compress < ActiveRecord::Base
+  class Compress < ActiveRecord4116::Base
     belongs_to :dress
   end
 
@@ -105,7 +105,7 @@ class EagerSingularizationTest < ActiveRecord::TestCase
   end
 
   def connection
-    ActiveRecord::Base.connection
+    ActiveRecord4116::Base.connection
   end
 
   def test_eager_no_extra_singularization_belongs_to

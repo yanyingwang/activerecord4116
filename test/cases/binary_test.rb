@@ -7,7 +7,7 @@ require "cases/helper"
 unless current_adapter?(:SybaseAdapter, :DB2Adapter, :FirebirdAdapter)
   require 'models/binary'
 
-  class BinaryTest < ActiveRecord::TestCase
+  class BinaryTest < ActiveRecord4116::TestCase
     FIXTURES = %w(flowers.jpg example.log test.txt)
 
     def test_mixed_encoding

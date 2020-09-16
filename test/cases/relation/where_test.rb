@@ -13,8 +13,8 @@ require "models/topic"
 require "models/treasure"
 require "models/vertex"
 
-module ActiveRecord
-  class WhereTest < ActiveRecord::TestCase
+module ActiveRecord4116
+  class WhereTest < ActiveRecord4116::TestCase
     fixtures :posts, :edges, :authors, :categories, :binaries, :essays
 
     def test_where_copies_bind_params
@@ -179,7 +179,7 @@ module ActiveRecord
     end
 
     def test_where_error
-      assert_raises(ActiveRecord::StatementInvalid) do
+      assert_raises(ActiveRecord4116::StatementInvalid) do
         Post.where(:id => { 'posts.author_id' => 10 }).first
       end
     end

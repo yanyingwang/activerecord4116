@@ -1,6 +1,6 @@
 require 'active_support/core_ext/array/wrap'
 
-module ActiveRecord
+module ActiveRecord4116
   module Associations
     # = Active Record Associations
     #
@@ -132,14 +132,14 @@ module ActiveRecord
       # If the \target is already \loaded it is just returned. Thus, you can call
       # +load_target+ unconditionally to get the \target.
       #
-      # ActiveRecord::RecordNotFound is rescued within the method, and it is
+      # ActiveRecord4116::RecordNotFound is rescued within the method, and it is
       # not reraised. The proxy is \reset and +nil+ is the return value.
       def load_target
         @target = find_target if (@stale_state && stale_target?) || find_target?
 
         loaded! unless loaded?
         target
-      rescue ActiveRecord::RecordNotFound
+      rescue ActiveRecord4116::RecordNotFound
         reset
       end
 
@@ -207,13 +207,13 @@ module ActiveRecord
           false
         end
 
-        # Raises ActiveRecord::AssociationTypeMismatch unless +record+ is of
+        # Raises ActiveRecord4116::AssociationTypeMismatch unless +record+ is of
         # the kind of the class of the associated objects. Meant to be used as
         # a sanity check when you are about to assign an associated record.
         def raise_on_type_mismatch!(record)
           unless record.is_a?(reflection.klass) || record.is_a?(reflection.class_name.constantize)
             message = "#{reflection.class_name}(##{reflection.klass.object_id}) expected, got #{record.class}(##{record.class.object_id})"
-            raise ActiveRecord::AssociationTypeMismatch, message
+            raise ActiveRecord4116::AssociationTypeMismatch, message
           end
         end
 

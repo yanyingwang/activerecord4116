@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module Associations
     class JoinDependency # :nodoc:
       autoload :JoinBase,        'active_record/associations/join_dependency/join_base'
@@ -77,7 +77,7 @@ module ActiveRecord
       #
       #  Example :
       #
-      #  class Physician < ActiveRecord::Base
+      #  class Physician < ActiveRecord4116::Base
       #    has_many :appointments
       #    has_many :patients, through: :appointments
       #  end

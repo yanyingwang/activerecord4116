@@ -1,10 +1,10 @@
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   module ConnectionAdapters
-    class SchemaCacheTest < ActiveRecord::TestCase
+    class SchemaCacheTest < ActiveRecord4116::TestCase
       def setup
-        connection = ActiveRecord::Base.connection
+        connection = ActiveRecord4116::Base.connection
         @cache     = SchemaCache.new connection
       end
 

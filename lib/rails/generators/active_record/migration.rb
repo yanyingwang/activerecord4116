@@ -1,6 +1,6 @@
 require 'rails/generators/migration'
 
-module ActiveRecord
+module ActiveRecord4116
   module Generators # :nodoc:
     module Migration
       extend ActiveSupport::Concern
@@ -10,7 +10,7 @@ module ActiveRecord
         # Implement the required interface for Rails::Generators::Migration.
         def next_migration_number(dirname)
           next_migration_number = current_migration_number(dirname) + 1
-          ActiveRecord::Migration.next_migration_number(next_migration_number)
+          ActiveRecord4116::Migration.next_migration_number(next_migration_number)
         end
       end
     end

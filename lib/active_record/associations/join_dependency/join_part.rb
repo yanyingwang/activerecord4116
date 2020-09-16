@@ -1,4 +1,4 @@
-module ActiveRecord
+module ActiveRecord4116
   module Associations
     class JoinDependency # :nodoc:
       # A JoinPart represents a part of a JoinDependency. It is inherited

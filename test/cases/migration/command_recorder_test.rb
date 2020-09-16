@@ -1,10 +1,10 @@
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   class Migration
-    class CommandRecorderTest < ActiveRecord::TestCase
+    class CommandRecorderTest < ActiveRecord4116::TestCase
       def setup
-        connection = ActiveRecord::Base.connection
+        connection = ActiveRecord4116::Base.connection
         @recorder  = CommandRecorder.new(connection)
       end
 
@@ -36,13 +36,13 @@ module ActiveRecord
       end
 
       def test_inverse_of_raise_exception_on_unknown_commands
-        assert_raises(ActiveRecord::IrreversibleMigration) do
+        assert_raises(ActiveRecord4116::IrreversibleMigration) do
           @recorder.inverse_of :execute, ['some sql']
         end
       end
 
       def test_irreversible_commands_raise_exception
-        assert_raises(ActiveRecord::IrreversibleMigration) do
+        assert_raises(ActiveRecord4116::IrreversibleMigration) do
           @recorder.revert{ @recorder.execute 'some sql' }
         end
       end
@@ -96,7 +96,7 @@ module ActiveRecord
           [:remove_column, [:fruits, :name, :string, {}], nil],
         ], @recorder.commands
 
-        assert_raises(ActiveRecord::IrreversibleMigration) do
+        assert_raises(ActiveRecord4116::IrreversibleMigration) do
           @recorder.revert do
             @recorder.change_table :fruits do |t|
               t.remove :kind
@@ -126,7 +126,7 @@ module ActiveRecord
       end
 
       def test_invert_drop_table_without_a_block_nor_option
-        assert_raises(ActiveRecord::IrreversibleMigration) do
+        assert_raises(ActiveRecord4116::IrreversibleMigration) do
           @recorder.inverse_of :drop_table, [:people_reminders]
         end
       end
@@ -163,7 +163,7 @@ module ActiveRecord
       end
 
       def test_invert_remove_column_without_type
-        assert_raises(ActiveRecord::IrreversibleMigration) do
+        assert_raises(ActiveRecord4116::IrreversibleMigration) do
           @recorder.inverse_of :remove_column, [:table, :column]
         end
       end
@@ -204,7 +204,7 @@ module ActiveRecord
       end
 
       def test_invert_remove_index_with_no_column
-        assert_raises(ActiveRecord::IrreversibleMigration) do
+        assert_raises(ActiveRecord4116::IrreversibleMigration) do
           @recorder.inverse_of :remove_index, [:table, name: "new_index"]
         end
       end

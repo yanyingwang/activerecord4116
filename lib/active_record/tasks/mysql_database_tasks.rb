@@ -1,11 +1,11 @@
-module ActiveRecord
+module ActiveRecord4116
   module Tasks # :nodoc:
     class MySQLDatabaseTasks # :nodoc:
       DEFAULT_CHARSET     = ENV['CHARSET']   || 'utf8'
       DEFAULT_COLLATION   = ENV['COLLATION'] || 'utf8_unicode_ci'
       ACCESS_DENIED_ERROR = 1045
 
-      delegate :connection, :establish_connection, to: ActiveRecord::Base
+      delegate :connection, :establish_connection, to: ActiveRecord4116::Base
 
       def initialize(configuration)
         @configuration = configuration
@@ -15,7 +15,7 @@ module ActiveRecord
         establish_connection configuration_without_database
         connection.create_database configuration['database'], creation_options
         establish_connection configuration
-      rescue ActiveRecord::StatementInvalid => error
+      rescue ActiveRecord4116::StatementInvalid => error
         if /database exists/ === error.message
           raise DatabaseAlreadyExists
         else

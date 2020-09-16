@@ -2,7 +2,7 @@ require "cases/helper"
 require 'models/topic'
 require 'models/task'
 
-class DateTimeTest < ActiveRecord::TestCase
+class DateTimeTest < ActiveRecord4116::TestCase
   def test_saves_both_date_and_time
     with_env_tz 'America/New_York' do
       with_timezone_config default: :utc do

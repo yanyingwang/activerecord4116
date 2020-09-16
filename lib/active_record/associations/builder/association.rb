@@ -11,7 +11,7 @@ require 'active_support/core_ext/module/attribute_accessors'
 #    - CollectionAssociation
 #      - HasManyAssociation
 
-module ActiveRecord::Associations::Builder
+module ActiveRecord4116::Associations::Builder
   class Association #:nodoc:
     class << self
       attr_accessor :extensions
@@ -66,7 +66,7 @@ module ActiveRecord::Associations::Builder
     end
 
     def build(model)
-      ActiveRecord::Reflection.create(macro, name, scope, options, model)
+      ActiveRecord4116::Reflection.create(macro, name, scope, options, model)
     end
 
     def macro
@@ -92,7 +92,7 @@ module ActiveRecord::Associations::Builder
     end
 
     # Defines the setter and getter methods for the association
-    # class Post < ActiveRecord::Base
+    # class Post < ActiveRecord4116::Base
     #   has_many :comments
     # end
     #

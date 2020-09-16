@@ -1,9 +1,9 @@
-module ActiveRecord
+module ActiveRecord4116
   module Tasks # :nodoc:
     class SQLiteDatabaseTasks # :nodoc:
-      delegate :connection, :establish_connection, to: ActiveRecord::Base
+      delegate :connection, :establish_connection, to: ActiveRecord4116::Base
 
-      def initialize(configuration, root = ActiveRecord::Tasks::DatabaseTasks.root)
+      def initialize(configuration, root = ActiveRecord4116::Tasks::DatabaseTasks.root)
         @configuration, @root = configuration, root
       end
 

@@ -1,8 +1,8 @@
 require "active_support/core_ext/module/attribute_accessors"
 require 'set'
 
-module ActiveRecord
-  class MigrationError < ActiveRecordError#:nodoc:
+module ActiveRecord4116
+  class MigrationError < ActiveRecord4116Error#:nodoc:
     def initialize(message = nil)
       message = "\n\n#{message}\n\n" if message
       super
@@ -59,7 +59,7 @@ module ActiveRecord
   #
   # Example of a simple migration:
   #
-  #   class AddSsl < ActiveRecord::Migration
+  #   class AddSsl < ActiveRecord4116::Migration
   #     def up
   #       add_column :accounts, :ssl_enabled, :boolean, default: true
   #     end
@@ -79,7 +79,7 @@ module ActiveRecord
   #
   # Example of a more complex migration that also needs to initialize data:
   #
-  #   class AddSystemSettings < ActiveRecord::Migration
+  #   class AddSystemSettings < ActiveRecord4116::Migration
   #     def up
   #       create_table :system_settings do |t|
   #         t.string  :name
@@ -126,7 +126,7 @@ module ActiveRecord
   #   specified by passing an +options+ hash like <tt>{ default: 11 }</tt>.
   #   Other options include <tt>:limit</tt> and <tt>:null</tt> (e.g.
   #   <tt>{ limit: 50, null: false }</tt>) -- see
-  #   ActiveRecord::ConnectionAdapters::TableDefinition#column for details.
+  #   ActiveRecord4116::ConnectionAdapters::TableDefinition#column for details.
   # * <tt>rename_column(table_name, column_name, new_column_name)</tt>: Renames
   #   a column but keeps the type and content.
   # * <tt>change_column(table_name, column_name, type, options)</tt>:  Changes
@@ -146,7 +146,7 @@ module ActiveRecord
   # == Irreversible transformations
   #
   # Some transformations are destructive in a manner that cannot be reversed.
-  # Migrations of that kind should raise an <tt>ActiveRecord::IrreversibleMigration</tt>
+  # Migrations of that kind should raise an <tt>ActiveRecord4116::IrreversibleMigration</tt>
   # exception in their +down+ method.
   #
   # == Running migrations from within Rails
@@ -169,7 +169,7 @@ module ActiveRecord
   #   rails generate migration add_fieldname_to_tablename fieldname:string
   #
   # This will generate the file <tt>timestamp_add_fieldname_to_tablename</tt>, which will look like this:
-  #   class AddFieldnameToTablename < ActiveRecord::Migration
+  #   class AddFieldnameToTablename < ActiveRecord4116::Migration
   #     def up
   #       add_column :tablenames, :fieldname, :string
   #     end
@@ -189,7 +189,7 @@ module ActiveRecord
   # To roll the database back to a previous migration version, use
   # <tt>rake db:migrate VERSION=X</tt> where <tt>X</tt> is the version to which
   # you wish to downgrade. If any of the migrations throw an
-  # <tt>ActiveRecord::IrreversibleMigration</tt> exception, that step will fail and you'll
+  # <tt>ActiveRecord4116::IrreversibleMigration</tt> exception, that step will fail and you'll
   # have some manual work to do.
   #
   # == Database support
@@ -201,20 +201,20 @@ module ActiveRecord
   #
   # Not all migrations change the schema. Some just fix the data:
   #
-  #   class RemoveEmptyTags < ActiveRecord::Migration
+  #   class RemoveEmptyTags < ActiveRecord4116::Migration
   #     def up
   #       Tag.all.each { |tag| tag.destroy if tag.pages.empty? }
   #     end
   #
   #     def down
   #       # not much we can do to restore deleted data
-  #       raise ActiveRecord::IrreversibleMigration, "Can't recover the deleted tags"
+  #       raise ActiveRecord4116::IrreversibleMigration, "Can't recover the deleted tags"
   #     end
   #   end
   #
   # Others remove columns when they migrate up instead of down:
   #
-  #   class RemoveUnnecessaryItemAttributes < ActiveRecord::Migration
+  #   class RemoveUnnecessaryItemAttributes < ActiveRecord4116::Migration
   #     def up
   #       remove_column :items, :incomplete_items_count
   #       remove_column :items, :completed_items_count
@@ -228,7 +228,7 @@ module ActiveRecord
   #
   # And sometimes you need to do something in SQL not abstracted directly by migrations:
   #
-  #   class MakeJoinUnique < ActiveRecord::Migration
+  #   class MakeJoinUnique < ActiveRecord4116::Migration
   #     def up
   #       execute "ALTER TABLE `pages_linked_pages` ADD UNIQUE `page_id_linked_page_id` (`page_id`,`linked_page_id`)"
   #     end
@@ -245,7 +245,7 @@ module ActiveRecord
   # <tt>Base#reset_column_information</tt> in order to ensure that the model has the
   # latest column data from after the new column was added. Example:
   #
-  #   class AddPeopleSalary < ActiveRecord::Migration
+  #   class AddPeopleSalary < ActiveRecord4116::Migration
   #     def up
   #       add_column :people, :salary, :integer
   #       Person.reset_column_information
@@ -261,7 +261,7 @@ module ActiveRecord
   # them to the console as they happen, along with benchmarks describing how
   # long each step took.
   #
-  # You can quiet them down by setting ActiveRecord::Migration.verbose = false.
+  # You can quiet them down by setting ActiveRecord4116::Migration.verbose = false.
   #
   # You can also insert your own messages and benchmarks by using the +say_with_time+
   # method:
@@ -319,7 +319,7 @@ module ActiveRecord
   # To define a reversible migration, define the +change+ method in your
   # migration like this:
   #
-  #   class TenderloveMigration < ActiveRecord::Migration
+  #   class TenderloveMigration < ActiveRecord4116::Migration
   #     def change
   #       create_table(:horses) do |t|
   #         t.column :content, :text
@@ -336,11 +336,11 @@ module ActiveRecord
   # and +down+ methods as before.
   #
   # If a command cannot be reversed, an
-  # <tt>ActiveRecord::IrreversibleMigration</tt> exception will be raised when
+  # <tt>ActiveRecord4116::IrreversibleMigration</tt> exception will be raised when
   # the migration is moving down.
   #
   # For a list of commands that are reversible, please see
-  # <tt>ActiveRecord::Migration::CommandRecorder</tt>.
+  # <tt>ActiveRecord4116::Migration::CommandRecorder</tt>.
   #
   # == Transactional Migrations
   #
@@ -349,7 +349,7 @@ module ActiveRecord
   # can't execute inside a transaction though, and for these situations
   # you can turn the automatic transactions off.
   #
-  #   class ChangeEnum < ActiveRecord::Migration
+  #   class ChangeEnum < ActiveRecord4116::Migration
   #     disable_ddl_transaction!
   #
   #     def up
@@ -372,9 +372,9 @@ module ActiveRecord
       end
 
       def call(env)
-        mtime = ActiveRecord::Migrator.last_migration.mtime.to_i
+        mtime = ActiveRecord4116::Migrator.last_migration.mtime.to_i
         if @last_check < mtime
-          ActiveRecord::Migration.check_pending!
+          ActiveRecord4116::Migration.check_pending!
           @last_check = mtime
         end
         @app.call(env)
@@ -386,11 +386,11 @@ module ActiveRecord
       attr_accessor :disable_ddl_transaction # :nodoc:
 
       def check_pending!(connection = Base.connection)
-        raise ActiveRecord::PendingMigrationError if ActiveRecord::Migrator.needs_migration?(connection)
+        raise ActiveRecord4116::PendingMigrationError if ActiveRecord4116::Migrator.needs_migration?(connection)
       end
 
       def load_schema_if_pending!
-        if ActiveRecord::Migrator.needs_migration?
+        if ActiveRecord4116::Migrator.needs_migration?
           # Roundrip to Rake to allow plugins to hook into database initialization.
           FileUtils.cd Rails.root do
             current_config = Base.connection_config
@@ -404,7 +404,7 @@ module ActiveRecord
       end
 
       def maintain_test_schema! # :nodoc:
-        if ActiveRecord::Base.maintain_test_schema
+        if ActiveRecord4116::Base.maintain_test_schema
           suppress_messages { load_schema_if_pending! }
         end
       end
@@ -447,7 +447,7 @@ module ActiveRecord
     # and create the table 'apples' on the way up, and the reverse
     # on the way down.
     #
-    #   class FixTLMigration < ActiveRecord::Migration
+    #   class FixTLMigration < ActiveRecord4116::Migration
     #     def change
     #       revert do
     #         create_table(:horses) do |t|
@@ -466,7 +466,7 @@ module ActiveRecord
     #
     #   require_relative '2012121212_tenderlove_migration'
     #
-    #   class FixupTLMigration < ActiveRecord::Migration
+    #   class FixupTLMigration < ActiveRecord4116::Migration
     #     def change
     #       revert TenderloveMigration
     #
@@ -519,7 +519,7 @@ module ActiveRecord
     # when the three columns 'first_name', 'last_name' and 'full_name' exist,
     # even when migrating down:
     #
-    #    class SplitNameMigration < ActiveRecord::Migration
+    #    class SplitNameMigration < ActiveRecord4116::Migration
     #      def change
     #        add_column :users, :first_name, :string
     #        add_column :users, :last_name, :string
@@ -581,7 +581,7 @@ module ActiveRecord
       end
 
       time   = nil
-      ActiveRecord::Base.connection_pool.with_connection do |conn|
+      ActiveRecord4116::Base.connection_pool.with_connection do |conn|
         time = Benchmark.measure do
           exec_migration(conn, direction)
         end
@@ -639,7 +639,7 @@ module ActiveRecord
     end
 
     def connection
-      @connection || ActiveRecord::Base.connection
+      @connection || ActiveRecord4116::Base.connection
     end
 
     def method_missing(method, *arguments, &block)
@@ -662,10 +662,10 @@ module ActiveRecord
 
       FileUtils.mkdir_p(destination) unless File.exist?(destination)
 
-      destination_migrations = ActiveRecord::Migrator.migrations(destination)
+      destination_migrations = ActiveRecord4116::Migrator.migrations(destination)
       last = destination_migrations.last
       sources.each do |scope, path|
-        source_migrations = ActiveRecord::Migrator.migrations(path)
+        source_migrations = ActiveRecord4116::Migrator.migrations(path)
 
         source_migrations.each do |migration|
           source = File.binread(migration.filename)
@@ -715,14 +715,14 @@ module ActiveRecord
 
     # Determines the version number of the next migration.
     def next_migration_number(number)
-      if ActiveRecord::Base.timestamped_migrations
+      if ActiveRecord4116::Base.timestamped_migrations
         [Time.now.utc.strftime("%Y%m%d%H%M%S"), "%.14d" % number].max
       else
         SchemaMigration.normalize_migration_number(number)
       end
     end
 
-    def table_name_options(config = ActiveRecord::Base)
+    def table_name_options(config = ActiveRecord4116::Base)
       {
         table_name_prefix: config.table_name_prefix,
         table_name_suffix: config.table_name_suffix
@@ -858,10 +858,10 @@ module ActiveRecord
       end
 
       def proper_table_name(name, options = {})
-        ActiveSupport::Deprecation.warn "ActiveRecord::Migrator.proper_table_name is deprecated and will be removed in Rails 4.2. Use the proper_table_name instance method on ActiveRecord::Migration instead"
+        ActiveSupport::Deprecation.warn "ActiveRecord4116::Migrator.proper_table_name is deprecated and will be removed in Rails 4.2. Use the proper_table_name instance method on ActiveRecord4116::Migration instead"
         options = {
-          table_name_prefix: ActiveRecord::Base.table_name_prefix,
-          table_name_suffix: ActiveRecord::Base.table_name_suffix
+          table_name_prefix: ActiveRecord4116::Base.table_name_prefix,
+          table_name_suffix: ActiveRecord4116::Base.table_name_suffix
         }.merge(options)
         if name.respond_to? :table_name
           name.table_name
@@ -1023,10 +1023,10 @@ module ActiveRecord
     def record_version_state_after_migrating(version)
       if down?
         migrated.delete(version)
-        ActiveRecord::SchemaMigration.where(:version => version.to_s).delete_all
+        ActiveRecord4116::SchemaMigration.where(:version => version.to_s).delete_all
       else
         migrated << version
-        ActiveRecord::SchemaMigration.create!(:version => version.to_s)
+        ActiveRecord4116::SchemaMigration.create!(:version => version.to_s)
       end
     end
 

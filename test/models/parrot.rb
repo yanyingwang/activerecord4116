@@ -1,4 +1,4 @@
-class Parrot < ActiveRecord::Base
+class Parrot < ActiveRecord4116::Base
   self.inheritance_column = :parrot_sti_class
 
   has_and_belongs_to_many :pirates

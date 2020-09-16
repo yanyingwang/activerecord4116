@@ -1,5 +1,5 @@
 
-module ActiveRecord
+module ActiveRecord4116
   # = Active Record Belongs To Has One Association
   module Associations
     class HasOneAssociation < SingularAssociation #:nodoc:
@@ -7,7 +7,7 @@ module ActiveRecord
       def handle_dependency
         case options[:dependent]
         when :restrict_with_exception
-          raise ActiveRecord::DeleteRestrictionError.new(reflection.name) if load_target
+          raise ActiveRecord4116::DeleteRestrictionError.new(reflection.name) if load_target
 
         when :restrict_with_error
           if load_target

@@ -1,13 +1,13 @@
-module ActiveRecord
+module ActiveRecord4116
   class LogSubscriber < ActiveSupport::LogSubscriber
     IGNORE_PAYLOAD_NAMES = ["SCHEMA", "EXPLAIN"]
 
     def self.runtime=(value)
-      ActiveRecord::RuntimeRegistry.sql_runtime = value
+      ActiveRecord4116::RuntimeRegistry.sql_runtime = value
     end
 
     def self.runtime
-      ActiveRecord::RuntimeRegistry.sql_runtime ||= 0
+      ActiveRecord4116::RuntimeRegistry.sql_runtime ||= 0
     end
 
     def self.reset_runtime
@@ -67,9 +67,9 @@ module ActiveRecord
     end
 
     def logger
-      ActiveRecord::Base.logger
+      ActiveRecord4116::Base.logger
     end
   end
 end
 
-ActiveRecord::LogSubscriber.attach_to :active_record
+ActiveRecord4116::LogSubscriber.attach_to :active_record

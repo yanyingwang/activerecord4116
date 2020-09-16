@@ -2,7 +2,7 @@ require "cases/helper"
 require "models/lesson"
 require "models/student"
 
-class HabtmDestroyOrderTest < ActiveRecord::TestCase
+class HabtmDestroyOrderTest < ActiveRecord4116::TestCase
   test "may not delete a lesson with students" do
     sicp = Lesson.new(:name => "SICP")
     ben = Student.new(:name => "Ben Bitdiddle")
@@ -34,7 +34,7 @@ class HabtmDestroyOrderTest < ActiveRecord::TestCase
       # add a before destroy to student
       Student.class_eval do
         before_destroy do
-          raise ActiveRecord::Rollback unless lessons.empty?
+          raise ActiveRecord4116::Rollback unless lessons.empty?
         end
       end
       ben.lessons << sicp

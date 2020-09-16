@@ -1,7 +1,7 @@
 require "cases/helper"
 require 'models/topic'
 
-class StoredProcedureTest < ActiveRecord::TestCase
+class StoredProcedureTest < ActiveRecord4116::TestCase
   fixtures :topics
 
   # Test that MySQL allows multiple results for stored procedures
@@ -9,7 +9,7 @@ class StoredProcedureTest < ActiveRecord::TestCase
     def test_multi_results_from_find_by_sql
       topics = Topic.find_by_sql 'CALL topics();'
       assert_equal 1, topics.size
-      assert ActiveRecord::Base.connection.active?, "Bad connection use by 'MysqlAdapter.select'"
+      assert ActiveRecord4116::Base.connection.active?, "Bad connection use by 'MysqlAdapter.select'"
     end
   end
 end

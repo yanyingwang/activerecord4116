@@ -2,7 +2,7 @@ require 'cases/helper'
 require 'models/post'
 require 'models/subscriber'
 
-class EachTest < ActiveRecord::TestCase
+class EachTest < ActiveRecord4116::TestCase
   fixtures :posts, :subscribers
 
   def setup
@@ -69,23 +69,23 @@ class EachTest < ActiveRecord::TestCase
   end
 
   def test_warn_if_limit_scope_is_set
-    ActiveRecord::Base.logger.expects(:warn)
+    ActiveRecord4116::Base.logger.expects(:warn)
     Post.limit(1).find_each { |post| post }
   end
 
   def test_warn_if_order_scope_is_set
-    ActiveRecord::Base.logger.expects(:warn)
+    ActiveRecord4116::Base.logger.expects(:warn)
     Post.order("title").find_each { |post| post }
   end
 
   def test_logger_not_required
-    previous_logger = ActiveRecord::Base.logger
-    ActiveRecord::Base.logger = nil
+    previous_logger = ActiveRecord4116::Base.logger
+    ActiveRecord4116::Base.logger = nil
     assert_nothing_raised do
       Post.limit(1).find_each { |post| post }
     end
   ensure
-    ActiveRecord::Base.logger = previous_logger
+    ActiveRecord4116::Base.logger = previous_logger
   end
 
   def test_find_in_batches_should_return_batches

@@ -1,6 +1,6 @@
 require 'rails/generators/active_record'
 
-module ActiveRecord
+module ActiveRecord4116
   module Generators # :nodoc:
     class MigrationGenerator < Base # :nodoc:
       argument :attributes, :type => :array, :default => [], :banner => "field[:type][:index] field[:type][:index]"

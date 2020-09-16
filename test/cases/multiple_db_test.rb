@@ -3,7 +3,7 @@ require 'models/entrant'
 require 'models/bird'
 require 'models/course'
 
-class MultipleDbTest < ActiveRecord::TestCase
+class MultipleDbTest < ActiveRecord4116::TestCase
   self.use_transactional_fixtures = false
 
   def setup
@@ -21,7 +21,7 @@ class MultipleDbTest < ActiveRecord::TestCase
     assert_not_equal(Entrant.connection, Course.connection)
     assert_equal(Entrant.connection, Entrant.retrieve_connection)
     assert_equal(Course.connection, Course.retrieve_connection)
-    assert_equal(ActiveRecord::Base.connection, Entrant.connection)
+    assert_equal(ActiveRecord4116::Base.connection, Entrant.connection)
   end
 
   def test_find
@@ -96,12 +96,12 @@ class MultipleDbTest < ActiveRecord::TestCase
   unless in_memory_db?
     def test_associations_should_work_when_model_has_no_connection
       begin
-        ActiveRecord::Base.remove_connection
-        assert_nothing_raised ActiveRecord::ConnectionNotEstablished do
+        ActiveRecord4116::Base.remove_connection
+        assert_nothing_raised ActiveRecord4116::ConnectionNotEstablished do
           College.first.courses.first
         end
       ensure
-        ActiveRecord::Base.establish_connection :arunit
+        ActiveRecord4116::Base.establish_connection :arunit
       end
     end
   end

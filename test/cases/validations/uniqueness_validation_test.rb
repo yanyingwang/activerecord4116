@@ -6,7 +6,7 @@ require 'models/warehouse_thing'
 require 'models/guid'
 require 'models/event'
 
-class Wizard < ActiveRecord::Base
+class Wizard < ActiveRecord4116::Base
   self.abstract_class = true
 
   validates_uniqueness_of :name
@@ -30,7 +30,7 @@ class ReplyWithTitleObject < Reply
   def title; ReplyTitle.new; end
 end
 
-class Employee < ActiveRecord::Base
+class Employee < ActiveRecord4116::Base
   self.table_name = 'postgresql_arrays'
   validates_uniqueness_of :nicknames
 end
@@ -40,12 +40,12 @@ class TopicWithUniqEvent < Topic
   validates :event, uniqueness: true
 end
 
-class UniquenessValidationTest < ActiveRecord::TestCase
+class UniquenessValidationTest < ActiveRecord4116::TestCase
   fixtures :topics, 'warehouse-things', :developers
 
   repair_validations(Topic, Reply)
 
-  class ModelWithScopedValidationOnArray < ActiveRecord::Base
+  class ModelWithScopedValidationOnArray < ActiveRecord4116::Base
     self.table_name = 'postgresql_arrays'
     validates_uniqueness_of :name, scope: [:commission_by_quarter]
   end

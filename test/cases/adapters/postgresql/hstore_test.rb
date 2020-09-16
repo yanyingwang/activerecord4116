@@ -4,15 +4,15 @@ require "cases/helper"
 require 'active_record/base'
 require 'active_record/connection_adapters/postgresql_adapter'
 
-class PostgresqlHstoreTest < ActiveRecord::TestCase
-  class Hstore < ActiveRecord::Base
+class PostgresqlHstoreTest < ActiveRecord4116::TestCase
+  class Hstore < ActiveRecord4116::Base
     self.table_name = 'hstores'
 
     store_accessor :settings, :language, :timezone
   end
 
   def setup
-    @connection = ActiveRecord::Base.connection
+    @connection = ActiveRecord4116::Base.connection
 
     unless @connection.extension_enabled?('hstore')
       @connection.enable_extension 'hstore'
@@ -35,7 +35,7 @@ class PostgresqlHstoreTest < ActiveRecord::TestCase
     @connection.execute 'drop table if exists hstores'
   end
 
-  if ActiveRecord::Base.connection.supports_extensions?
+  if ActiveRecord4116::Base.connection.supports_extensions?
     def test_hstore_included_in_extensions
       assert @connection.respond_to?(:extensions), "connection should have a list of extensions"
       assert @connection.extensions.include?('hstore'), "extension list should include hstore"
@@ -65,14 +65,14 @@ class PostgresqlHstoreTest < ActiveRecord::TestCase
         column = Hstore.columns.find { |c| c.name == 'users' }
         assert_equal :hstore, column.type
 
-        raise ActiveRecord::Rollback # reset the schema change
+        raise ActiveRecord4116::Rollback # reset the schema change
       end
     ensure
       Hstore.reset_column_information
     end
 
     def test_hstore_migration
-      hstore_migration = Class.new(ActiveRecord::Migration) do
+      hstore_migration = Class.new(ActiveRecord4116::Migration) do
         def change
           change_table("hstores") do |t|
             t.hstore :keys

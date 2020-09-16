@@ -1,12 +1,12 @@
 require "cases/helper"
 
-module ActiveRecord
+module ActiveRecord4116
   class Migration
     class << self; attr_accessor :message_count; end
     self.message_count = 0
 
     def puts(text="")
-      ActiveRecord::Migration.message_count += 1
+      ActiveRecord4116::Migration.message_count += 1
     end
 
     module TestHelper
@@ -14,13 +14,13 @@ module ActiveRecord
 
       CONNECTION_METHODS = %w[add_column remove_column rename_column add_index change_column rename_table column_exists? index_exists? add_reference add_belongs_to remove_reference remove_references remove_belongs_to]
 
-      class TestModel < ActiveRecord::Base
+      class TestModel < ActiveRecord4116::Base
         self.table_name = :test_models
       end
 
       def setup
         super
-        @connection = ActiveRecord::Base.connection
+        @connection = ActiveRecord4116::Base.connection
         connection.create_table :test_models do |t|
           t.timestamps
         end
